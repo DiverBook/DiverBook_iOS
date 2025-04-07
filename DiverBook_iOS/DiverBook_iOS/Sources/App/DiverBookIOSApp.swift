@@ -4,7 +4,7 @@ import SwiftUI
 struct DiverBookIOSApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
     }
 }
