@@ -1,3 +1,4 @@
+import Foundation
 import ProjectDescription
 
 let project = Project(
@@ -24,9 +25,24 @@ let project = Project(
             ),
             sources: ["DiverBook_iOS/Sources/**"],
             resources: ["DiverBook_iOS/Resources/**"],
+            scripts: [
+                .pre(
+                    script: """
+                    export PATH="$PATH:/opt/homebrew/bin"
+                    if which swiftlint >/dev/null; then
+                        swiftlint
+                    else
+                        echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+                    fi
+                    """,
+                    name: "SwiftLint",
+                    basedOnDependencyAnalysis: false
+                )
+            ],
             dependencies: [
                 // TODO
-            ]
+            ],
+            additionalFiles: [".swiftlint.yml"]
         ),
         .target(
             name: "DiverBook_iOSTests",
