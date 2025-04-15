@@ -15,8 +15,8 @@ struct DiverBookIOSApp: App {
                         case .splash:
                             OnboardingView()
                                 .toolbar(.hidden, for: .navigationBar)
-                        case .main:
-                            MainView(viewModel: MainViewModel(coordinator: self.coordinator))
+                        case .mainTab:
+                            DiverBookTabView(viewModel: DiverBookTabViewModel(coordinator: self.coordinator))
                                 .toolbar(.hidden, for: .navigationBar)
                         }
                     })

@@ -25,5 +25,5 @@ class Coordinator: ObservableObject {
 // MARK: - navigating 되는 뷰 case 분리
 enum Path {
     case splash
-    case main
+    case mainTab
 }
