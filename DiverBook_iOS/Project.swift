@@ -21,6 +21,7 @@ let project = Project(
                     "UISupportedInterfaceOrientations": [
                         "UIInterfaceOrientationPortrait",
                     ],
+                    "NSCameraUsageDescription": "러너 출입증 인식을 위해 카메라 접근 권한이 필요합니다."
                 ]
             ),
             sources: ["DiverBook_iOS/Sources/**"],
