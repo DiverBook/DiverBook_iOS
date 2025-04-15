@@ -18,7 +18,7 @@ class Coordinator: ObservableObject {
     }
     
     func pop() {
-        let _ = self.path.popLast()
+        _ = self.path.popLast()
     }
 }
 
