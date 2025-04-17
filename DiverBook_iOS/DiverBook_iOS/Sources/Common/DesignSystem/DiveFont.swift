@@ -1,0 +1,31 @@
+//
+//  DiveFont.swift
+//  DiverBook_iOS
+//
+//  Created by 배현진 on 4/15/25.
+//
+
+import SwiftUI
+
+enum DiveFont {
+    /// size: 28, weight: semibold
+    static let headingH1: Font = .system(size: 28, weight: .semibold)
+    /// size: 24, weight: semibold
+    static let headingH2: Font = .system(size: 24, weight: .semibold)
+    /// size: 18, weight: regular
+    static let bodyLarge: Font = .system(size: 18, weight: .regular)
+    /// size: 16, weight: regular
+    static let bodyMedium1: Font = .system(size: 16, weight: .regular)
+    /// size: 14, weight: regular
+    static let bodyMedium2: Font = .system(size: 14, weight: .regular)
+    /// size: 12, weight: regular
+    static let bodyExtra1: Font = .system(size: 12, weight: .regular)
+    /// size: 10, weight: regular
+    static let bodyExtra2: Font = .system(size: 10, weight: .regular)
+    /// size: 16, weight: regular
+    static let button: Font = .system(size: 16, weight: .regular)
+    /// size: 18, weight: medium
+    static let bar: Font = .system(size: 18, weight: .medium)
+    /// size: 18 , weight: semibold
+    static let bodyPretendard: Font = .custom("Pretendard-SemiBold", size: 18)
+}
