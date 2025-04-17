@@ -6,7 +6,21 @@
 //
 
 import Combine
+import UIKit
 
-class IDCardScannerViewModel: {
+class IDCardScannerViewModel: ViewModelable {
+    struct State {
+        
+    }
+    
+    enum Action {
+        
+    }
+    
+    @Published var state: State = State()
+    
+    func action(_ action: Action) {
+        
+    }
     
 }

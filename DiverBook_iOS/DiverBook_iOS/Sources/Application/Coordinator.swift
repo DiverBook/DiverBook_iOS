@@ -18,12 +18,12 @@ class Coordinator: ObservableObject {
     }
     
     func pop() {
-        let _ = self.path.popLast()
+        _ = self.path.popLast()
     }
 }
 
 // MARK: - navigating 되는 뷰 case 분리
 enum Path {
     case splash
-    case main
+    case mainTab
 }
