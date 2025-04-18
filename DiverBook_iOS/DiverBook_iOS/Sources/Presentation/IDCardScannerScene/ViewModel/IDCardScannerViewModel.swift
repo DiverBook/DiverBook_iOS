@@ -6,8 +6,8 @@
 //
 
 import Combine
-import SwiftUI
 import CoreImage
+import SwiftUI
 
 
 class IDCardScannerViewModel: ViewModelable {

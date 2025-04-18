@@ -5,8 +5,8 @@
 //  Created by 한건희 on 4/16/25.
 //
 
-import SwiftUI
 import CoreML
+import SwiftUI
 import Vision
 
 class MLModelManager {
