@@ -7,22 +7,23 @@
 
 import SwiftUI
 
-struct PrimaryButton<Destination: View>: View {
+struct PrimaryButton: View {
+    @ObservedObject var coordinator: Coordinator
+
     let title: String
     let isEnabled: Bool
     let color: PrimaryButtonColor
-    let destination: Destination?
     let action: () -> Void
     
     init(title: String,
          isEnabled: Bool = true,
          color: PrimaryButtonColor = .darker,
-         destination: Destination? = nil,
+         coordinator: Coordinator,
          action: @escaping () -> Void) {
         self.title = title
         self.isEnabled = isEnabled
         self.color = color
-        self.destination = destination
+        self.coordinator = coordinator
         self.action = action
     }
     
@@ -50,26 +51,14 @@ struct PrimaryButton<Destination: View>: View {
     }
     
     var body: some View {
-        Group {
-            if let destination = destination, isEnabled {
-                NavigationLink(destination: destination) {
-                    buttonLabel
-                }
-                .simultaneousGesture(TapGesture().onEnded {
-                    action()
-                })
-                .disabled(!isEnabled)
-            } else {
-                Button(action: {
-                    if isEnabled {
-                        action()
-                    }
-                }, label: {
-                    buttonLabel
-                })
-                .disabled(!isEnabled)
+        Button(action: {
+            if isEnabled {
+                action()
             }
-        }
+        }, label: {
+            buttonLabel
+        })
+        .disabled(!isEnabled)
     }
 }
 
@@ -79,7 +68,10 @@ enum PrimaryButtonColor {
 }
 
 #Preview {
-    PrimaryButton(title: "활성화", destination: EmptyView()) {
-        print("버튼 클릭")
-    }
+    // 진한 색상 활성상태 버튼
+    PrimaryButton(title: "활성화", coordinator: Coordinator()) {}
+    // 연한 색상 활성상태 버튼
+    PrimaryButton(title: "활성화", color: .lighter, coordinator: Coordinator()) {}
+    // 비활성상태 버튼
+    PrimaryButton(title: "비활성화", isEnabled: false, coordinator: Coordinator()) {}
 }

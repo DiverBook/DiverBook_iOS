@@ -16,7 +16,7 @@ struct OnboardingContentView: View {
             Spacer()
             OnboardIntroView()
             Spacer()
-            PrimaryButton<EmptyView>(title: "등록하기", destination: nil) {
+            PrimaryButton(title: "등록하기", coordinator: Coordinator()) {
                 self.viewModel.action(.signUpButtonTapped)
             }
             .padding(.bottom, 50)

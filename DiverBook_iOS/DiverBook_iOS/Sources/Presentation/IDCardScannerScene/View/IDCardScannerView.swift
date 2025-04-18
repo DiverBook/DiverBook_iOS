@@ -31,7 +31,7 @@ struct IDCardScannerView: View {
             Image("idcard-image").resizable().aspectRatio(contentMode: .fit).frame(width: 241)
             Spacer()
             
-            PrimaryButton<EmptyView>(title: "촬영하기", destination: nil) {
+            PrimaryButton(title: "촬영하기", coordinator: Coordinator()) {
                 startScanning()
             }
             .padding(.bottom, 20)
@@ -68,17 +68,17 @@ struct IDCardScannerView: View {
     }
     
     func startScanning() {
-        CameraManager.shared.requestCameraAccess(
-            isNotAuthorized: {
-                DispatchQueue.main.async {
-                    self.viewModel.state.goSettingAlertState = true
-                }
-            },
-            authorized: {
-                DispatchQueue.main.async {
-                    self.viewModel.state.showCamera = true
-                }
-            })
+//        CameraManager.shared.requestCameraAccess(
+//            isNotAuthorized: {
+//                DispatchQueue.main.async {
+//                    self.viewModel.state.goSettingAlertState = true
+//                }
+//            },
+//            authorized: {
+//                DispatchQueue.main.async {
+//                    self.viewModel.state.showCamera = true
+//                }
+//            })
     }
 }
 
