@@ -10,6 +10,10 @@ import SwiftUI
 struct DiverBookTabView: View {
     @StateObject var viewModel: DiverBookTabViewModel
     
+    init(coordinator: Coordinator) {
+        _viewModel = StateObject(wrappedValue: DiverBookTabViewModel(coordinator: coordinator))
+    }
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: self.$viewModel.state.selectedTab) {
@@ -31,5 +35,5 @@ struct DiverBookTabView: View {
 
 #Preview {
     @Previewable @StateObject var coordinator = Coordinator()
-    DiverBookTabView(viewModel: DiverBookTabViewModel(coordinator: coordinator))
+    DiverBookTabView(coordinator: coordinator)
 }
