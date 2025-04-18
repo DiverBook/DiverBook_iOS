@@ -23,10 +23,8 @@ struct ProfileView: View {
             VStack(spacing: 26) {
                 //MARK: 프로필 이미지, 이름, 발결일자
                 HStack(spacing: 11){
-                    Circle()
-                        .fill(Color.white)
-                        .shadow(color: Color("shadow1").opacity(0.18), radius: 10, x: 0, y: 4)
-                        .frame(width: 76, height: 76)
+                    // 미모지 샘플 사용으로 이미지만 '베리'의 내용입니다.
+                    PrimaryProfile(image: Image("exMemoji"), style: .basic)
                     
                     VStack(alignment: .leading, spacing: 6){
                         Text("Chloe")
