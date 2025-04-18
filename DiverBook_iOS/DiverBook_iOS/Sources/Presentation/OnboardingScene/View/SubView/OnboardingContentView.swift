@@ -15,19 +15,9 @@ struct OnboardingContentView: View {
         VStack {
             Spacer()
             OnboardIntroView()
-            // MARK: 추후 버튼 컴포넌트 사용하도록 수정
             Spacer()
-            Button(action: {
+            PrimaryButton<EmptyView>(title: "등록하기", destination: nil) {
                 self.viewModel.action(.signUpButtonTapped)
-            }) {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.blue)
-                    .frame(height: 55)
-                    .overlay(
-                        Text("등록하기")
-                            .font(.callout)
-                            .foregroundStyle(.white)
-                    )
             }
             .padding(.bottom, 50)
         }

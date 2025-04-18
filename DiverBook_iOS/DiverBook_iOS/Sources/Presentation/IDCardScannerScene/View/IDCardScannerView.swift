@@ -31,29 +31,10 @@ struct IDCardScannerView: View {
             Image("idcard-image").resizable().aspectRatio(contentMode: .fit).frame(width: 241)
             Spacer()
             
-            // MARK: 추후 버튼 컴포넌트 사용하도록 수정
-            Button(action: {
-                CameraManager.shared.requestCameraAccess(
-                    isNotAuthorized: {
-                        DispatchQueue.main.async {
-                            self.viewModel.state.goSettingAlertState = true
-                        }
-                    },
-                    authorized: {
-                        DispatchQueue.main.async {
-                            self.viewModel.state.showCamera = true
-                        }
-                    })
-            }, label: {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.blue)
-                    .frame(height: 55)
-                    .overlay(
-                        Text("촬영하기")
-                            .font(DiveFont.button)
-                            .foregroundStyle(.white)
-                    )
-            })
+            PrimaryButton<EmptyView>(title: "촬영하기", destination: nil) {
+                startScanning()
+            }
+            .padding(.bottom, 20)
         }
         .padding(.horizontal, 24)
         .sheet(
@@ -84,6 +65,20 @@ struct IDCardScannerView: View {
                         UIApplication.shared.open(settingURL, options: [:])
                     }), secondaryButton: .cancel())
         }
+    }
+    
+    func startScanning() {
+        CameraManager.shared.requestCameraAccess(
+            isNotAuthorized: {
+                DispatchQueue.main.async {
+                    self.viewModel.state.goSettingAlertState = true
+                }
+            },
+            authorized: {
+                DispatchQueue.main.async {
+                    self.viewModel.state.showCamera = true
+                }
+            })
     }
 }
 
