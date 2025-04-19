@@ -19,7 +19,7 @@ struct IDCardScannerView: View {
     @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack(spacing: 0) {
-            IDScannerTopBar()
+            TopBar()
             Spacer()
             Text("아카데미 출입증을 준비해주세요").font(DiveFont.headingH3)
                 .padding(.bottom, 5)

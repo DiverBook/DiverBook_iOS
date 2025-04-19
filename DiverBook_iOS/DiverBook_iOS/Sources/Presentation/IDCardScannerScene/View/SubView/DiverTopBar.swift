@@ -8,7 +8,7 @@
 import Combine
 import SwiftUI
 
-struct IDScannerTopBar: View {
+struct TopBar: View {
     @Environment(\.dismiss) var dismiss
     var body: some View {
         HStack(spacing: 0) {
