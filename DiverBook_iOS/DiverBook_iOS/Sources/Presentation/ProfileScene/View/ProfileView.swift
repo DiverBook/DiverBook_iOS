@@ -55,7 +55,7 @@ struct ProfileView: View {
                 VStack(spacing: 14){
                     HStack{
                         Text("다이버에 대한 기록을 남겨주세요!")
-                            .foregroundStyle(Color.gray3)
+                            .foregroundStyle(DiveColor.color2)
                         Spacer()
                     }
                     
@@ -68,7 +68,7 @@ struct ProfileView: View {
                 
                 //MARK: Module 4 : 저장버튼
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.savebutton)
+                    .fill(DiveColor.color4)
                     .frame(height: 55)
                     .frame(maxWidth: .infinity)
                     .overlay(
