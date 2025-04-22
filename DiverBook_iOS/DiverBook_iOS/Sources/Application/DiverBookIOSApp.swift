@@ -26,6 +26,11 @@ struct DiverBookIOSApp: App {
                             case .mainTab:
                                 DiverBookTabView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
+                            case .searchingDiver:
+                                DiverSearchingView(coordinator: self.coordinator)
+                                    .toolbar(.hidden, for: .navigationBar)
+                            case .searchResult(nickname: let nickname):
+                                DiverSearchResultView(nickname: nickname)
                             }
                         })
             }

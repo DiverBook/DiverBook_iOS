@@ -28,4 +28,6 @@ enum Path: Hashable {
     case userProfileSetting(nickname: String)
     case idCardScan
     case mainTab
+    case searchingDiver
+    case searchResult(nickname: String)
 }

@@ -41,7 +41,7 @@ let project = Project(
                 )
             ],
             dependencies: [
-                
+                .external(name: "Lottie")
             ],
             additionalFiles: [".swiftlint.yml"]
         ),
