@@ -19,6 +19,7 @@ struct TopBar: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 12)
+                    .foregroundColor(DiveColor.color6)
             })
             .buttonStyle(.plain)
             Spacer()
