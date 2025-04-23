@@ -43,9 +43,7 @@ struct ConversationView: View {
 
 struct QuestionCardCell: View {
     var body: some View {
-        ZStack {
-            Image("questionCard")
-                .shadow(color: DiveColor.gray4.opacity(0.18), radius: 5, y: 5)
-        }
+        Image("questionCard")
+            .shadow(color: DiveColor.gray4.opacity(0.18), radius: 5, y: 5)
     }
 }
