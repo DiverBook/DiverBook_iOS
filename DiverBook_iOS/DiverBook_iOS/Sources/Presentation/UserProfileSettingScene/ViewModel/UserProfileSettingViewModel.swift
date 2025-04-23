@@ -53,7 +53,7 @@ class UserProfileSettingViewModel: ViewModelable {
             }
             
         case .profileSettingEnd:
-            print("end!")
+            self.coordinator.push(.mainTab)
             
         case .validateCurrentStepInfo:
             switch self.state.profileSettingPhase {
