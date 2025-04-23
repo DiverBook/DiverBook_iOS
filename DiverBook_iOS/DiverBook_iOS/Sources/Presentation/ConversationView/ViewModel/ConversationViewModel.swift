@@ -25,5 +25,9 @@ final class ConversationViewModel: ViewModelable {
     }
     
     func action(_ action: Action) {
+        switch action {
+        case .finishConversation:
+            coordinator.push(.finishConversation)
+        }
     }
 }

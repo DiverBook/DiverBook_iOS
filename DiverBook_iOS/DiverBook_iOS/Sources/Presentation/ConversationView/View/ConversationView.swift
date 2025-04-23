@@ -34,7 +34,7 @@ struct ConversationView: View {
             
             Spacer()
             PrimaryButton(title: "대화 완료", coordinator: Coordinator()) {
-                // TODO: - 대화 완료 클릭시 화면 전환 (ProfileView로)
+                viewModel.action(.finishConversation)
             }
         }
         .padding(.horizontal, 24)
