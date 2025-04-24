@@ -1,19 +1,20 @@
 //
-//  DiverSearchResultViewModel.swift
+//  ConversationViewModel.swift
 //  DiverBook_iOS
 //
-//  Created by 배현진 on 4/22/25.
+//  Created by 배현진 on 4/23/25.
 //
 
 import Combine
 import SwiftUI
 
-final class DiverSearchResultViewModel: ViewModelable {
+final class ConversationViewModel: ViewModelable {
     struct State {
+        
     }
     
     enum Action {
-        case startConversation
+        case finishConversation
     }
     
     @Published var state: State = State()
@@ -25,8 +26,8 @@ final class DiverSearchResultViewModel: ViewModelable {
     
     func action(_ action: Action) {
         switch action {
-        case .startConversation:
-            coordinator.push(.startConversation)
+        case .finishConversation:
+            coordinator.push(.finishConversation)
         }
     }
 }
