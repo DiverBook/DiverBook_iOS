@@ -15,7 +15,7 @@ struct BadgeState: Identifiable {
     let description: String
 }
 
-final class CollectedBadgeViewModel: ObservableObject {
+class CollectedBadgeViewModel: ViewModelable {
     struct State {
         var badges: [BadgeState] = []
     }

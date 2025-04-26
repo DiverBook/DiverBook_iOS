@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct MyProfileView: View {
-    @State private var todayTalk: String = "공기는 눈에 보이지 않지만 어디에나 있습니다."
-    private var division = "디자인"
-    private var phoneNumber = "010-0000-0000"
-    private var interests = "사진, 아마스빈"
-    private var places = "C5"
+    @StateObject private var viewModel: MyProfileViewModel
+
+    init(viewModel: MyProfileViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         VStack(spacing: 34) {
@@ -23,15 +23,16 @@ struct MyProfileView: View {
                     .font(DiveFont.headingH3)
             }
 
-            TodayTalkSectionView(todayTalk: $todayTalk)
+            TodayTalkSectionView(todayTalk: $viewModel.state.todayTalk)
 
             ProfileDetailsInfoView(
-                division: division,
-                phoneNumber: phoneNumber,
-                interests: interests,
-                places: places
+                division: viewModel.state.division,
+                phoneNumber: viewModel.state.phoneNumber,
+                interests: viewModel.state.interests,
+                places: viewModel.state.places
             )
-            CollectedBadgeButtonView(badgeCount: 5)
+            
+            CollectedBadgeButtonView(badgeCount: viewModel.state.badgeCount)
             
             Spacer()
         }
@@ -40,5 +41,5 @@ struct MyProfileView: View {
 }
 
 #Preview {
-    MyProfileView()
+    MyProfileView(viewModel: MyProfileViewModel())
 }

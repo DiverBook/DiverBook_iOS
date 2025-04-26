@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct CollectedBadgeView: View {
-    @ObservedObject private var viewModel = CollectedBadgeViewModel(
-        registeredDiverCount: 17
-    )
+    @ObservedObject private var viewModel: CollectedBadgeViewModel
+
+    init(viewModel: CollectedBadgeViewModel) {
+        self.viewModel = viewModel
+    }
 
     let columns = [
         GridItem(.flexible()),
@@ -34,5 +36,5 @@ struct CollectedBadgeView: View {
 }
 
 #Preview {
-    CollectedBadgeView()
+    CollectedBadgeView(viewModel: CollectedBadgeViewModel(registeredDiverCount: 40))
 }
