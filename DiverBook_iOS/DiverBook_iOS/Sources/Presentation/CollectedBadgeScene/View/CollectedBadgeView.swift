@@ -36,5 +36,5 @@ struct CollectedBadgeView: View {
 }
 
 #Preview {
-    CollectedBadgeView(viewModel: CollectedBadgeViewModel(registeredDiverCount: 40))
+    CollectedBadgeView(viewModel: CollectedBadgeViewModel(registeredDiverCount: 5))
 }

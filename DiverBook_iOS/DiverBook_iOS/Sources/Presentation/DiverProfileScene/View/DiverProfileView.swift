@@ -20,7 +20,7 @@ struct DiverProfileView: View {
         ScrollView {
             VStack(spacing: 26) {
                 DiverProfileHeaderSectionView(name: "Chloe", foundDate: "25.03.24")
-                TodayTalkSectionView(todayTalk: $todayTalk)
+                TodayTalkSectionView(mode: .readOnly(text: todayTalk))
                 ProfileDetailsInfoView(
                     division: division,
                     phoneNumber: phoneNumber,

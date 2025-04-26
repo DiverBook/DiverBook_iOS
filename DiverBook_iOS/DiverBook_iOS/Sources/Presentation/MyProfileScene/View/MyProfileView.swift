@@ -23,7 +23,7 @@ struct MyProfileView: View {
                     .font(DiveFont.headingH3)
             }
 
-            TodayTalkSectionView(todayTalk: $viewModel.state.todayTalk)
+            TodayTalkSectionView(mode: .editable(binding: $viewModel.state.todayTalk))
 
             ProfileDetailsInfoView(
                 division: viewModel.state.division,

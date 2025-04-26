@@ -8,8 +8,13 @@
 import Foundation
 import SwiftUI
 
+enum TodayTalkMode {
+    case editable(binding: Binding<String>)
+    case readOnly(text: String)
+}
+
 struct TodayTalkSectionView: View {
-    @Binding var todayTalk: String
+    let mode: TodayTalkMode
 
     var body: some View {
         ZStack(alignment: .center) {
@@ -18,10 +23,18 @@ struct TodayTalkSectionView: View {
                 .scaledToFill()
                 .clipped()
 
-            TextField("오늘의 한마디를 입력해주세요", text: $todayTalk)
-                .font(DiveFont.bodyMedium2)
-                .multilineTextAlignment(.center)
-                .padding(16)
+            switch mode {
+            case .editable(let binding):
+                TextField("오늘의 한마디를 입력해주세요", text: binding)
+                    .font(DiveFont.bodyMedium2)
+                    .multilineTextAlignment(.center)
+                    .padding(16)
+            case .readOnly(let text):
+                Text(text.isEmpty ? "오늘의 한마디가 없습니다" : text)
+                    .font(DiveFont.bodyMedium2)
+                    .multilineTextAlignment(.center)
+                    .padding(16)
+            }
         }
         .frame(maxWidth: .infinity)
         .frame(height: 55)
@@ -29,5 +42,8 @@ struct TodayTalkSectionView: View {
 }
 
 #Preview {
-    TodayTalkSectionView(todayTalk: .constant(""))
+    VStack(spacing: 40) {
+        TodayTalkSectionView(mode: .editable(binding: .constant("")))
+        TodayTalkSectionView(mode: .readOnly(text: "오늘은 날씨가 좋네요"))
+    }
 }
