@@ -21,7 +21,7 @@ struct CollectedBadgeView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(viewModel.badges) { badge in
+                ForEach(viewModel.state.badges) { badge in
                     BadgeCardView(badge: badge)
                         .frame(maxWidth: .infinity)
                 }
@@ -36,4 +36,3 @@ struct CollectedBadgeView: View {
 #Preview {
     CollectedBadgeView()
 }
-

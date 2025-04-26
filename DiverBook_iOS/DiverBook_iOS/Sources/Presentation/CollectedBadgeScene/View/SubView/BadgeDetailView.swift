@@ -11,15 +11,15 @@ struct BadgeDetailView: View {
     let badge: BadgeState
 
     var body: some View {
-        VStack(alignment:.center) {
+        VStack(alignment: .center) {
             Image(badge.displayImageName)
 
             Text(badge.name)
                 .font(DiveFont.headingH3)
                 .foregroundStyle(DiveColor.color5)
-            
+
             Spacer().frame(height: 12)
-            
+
             Text(badge.description)
                 .font(DiveFont.bodyMedium2)
                 .multilineTextAlignment(.center)

@@ -16,10 +16,25 @@ struct BadgeState: Identifiable {
 }
 
 final class CollectedBadgeViewModel: ObservableObject {
-    @Published var badges: [BadgeState] = []
+    struct State {
+        var badges: [BadgeState] = []
+    }
+
+    enum Action {
+        case fetchBadges(registeredDiverCount: Int)
+    }
+
+    @Published var state = State()
 
     init(registeredDiverCount: Int) {
-        loadBadges(for: registeredDiverCount)
+        action(.fetchBadges(registeredDiverCount: registeredDiverCount))
+    }
+
+    func action(_ action: Action) {
+        switch action {
+        case .fetchBadges(let registeredDiverCount):
+            loadBadges(for: registeredDiverCount)
+        }
     }
 
     private func loadBadges(for registeredDiverCount: Int) {
@@ -74,7 +89,7 @@ final class CollectedBadgeViewModel: ObservableObject {
             ),
         ]
 
-        self.badges = allBadges.map { badge in
+        self.state.badges = allBadges.map { badge in
             let hasCollected = registeredDiverCount >= badge.requiredDiverCount
             return BadgeState(
                 name: badge.name,
