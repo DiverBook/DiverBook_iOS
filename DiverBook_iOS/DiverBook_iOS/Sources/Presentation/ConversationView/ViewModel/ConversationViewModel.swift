@@ -18,6 +18,8 @@ final class ConversationViewModel: ViewModelable {
     
     enum Action {
         case finishConversation
+        case selectCard(index: Int)
+        case dismissCard
     }
     
     @Published var state: State = State()
@@ -31,15 +33,19 @@ final class ConversationViewModel: ViewModelable {
         switch action {
         case .finishConversation:
             coordinator.push(.finishConversation)
+        case .selectCard(let index):
+            handleSelectCard(index: index)
+        case .dismissCard:
+            handleDismissCard()
         }
     }
     
-    func selectCard(index: Int) {
+    private func handleSelectCard(index: Int) {
         selectedCardIndex = index
         isPopupCard = true
     }
     
-    func dismissCard() {
+    private func handleDismissCard() {
         withAnimation {
             isPopupCard = false
         }

@@ -36,7 +36,7 @@ struct ConversationView: View {
                             QuestionCardCell()
                                 .matchedGeometryEffect(id: index, in: animationNamespace)
                                 .onTapGesture {
-                                    viewModel.selectCard(index: index)
+                                    viewModel.action(.selectCard(index: index))
                                 }
                         }
                     }
@@ -61,7 +61,7 @@ struct ConversationView: View {
                 .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation {
-                        viewModel.dismissCard()
+                        viewModel.action(.dismissCard)
                     }
                 }
                 .zIndex(1)
