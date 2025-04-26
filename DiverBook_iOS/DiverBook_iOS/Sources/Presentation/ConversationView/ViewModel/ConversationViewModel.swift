@@ -9,6 +9,9 @@ import Combine
 import SwiftUI
 
 final class ConversationViewModel: ViewModelable {
+    @Published var selectedCardIndex: Int?
+    @Published var isPopupCard: Bool = false
+    
     struct State {
         
     }
@@ -28,6 +31,20 @@ final class ConversationViewModel: ViewModelable {
         switch action {
         case .finishConversation:
             coordinator.push(.finishConversation)
+        }
+    }
+    
+    func selectCard(index: Int) {
+        selectedCardIndex = index
+        isPopupCard = true
+    }
+    
+    func dismissCard() {
+        withAnimation {
+            isPopupCard = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            self.selectedCardIndex = nil
         }
     }
 }

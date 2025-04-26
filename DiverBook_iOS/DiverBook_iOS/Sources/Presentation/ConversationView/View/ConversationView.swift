@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ConversationView: View {
+    @Namespace private var animationNamespace
     @StateObject var viewModel: ConversationViewModel
     
     init(coordinator: Coordinator) {
@@ -17,27 +18,59 @@ struct ConversationView: View {
     let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
     
     var body: some View {
-        VStack {
-            TopBar()
-            Spacer()
-            Text("아래 카드를 고르면\n다이버와 깊이 잠수해볼 수 있어요")
-                .font(DiveFont.headingH3)
-                .foregroundColor(DiveColor.gray4)
-                .padding(.bottom, 25)
-                .multilineTextAlignment(.center)
-            
-            LazyVGrid(columns: columns, spacing: 0) {
-                ForEach(0..<4) { index in
-                    QuestionCardCell()
+        ZStack {
+            VStack {
+                TopBar()
+                Spacer()
+                Text("아래 카드를 고르면\n다이버와 깊이 잠수해볼 수 있어요")
+                    .font(DiveFont.headingH3)
+                    .foregroundColor(DiveColor.gray4)
+                    .padding(.bottom, 25)
+                    .multilineTextAlignment(.center)
+                
+                LazyVGrid(columns: columns, spacing: 0) {
+                    ForEach(0..<4) { index in
+                        if viewModel.selectedCardIndex == index {
+                            Color.clear
+                        } else {
+                            QuestionCardCell()
+                                .matchedGeometryEffect(id: index, in: animationNamespace)
+                                .onTapGesture {
+                                    viewModel.selectCard(index: index)
+                                }
+                        }
+                    }
+                }
+                
+                Spacer()
+                PrimaryButton(title: "대화 완료", coordinator: Coordinator()) {
+                    viewModel.action(.finishConversation)
                 }
             }
+            .padding(.horizontal, 24)
             
-            Spacer()
-            PrimaryButton(title: "대화 완료", coordinator: Coordinator()) {
-                viewModel.action(.finishConversation)
-            }
+            popupCardView()
         }
-        .padding(.horizontal, 24)
+    }
+    
+    @ViewBuilder
+    private func popupCardView() -> some View {
+        if let cardIndex = viewModel.selectedCardIndex,
+           viewModel.isPopupCard {
+            Color.black.opacity(0.2)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation {
+                        viewModel.dismissCard()
+                    }
+                }
+                .zIndex(1)
+
+            QuestionCardView(index: cardIndex)
+                .matchedGeometryEffect(id: cardIndex, in: animationNamespace)
+                .transition(.scale.animation(.easeIn))
+                .zIndex(2)
+        }
     }
 }
 
