@@ -37,6 +37,3 @@ struct CollectedBadgeView: View {
     CollectedBadgeView()
 }
 
-#Preview {
-    CollectedBadgeView()
-}

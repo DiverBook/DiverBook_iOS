@@ -12,4 +12,5 @@ struct Badge: Identifiable {
     let name: String
     let requiredDiverCount: Int
     let imageName: String
+    let description: String
 }
