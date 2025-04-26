@@ -12,7 +12,7 @@ struct ProfileDetailsInfoView: View {
     var phoneNumber: String
     var interests: String
     var places: String
-
+    
     var body: some View {
         VStack(spacing: 32) {
             ProfileInfoRow(title: "희망분야", content: division)

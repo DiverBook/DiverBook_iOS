@@ -21,7 +21,7 @@ struct TodayTalkSectionView: View {
             TextField("오늘의 한마디를 입력해주세요", text: $todayTalk)
                 .font(DiveFont.bodyMedium2)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
+                .padding(16)
         }
         .frame(maxWidth: .infinity)
         .frame(height: 55)
