@@ -9,12 +9,13 @@ import Foundation
 import SwiftUI
 
 struct DiverProfileHeaderSectionView: View {
+    let profileImageName: String
     let name: String
     let foundDate: String
-    
+
     var body: some View {
         HStack(spacing: 11) {
-            PrimaryProfile(image: Image("exMemoji"), style: .basic)
+            PrimaryProfile(image: Image(profileImageName), style: .basic)
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(name)
@@ -30,5 +31,9 @@ struct DiverProfileHeaderSectionView: View {
 }
 
 #Preview {
-    DiverProfileHeaderSectionView(name: "Chloe", foundDate: "25.03.24")
+    DiverProfileHeaderSectionView(
+        profileImageName: "exMemoji",
+        name: "Chloe",
+        foundDate: "25.03.24"
+    )
 }

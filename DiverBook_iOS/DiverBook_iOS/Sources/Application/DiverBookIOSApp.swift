@@ -8,7 +8,7 @@ struct DiverBookIOSApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MyProfileView(viewModel: MyProfileViewModel())
+            DiverProfileView(viewModel: DiverProfileViewModel())
 //            NavigationStack(path: self.$coordinator.path) {
 //                OnboardingView(coordinator: self.coordinator)
 //                    .navigationDestination(

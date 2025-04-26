@@ -8,34 +8,43 @@
 import SwiftUI
 
 struct DiverProfileView: View {
-    @State private var todayTalk: String = ""
-    @State private var history: String = ""
+    @StateObject private var viewModel: DiverProfileViewModel
 
-    private var division = "디자인"
-    private var phoneNumber = "010-0000-0000"
-    private var interests = "사진, 아마스빈"
-    private var places = "C5"
+    init(viewModel: DiverProfileViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 26) {
-                DiverProfileHeaderSectionView(name: "Chloe", foundDate: "25.03.24")
-                TodayTalkSectionView(mode: .readOnly(text: todayTalk))
-                ProfileDetailsInfoView(
-                    division: division,
-                    phoneNumber: phoneNumber,
-                    interests: interests,
-                    places: places
+                DiverProfileHeaderSectionView(
+                    profileImageName: viewModel.state.profileImageName,
+                    name: viewModel.state.name,
+                    foundDate: viewModel.state.foundDate
                 )
+
+                TodayTalkSectionView(
+                    mode: .readOnly(text: viewModel.state.todayTalk)
+                )
+
+                ProfileDetailsInfoView(
+                    division: viewModel.state.division,
+                    phoneNumber: viewModel.state.phoneNumber,
+                    interests: viewModel.state.interests,
+                    places: viewModel.state.places
+                )
+
                 Spacer().frame(height: 12)
-                DiverHistorySectionView(history: $history)
-                
+
+                DiverHistorySectionView(history: $viewModel.history)
+
                 PrimaryButton(
                     title: "저장",
+                    isEnabled: viewModel.isSaveEnabled,
                     color: .lighter,
                     coordinator: Coordinator(),
                     action: {
-                        // 저장 액션 처리
+                        // 저장 액션 처리 예정
                     }
                 )
             }
@@ -45,5 +54,5 @@ struct DiverProfileView: View {
 }
 
 #Preview {
-    DiverProfileView()
+    DiverProfileView(viewModel: DiverProfileViewModel())
 }
