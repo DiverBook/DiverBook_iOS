@@ -28,10 +28,10 @@ struct DiverProfileView: View {
                 )
 
                 ProfileDetailsInfoView(
-                    division: viewModel.state.division,
-                    phoneNumber: viewModel.state.phoneNumber,
-                    interests: viewModel.state.interests,
-                    places: viewModel.state.places
+                    division: .readOnly(text: viewModel.state.division),
+                    phoneNumber: .readOnly(text: viewModel.state.phoneNumber),
+                    interests: .readOnly(text: viewModel.state.interests),
+                    places: .readOnly(text: viewModel.state.places)
                 )
 
                 Spacer().frame(height: 12)

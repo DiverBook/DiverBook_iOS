@@ -8,9 +8,14 @@
 import Foundation
 import SwiftUI
 
+enum ProfileInfoMode {
+    case editable(binding: Binding<String>)
+    case readOnly(text: String)
+}
+
 struct ProfileInfoRow: View {
     var title: String
-    var content: String
+    var mode: ProfileInfoMode
 
     var body: some View {
         HStack {
@@ -20,12 +25,24 @@ struct ProfileInfoRow: View {
 
             Spacer()
 
-            Text(content)
-                .font(DiveFont.bodyPretendard)
+            switch mode {
+            case .editable(let binding):
+                TextField("", text: binding)
+                    .multilineTextAlignment(.trailing)
+                    .font(DiveFont.bodyPretendard)
+
+            case .readOnly(let text):
+                Text(text)
+                    .font(DiveFont.bodyPretendard)
+                    .multilineTextAlignment(.trailing)
+            }
         }
     }
 }
 
 #Preview {
-    ProfileInfoRow(title: "희망분야", content: "디자인")
+    VStack {
+        ProfileInfoRow(title: "희망분야", mode: .editable(binding: .constant("디자인")))
+        ProfileInfoRow(title: "희망분야", mode: .readOnly(text: "디자인"))
+    }
 }

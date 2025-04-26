@@ -73,6 +73,7 @@ final class MyProfileViewModel: ViewModelable {
     private func observeStateChanges() {
         $state
             .dropFirst()
+            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
             .sink { [weak self] newState in
                 self?.saveProfileData(newState)
             }
@@ -81,6 +82,6 @@ final class MyProfileViewModel: ViewModelable {
     
     private func saveProfileData(_ state: State) {
         // TODO: 서버 저장 로직으로 변경해야함
-        print("✅ 자동 저장: \(state.todayTalk), \(state.division), ...")
+        print("✅ 자동 저장: \(state.todayTalk), \(state.division), \(state.phoneNumber), \(state.interests), \(state.places)")
     }
 }

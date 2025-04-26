@@ -26,10 +26,10 @@ struct MyProfileView: View {
             TodayTalkSectionView(mode: .editable(binding: $viewModel.state.todayTalk))
 
             ProfileDetailsInfoView(
-                division: viewModel.state.division,
-                phoneNumber: viewModel.state.phoneNumber,
-                interests: viewModel.state.interests,
-                places: viewModel.state.places
+                division: .editable(binding: $viewModel.state.division),
+                phoneNumber: .editable(binding: $viewModel.state.phoneNumber),
+                interests: .editable(binding: $viewModel.state.interests),
+                places: .editable(binding: $viewModel.state.places)
             )
             
             CollectedBadgeButtonView(badgeCount: viewModel.state.badgeCount)
