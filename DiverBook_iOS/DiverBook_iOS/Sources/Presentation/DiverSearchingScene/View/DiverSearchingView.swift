@@ -11,7 +11,7 @@ struct DiverSearchingView: View {
     @StateObject var viewModel: DiverSearchingViewModel
     
     init(coordinator: Coordinator) {
-        let viewModel = DiverSearchingViewModel(coordinator: coordinator, nickname: "Berry")
+        let viewModel = DiverSearchingViewModel(coordinator: coordinator)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     

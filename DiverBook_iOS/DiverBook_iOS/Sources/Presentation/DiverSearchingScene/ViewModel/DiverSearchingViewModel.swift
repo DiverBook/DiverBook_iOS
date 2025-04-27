@@ -24,9 +24,10 @@ final class DiverSearchingViewModel: ViewModelable {
         return DataTransferManager(nickname: nickname, viewModel: self)
     }()
     
-    init(coordinator: Coordinator, nickname: String) {
+    init(coordinator: Coordinator) {
         self.coordinator = coordinator
-        self.nickname = nickname
+        // TODO: - 사용자 데이터에서 가져오기
+        self.nickname = "Berry"
     }
     
     func action(_ action: Action) {
