@@ -21,13 +21,16 @@ struct DiverBookTabView: View {
                 MainView(viewModel: MainViewModel(coordinator: self.viewModel.coordinator))
                     .tag(TabType.diverBook)
                 
-                // MARK: 탐색 뷰는 탭 아이템 누를 시 탭 뷰로 보여지지 않고 새로운 뷰로 Navigating
-                
                 Text("setting")
                     .tag(TabType.setting)
             }
             .tabViewStyle(.page)
-            DiverBookTabBar(selectedTab: self.$viewModel.state.selectedTab)
+            DiverBookTabBar(
+                selectedTab: self.$viewModel.state.selectedTab,
+                selectSearchTab: {
+                    viewModel.action(.selectSearchTab)
+                }
+            )
         }
         .ignoresSafeArea(edges: [.bottom])
     }
