@@ -29,8 +29,7 @@ struct PrimaryProfile: View {
                 Circle()
                     .fill((DiveColor.white))
                     .frame(width: style.imageSize, height: style.imageSize)
-                    .shadow(color: hasShadow ? DiveColor.color6.opacity(0.18) : .clear,
-                            radius: hasShadow ? 5 : 0, y: 5)
+                    .applyShadow(hasShadow ? style.shadow : DiveShadow.noneShadow)
                 image
                     .resizable()
                     .scaledToFill()
@@ -41,7 +40,7 @@ struct PrimaryProfile: View {
             if let nickname = nickname {
                 Text(nickname)
                     .font(style.nicknameFont)
-                    .foregroundColor(DiveColor.gray4)
+                    .foregroundColor(style.nicknameColor)
             }
         }
     }
@@ -50,6 +49,7 @@ struct PrimaryProfile: View {
 enum ProfileStyle {
     case found
     case mypage
+    case unfound
     case diver
     case basic
     
@@ -59,6 +59,8 @@ enum ProfileStyle {
             return 160
         case .mypage:
             return 136
+        case .unfound:
+            return 110
         case .diver:
             return 100
         case .basic:
@@ -72,10 +74,30 @@ enum ProfileStyle {
             return nil
         case .mypage:
             return DiveFont.headingH3
+        case .unfound:
+            return DiveFont.bodyMedium1
         case .diver:
             return DiveFont.bodyMedium1
         case .basic:
             return nil
+        }
+    }
+    
+    var nicknameColor: Color {
+        switch self {
+        case .unfound:
+            return DiveColor.gray3
+        default:
+            return DiveColor.gray4
+        }
+    }
+    
+    var shadow: Shadow {
+        switch self {
+        case .unfound:
+            return DiveShadow.shadow3
+        default:
+            return DiveShadow.shadow1
         }
     }
 }

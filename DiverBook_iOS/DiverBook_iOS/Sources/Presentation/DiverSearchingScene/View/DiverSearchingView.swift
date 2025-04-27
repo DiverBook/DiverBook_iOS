@@ -19,7 +19,7 @@ struct DiverSearchingView: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            TopBar()
+            DiverSearchingTopBarView()
             Spacer()
             LottieView(animationName: "DiverDrop", shouldPlay: true)
                 .frame(width: 350, height: 100)
@@ -37,13 +37,7 @@ struct DiverSearchingView: View {
             }
             .font(DiveFont.headingH2)
             
-            HStack(spacing: 5) {
-                ProgressView()
-                Text("탐색중...")
-                    .font(DiveFont.bodyMedium2)
-                    .foregroundColor(DiveColor.gray3)
-            }
-            .padding(.top, 100)
+            DiverSearchingProgressView()
             
             Spacer()
         }
