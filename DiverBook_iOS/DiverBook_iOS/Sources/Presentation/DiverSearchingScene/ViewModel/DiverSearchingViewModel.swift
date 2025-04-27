@@ -19,8 +19,14 @@ final class DiverSearchingViewModel: ViewModelable {
     @Published var state: State = State()
     @ObservedObject var coordinator: Coordinator
     
-    init(coordinator: Coordinator) {
+    private let nickname: String
+    private lazy var dataTransferManager: DataTransferManager = {
+        return DataTransferManager(nickname: nickname, viewModel: self)
+    }()
+    
+    init(coordinator: Coordinator, nickname: String) {
         self.coordinator = coordinator
+        self.nickname = nickname
     }
     
     func action(_ action: Action) {
@@ -28,5 +34,13 @@ final class DiverSearchingViewModel: ViewModelable {
         case .successSearchingDiver(let nickname):
             self.coordinator.push(.searchResult(nickname: nickname))
         }
+    }
+    
+    func startSearching() {
+        dataTransferManager.startSession()
+    }
+
+    func stopSearching() {
+        dataTransferManager.stopSession()
     }
 }
