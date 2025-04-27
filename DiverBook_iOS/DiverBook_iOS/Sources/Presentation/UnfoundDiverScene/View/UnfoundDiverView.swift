@@ -25,7 +25,7 @@ struct UnfoundDiverView: View {
                 .padding(.top, 60)
             Spacer()
             PrimaryButton(title: "다이버 탐색하기", coordinator: Coordinator()) {
-                // TODO: 다이버 탐색 연결
+                viewModel.action(.tabSearchButton)
             }
         }
         .padding(.horizontal, 24)

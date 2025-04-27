@@ -14,6 +14,7 @@ final class UnfoundDiverViewModel: ViewModelable {
     }
     
     enum Action {
+        case tabSearchButton
     }
     
     @Published var state: State = State()
@@ -24,6 +25,9 @@ final class UnfoundDiverViewModel: ViewModelable {
     }
     
     func action(_ action: Action) {
-        
+        switch action {
+        case .tabSearchButton:
+            coordinator.push(.searchingDiver)
+        }
     }
 }
