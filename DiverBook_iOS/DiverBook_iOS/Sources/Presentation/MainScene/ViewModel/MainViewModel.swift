@@ -10,11 +10,13 @@ import SwiftUI
 
 class MainViewModel: ViewModelable {
     struct State {
-        
+        var userNickname: String = "Ted"
+        var bookAttainmentRate: Double = 50
     }
     
     enum Action {
-        
+        case profileSettingButtonTapped
+        case diverTapped
     }
     
     @Published var state: State = State()
@@ -26,6 +28,11 @@ class MainViewModel: ViewModelable {
     }
     
     func action(_ action: Action) {
-        //
+        switch action {
+        case .profileSettingButtonTapped:
+            print("profile setting button tapped!")
+        case .diverTapped:
+            print("diver tapped!")
+        }
     }
 }

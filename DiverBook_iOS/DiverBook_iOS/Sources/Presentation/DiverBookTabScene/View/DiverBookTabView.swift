@@ -11,14 +11,14 @@ struct DiverBookTabView: View {
     @StateObject var viewModel: DiverBookTabViewModel
     
     init(coordinator: Coordinator) {
-        _viewModel = StateObject(wrappedValue: DiverBookTabViewModel(coordinator: coordinator))
+        self._viewModel = StateObject(wrappedValue: DiverBookTabViewModel(coordinator: coordinator))
     }
     
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: self.$viewModel.state.selectedTab) {
                 // MARK: TabType에 따라 Tag 부착
-                MainView(viewModel: MainViewModel(coordinator: self.viewModel.coordinator))
+                MainView(coordinator: self.viewModel.coordinator)
                     .tag(TabType.diverBook)
                 
                 Text("setting")
@@ -34,9 +34,4 @@ struct DiverBookTabView: View {
         }
         .ignoresSafeArea(edges: [.bottom])
     }
-}
-
-#Preview {
-    @Previewable @StateObject var coordinator = Coordinator()
-    DiverBookTabView(coordinator: coordinator)
 }

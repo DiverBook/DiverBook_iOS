@@ -10,20 +10,22 @@ import Foundation
 
 class CameraManager {
     static var shared: CameraManager = CameraManager()
-    
+
     private init() {
-        
+
     }
-        
-    func requestCameraAccess(isNotAuthorized: @escaping () -> Void, authorized: @escaping () -> Void) {
+
+    func requestCameraAccess(
+        isNotAuthorized: @escaping () -> Void, authorized: @escaping () -> Void
+    ) {
         AVCaptureDevice.requestAccess(for: .video) { isAuthorized in
             guard isAuthorized else {
                 isNotAuthorized()
                 return
             }
-            
+
             authorized()
         }
-        
+
     }
 }
