@@ -8,8 +8,6 @@
 import SwiftUI
 
 enum DiveFont {
-    /// size: 22, weight: bold
-    static let title2Emphasized: Font = .system(size: 22, weight: .bold)
     /// size: 28, weight: semibold
     static let headingH1: Font = .system(size: 28, weight: .semibold)
     /// size: 24, weight: semibold
