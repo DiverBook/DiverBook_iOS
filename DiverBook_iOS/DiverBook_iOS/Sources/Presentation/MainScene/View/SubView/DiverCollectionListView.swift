@@ -31,7 +31,7 @@ struct DiverCollectionListView: View {
     }
 }
 
-class DiverCollectionListViewModel: ViewModelable {
+final class DiverCollectionListViewModel: ViewModelable {
     struct State {
 
     }

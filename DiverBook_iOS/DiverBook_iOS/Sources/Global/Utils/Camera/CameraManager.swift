@@ -8,7 +8,7 @@
 import AVFoundation
 import Foundation
 
-class CameraManager {
+final class CameraManager {
     static var shared: CameraManager = CameraManager()
 
     private init() {

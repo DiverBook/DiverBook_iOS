@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DiverBookTabView: View {
-    @StateObject var viewModel: DiverBookTabViewModel
+    @StateObject private var viewModel: DiverBookTabViewModel
     
     init(coordinator: Coordinator) {
         self._viewModel = StateObject(wrappedValue: DiverBookTabViewModel(coordinator: coordinator))

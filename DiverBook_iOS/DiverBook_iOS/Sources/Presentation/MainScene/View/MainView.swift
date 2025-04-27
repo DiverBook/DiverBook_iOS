@@ -7,8 +7,8 @@
 import SwiftUI
 
 struct MainView: View {
-    @StateObject var viewModel: MainViewModel
-    @GestureState var dragOffset: CGSize = .zero
+    @StateObject private var viewModel: MainViewModel
+    @GestureState private var dragOffset: CGSize = .zero
     
     init(coordinator: Coordinator) {
         self._viewModel = StateObject(wrappedValue: MainViewModel(coordinator: coordinator))

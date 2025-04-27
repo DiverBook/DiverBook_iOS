@@ -8,7 +8,7 @@
 import Combine
 import SwiftUI
 
-class UserProfileSettingViewModel: ViewModelable {
+final class UserProfileSettingViewModel: ViewModelable {
     
     struct State {
         var profileSettingPhase: ProfileSettingPhase = .checkDetectedIDCardInfo

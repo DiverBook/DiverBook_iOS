@@ -8,7 +8,7 @@
 import Combine
 import SwiftUI
 
-class DiverBookTabViewModel: ViewModelable {
+final class DiverBookTabViewModel: ViewModelable {
     struct State {
         var selectedTab: TabType = .diverBook
     }

@@ -10,7 +10,7 @@ import SwiftUI
 import UIKit
 
 struct IDCardScannerView: View {
-    @StateObject var viewModel: IDCardScannerViewModel
+    @StateObject private var viewModel: IDCardScannerViewModel
 
     init(coordinator: Coordinator) {
         _viewModel = StateObject(wrappedValue: IDCardScannerViewModel(coordinator: coordinator))

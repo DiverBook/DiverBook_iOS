@@ -8,7 +8,7 @@
 import Combine
 import SwiftUI
 
-class MainViewModel: ViewModelable {
+final class MainViewModel: ViewModelable {
     struct State {
         var userNickname: String = "Ted"
         var bookAttainmentRate: Double = 50

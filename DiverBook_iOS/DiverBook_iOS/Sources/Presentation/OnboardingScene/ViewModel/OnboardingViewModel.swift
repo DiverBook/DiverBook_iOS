@@ -8,7 +8,7 @@
 import Combine
 import SwiftUI
 
-class OnboardingViewModel: ViewModelable {
+final class OnboardingViewModel: ViewModelable {
     struct State {
         var isSplashing: Bool = true
     }
