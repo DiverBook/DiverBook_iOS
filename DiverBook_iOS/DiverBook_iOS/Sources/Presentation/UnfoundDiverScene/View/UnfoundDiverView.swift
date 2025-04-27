@@ -16,7 +16,7 @@ struct UnfoundDiverView: View {
     
     var body: some View {
         VStack {
-            TopBar()
+            UnfoundDiverTopBarView()
             Spacer()
             PrimaryProfile(image: Image("unfoundProfile"), nickname: "Air", style: .unfound)
             Text("아직 발견되지 않은 다이버입니다.")
