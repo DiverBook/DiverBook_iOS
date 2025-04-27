@@ -8,8 +8,7 @@
 import MultipeerConnectivity
 
 final class AdvertiserManager: NSObject, MCNearbyServiceAdvertiserDelegate {
-    private let dataTransferManager: DataTransferManager
-    private let peerID = MCPeerID(displayName: UIDevice.current.name)
+    private let dataTransferManager: DataTransferManager?
     private var advertiser: MCNearbyServiceAdvertiser?
 
     init(dataTransferManager: DataTransferManager) {
@@ -18,7 +17,7 @@ final class AdvertiserManager: NSObject, MCNearbyServiceAdvertiserDelegate {
         advertiser = MCNearbyServiceAdvertiser(
             peer: dataTransferManager.peerID,
             discoveryInfo: ["uuid": UUIDManager.shared.uuid],
-            serviceType: "DiverBook"
+            serviceType: dataTransferManager.serviceType
         )
         advertiser?.delegate = self
     }
@@ -29,7 +28,7 @@ final class AdvertiserManager: NSObject, MCNearbyServiceAdvertiserDelegate {
         print("start advertising")
     }
 
-    func endSession() {
+    func stop() {
         advertiser?.stopAdvertisingPeer()
     }
     
@@ -39,6 +38,6 @@ final class AdvertiserManager: NSObject, MCNearbyServiceAdvertiserDelegate {
                     invitationHandler: @escaping (Bool, MCSession?) -> Void
     ) {
         print("📩 초대 수신 : \(peerID.displayName)")
-        invitationHandler(true, dataTransferManager.session)
+        invitationHandler(true, dataTransferManager?.session)
     }
 }

@@ -20,6 +20,7 @@ struct DiverSearchResultView: View {
     
     var body: some View {
         VStack {
+            TopBar()
             Spacer()
             Group {
                 Text("심해를 탐험하는")
@@ -37,7 +38,7 @@ struct DiverSearchResultView: View {
             PrimaryButton(title: "대화 시작", coordinator: Coordinator()) {
                 viewModel.action(.startConversation)
             }
-            .padding(.horizontal, 24)
         }
+        .padding(.horizontal, 24)
     }
 }

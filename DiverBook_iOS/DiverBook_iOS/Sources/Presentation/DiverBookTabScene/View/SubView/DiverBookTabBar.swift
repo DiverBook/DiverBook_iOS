@@ -10,11 +10,12 @@ import SwiftUI
 
 struct DiverBookTabBar: View {
     @Binding var selectedTab: TabType
+    var selectSearchTab: () -> Void
 
     var body: some View {
         ZStack {
             TabInsideButtons(selectedTab: self.$selectedTab)
-            SearchTabButton()
+            SearchTabButton(selectSearchTab: selectSearchTab)
         }
     }
 }
@@ -23,7 +24,10 @@ struct DiverBookTabBar: View {
     @Previewable @State var selectedTab: TabType = .diverBook
     VStack {
         Spacer()
-        DiverBookTabBar(selectedTab: $selectedTab)
+        DiverBookTabBar(
+            selectedTab: $selectedTab) {
+            print("탐색 버튼 눌림")
+        }
     }
     .ignoresSafeArea()
 }
