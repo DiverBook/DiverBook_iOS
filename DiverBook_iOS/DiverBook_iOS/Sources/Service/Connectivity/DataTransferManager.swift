@@ -19,13 +19,13 @@ final class DataTransferManager: NSObject, ObservableObject {
     private var browserManager: BrowserManager?
     private weak var viewModel: DiverSearchingViewModel?
     
+    let hapticManager = HapticManager.instance
     let serviceType = "DiverBook"
     private let minDistance: Float = 0.2
     private let maxDistance: Float = 0.3
 
     // TODO: - 내 실제 닉네임 전달해주도록 변경
     @Published var isBrowser: Bool = false
-//    @Published var myNickname: String = "User\(Int.random(in: 1000...9999))"
     @Published var receivedNickname: String = ""
 
     init(nickname: String, viewModel: DiverSearchingViewModel) {
@@ -113,9 +113,12 @@ extension DataTransferManager: MCSessionDelegate {
 
         if let nickname = String(data: data, encoding: .utf8) {
             DispatchQueue.main.async {
-                self.receivedNickname = nickname
-                self.viewModel?.action(.successSearchingDiver(nickname: nickname))
-                print("✅ 받은 닉네임: \(nickname)")
+                self.hapticManager.cutstomStrongHaptic()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.receivedNickname = nickname
+                    self.viewModel?.action(.successSearchingDiver(nickname: nickname))
+                    print("✅ 받은 닉네임: \(nickname)")
+                }
             }
         }
     }
