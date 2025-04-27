@@ -10,6 +10,6 @@ import SwiftUI
 struct QuestionCardCell: View {
     var body: some View {
         Image("questionCard")
-            .shadow(color: DiveColor.gray4.opacity(0.18), radius: 5, y: 5)
+            .applyShadow(DiveShadow.shadow3)
     }
 }
