@@ -30,4 +30,6 @@ enum DiveFont {
     static let bar: Font = .system(size: 18, weight: .medium)
     /// size: 18 , weight: semibold
     static let bodyPretendard: Font = .custom("Pretendard-SemiBold", size: 18)
+    /// size: 16, weight: semibold
+    static let bodyMediumPretendard: Font = .custom("Pretendard-SemiBold", size: 16)
 }
