@@ -21,7 +21,14 @@ let project = Project(
                     "UISupportedInterfaceOrientations": [
                         "UIInterfaceOrientationPortrait",
                     ],
-                    "NSCameraUsageDescription": "러너 출입증 인식을 위해 카메라 접근 권한이 필요합니다."
+                    "NSCameraUsageDescription": "러너 출입증 인식을 위해 카메라 접근 권한이 필요합니다.",
+                    "NSNearbyInteractionUsageDescription": "근처 기기와 상호작용하기 위해 NearbyInteraction을 사용합니다.",
+                    "NSLocalNetworkUsageDescription": "기기 간 통신을 위해 로컬 네트워크 사용 권한이 필요합니다.",
+                    "NSBluetoothAlwaysUsageDescription": "기기 간 탐색을 위해 블루투스 사용 권한이 필요합니다.",
+                    "NSBonjourServices": [
+                        "_DiverBook._udp",
+                        "_DiverBook._tcp"
+                    ]
                 ]
             ),
             sources: ["DiverBook_iOS/Sources/**"],

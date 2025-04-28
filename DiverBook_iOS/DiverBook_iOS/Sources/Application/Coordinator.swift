@@ -30,4 +30,6 @@ enum Path: Hashable {
     case mainTab
     case searchingDiver
     case searchResult(nickname: String)
+    case startConversation
+    case finishConversation
 }

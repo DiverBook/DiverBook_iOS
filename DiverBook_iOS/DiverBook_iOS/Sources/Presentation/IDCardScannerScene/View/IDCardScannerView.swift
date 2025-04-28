@@ -68,17 +68,17 @@ struct IDCardScannerView: View {
     }
     
     func startScanning() {
-//        CameraManager.shared.requestCameraAccess(
-//            isNotAuthorized: {
-//                DispatchQueue.main.async {
-//                    self.viewModel.state.goSettingAlertState = true
-//                }
-//            },
-//            authorized: {
-//                DispatchQueue.main.async {
-//                    self.viewModel.state.showCamera = true
-//                }
-//            })
+        CameraManager.shared.requestCameraAccess(
+            isNotAuthorized: {
+                DispatchQueue.main.async {
+                    self.viewModel.state.goSettingAlertState = true
+                }
+            },
+            authorized: {
+                DispatchQueue.main.async {
+                    self.viewModel.state.showCamera = true
+                }
+            })
     }
 }
 

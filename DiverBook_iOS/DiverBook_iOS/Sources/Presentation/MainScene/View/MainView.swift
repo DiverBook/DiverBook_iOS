@@ -7,10 +7,45 @@
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var viewModel: MainViewModel
+    @StateObject var viewModel: MainViewModel
+    @GestureState var dragOffset: CGSize = .zero
+    
+    init(coordinator: Coordinator) {
+        self._viewModel = StateObject(wrappedValue: MainViewModel(coordinator: coordinator))
+    }
     var body: some View {
-        VStack {
-            Text("Main view")
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(spacing: 0) {
+                    MainTopInfoView(viewModel: self.viewModel)
+                        .background(DiveColor.color6)
+                        .id("top")
+                    DiverCollectionStatusView(viewModel: self.viewModel)
+                        .padding(.bottom, 60)
+                    Button(action: {
+                        withAnimation {
+                            proxy.scrollTo("top", anchor: .top)
+                        }
+                    }, label: {
+                        HStack {
+                            Image(systemName: "arrow.up")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 12)
+                            Text("위로 가기")
+                                .font(.subheadline)
+                        }
+                    })
+                    .padding(.bottom, 140)
+                }
+            }
+            .ignoresSafeArea(edges: [.top])
         }
     }
+}
+
+#Preview {
+    @Previewable @StateObject var coordinator = Coordinator()
+    
+    MainView(coordinator: coordinator)
 }
