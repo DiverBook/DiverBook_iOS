@@ -11,7 +11,9 @@ import SwiftUI
 class UserProfileSettingViewModel: ViewModelable {
     
     struct State {
+        var authUseCase: AuthUseCase
         var profileSettingPhase: ProfileSettingPhase = .checkDetectedIDCardInfo
+        var nickName: String
         var preferredField: PreferredField = .tech
         var phoneNumber: String = ""
         var interests: String = ""
@@ -28,10 +30,11 @@ class UserProfileSettingViewModel: ViewModelable {
     }
     
     @ObservedObject var coordinator: Coordinator
-    @Published var state: State = State()
+    @Published var state: State
     
-    init(coordinator: Coordinator) {
+    init(coordinator: Coordinator, authUseCase: AuthUseCase, nickName: String) {
         self.coordinator = coordinator
+        self.state = State(authUseCase: authUseCase, nickName: nickName)
     }
     
     func action(_ action: Action) {
@@ -53,7 +56,23 @@ class UserProfileSettingViewModel: ViewModelable {
             }
             
         case .profileSettingEnd:
-            self.coordinator.push(.mainTab)
+            Task { [weak self] in
+                let result = await state.authUseCase.executeSignUp(
+                    userName: String(state.nickName.uppercased().first!)+String(state.nickName.dropFirst()),
+                    divisions: state.preferredField.fieldDescription,
+                    phoneNumber: state.phoneNumber,
+                    interests: state.interests,
+                    places: state.preferredPlaces,
+                    about: state.shortBio,
+                    password: "9182"
+                )
+                switch result {
+                case .success:
+                    coordinator.push(.mainTab)
+                case .failure:
+                    print("fail")
+                }
+            }
             
         case .validateCurrentStepInfo:
             switch self.state.profileSettingPhase {
