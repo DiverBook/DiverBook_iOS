@@ -20,6 +20,8 @@ enum DiveFont {
     static let bodyMedium1: Font = .system(size: 16, weight: .regular)
     /// size: 14, weight: regular
     static let bodyMedium2: Font = .system(size: 14, weight: .regular)
+    /// size: 14, weight: semibold
+    static let bodySemibold: Font = .system(size: 14, weight: .semibold)
     /// size: 12, weight: regular
     static let bodyExtra1: Font = .system(size: 12, weight: .regular)
     /// size: 10, weight: regular
