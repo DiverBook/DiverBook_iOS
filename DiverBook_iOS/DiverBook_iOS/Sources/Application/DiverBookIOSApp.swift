@@ -18,7 +18,10 @@ struct DiverBookIOSApp: App {
                                 OnboardingView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .userProfileSetting(let nickname):
-                                UserProfileSettingView(nickname: nickname, coordinator: self.coordinator)
+                                UserProfileSettingView(
+                                    nickName: nickname,
+                                    coordinator: self.coordinator
+                                )
                                     .toolbar(.hidden, for: .navigationBar)
                             case .idCardScan:
                                 IDCardScannerView(coordinator: self.coordinator)
