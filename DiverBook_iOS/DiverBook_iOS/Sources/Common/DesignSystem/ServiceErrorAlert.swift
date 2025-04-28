@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ServiceErrorAlert: View {
     let message: String
+    @Binding var showErrorAlert: Bool
     
     var body: some View {
         ZStack {
@@ -16,7 +17,12 @@ struct ServiceErrorAlert: View {
                 .foregroundColor(DiveColor.color1)
             ServiceErrorContent(message: message)
         }
-        .frame(width: 350, height: 55)
+        .frame(height: 55)
+        .padding(.top, 50)
+        .padding(.horizontal, 24)
+        .opacity(showErrorAlert ? 1 : 0)
+        .scaleEffect(showErrorAlert ? 1.0 : 0.8)
+        .animation(.easeInOut(duration: 0.4), value: showErrorAlert)
     }
 }
 
@@ -43,8 +49,4 @@ struct ServiceErrorContent: View {
             Spacer()
         }
     }
-}
-
-#Preview {
-    ServiceErrorAlert(message: "Service unavailable")
 }
