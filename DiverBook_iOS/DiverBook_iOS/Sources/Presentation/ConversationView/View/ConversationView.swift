@@ -38,7 +38,7 @@ struct ConversationView: View {
                 }
                 .zIndex(1)
 
-            QuestionCardView(index: cardIndex)
+            FlipCardView(cardIndex: cardIndex)
                 .matchedGeometryEffect(id: cardIndex, in: animationNamespace)
                 .transition(.scale.animation(.easeIn))
                 .zIndex(2)

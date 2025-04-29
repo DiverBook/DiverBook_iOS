@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct QuestionCardView: View {
-    let cardIndex: Int
+    @Binding var degree: Double
     
-    init(index: Int) {
-        self.cardIndex = index
-    }
+    let index: Int
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: CGFloat(18))
@@ -38,5 +37,6 @@ struct QuestionCardView: View {
             }
             .frame(width: 230, height: 300)
         }
+        .rotation3DEffect(Angle(degrees: degree), axis: (x: 0, y: 1, z: 0))
     }
 }

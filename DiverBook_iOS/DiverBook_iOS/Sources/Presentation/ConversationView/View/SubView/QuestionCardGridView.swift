@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QuestionCardGridView: View {
     @StateObject var viewModel: ConversationViewModel
+    @State private var degree: Double = 0
     
     let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
     var animationNamespace: Namespace.ID
@@ -28,7 +29,7 @@ struct QuestionCardGridView: View {
                     if viewModel.selectedCardIndex == index {
                         Color.clear
                     } else {
-                        QuestionCardCell()
+                        QuestionCardCell(degree: $degree)
                             .matchedGeometryEffect(id: index, in: animationNamespace)
                             .onTapGesture {
                                 viewModel.action(.selectCard(index: index))
