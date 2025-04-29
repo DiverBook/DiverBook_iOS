@@ -58,7 +58,7 @@ class UserProfileSettingViewModel: ViewModelable {
         case .profileSettingEnd:
             Task { [weak self] in
                 let result = await state.authUseCase.executeSignUp(
-                    userName: String(state.nickName.uppercased().first!)+String(state.nickName.dropFirst()),
+                    userName: capitalizeNickname(nickName: state.nickName),
                     divisions: state.preferredField.fieldDescription,
                     phoneNumber: state.phoneNumber,
                     interests: state.interests,
@@ -92,8 +92,12 @@ class UserProfileSettingViewModel: ViewModelable {
         }
     }
     
-    func validatePhoneNumber(_ phoneNumber: String) -> Bool {
+    private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
         return phoneNumber.count == 11
+    }
+    
+    private func capitalizeNickname(nickName: String) -> String {
+        return String(state.nickName.uppercased().first!) + String(state.nickName.dropFirst().lowercased())
     }
 }
 
