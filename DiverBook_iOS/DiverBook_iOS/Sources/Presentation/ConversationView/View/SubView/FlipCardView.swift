@@ -14,12 +14,15 @@ struct FlipCardView: View {
     
     let durationAndDelay: CGFloat = 0.3
     let cardIndex: Int
+    let animationNamespace: Namespace.ID
     
     var body: some View {
         ZStack {
             QuestionCardFrontView(degree: $frontDegree, index: cardIndex)
             QuestionCardBackView(degree: $backDegree)
+                .matchedGeometryEffect(id: cardIndex, in: animationNamespace)
         }
+        .frame(width: 230, height: 300)
         .onAppear {
             flipCard()
         }

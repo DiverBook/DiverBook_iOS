@@ -12,7 +12,7 @@ struct QuestionCardGridView: View {
     @State private var degree: Double = 0
     
     let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
-    var animationNamespace: Namespace.ID
+    let animationNamespace: Namespace.ID
     
     var body: some View {
         VStack {
