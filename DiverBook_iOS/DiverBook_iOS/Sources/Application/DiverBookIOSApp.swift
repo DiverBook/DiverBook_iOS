@@ -19,7 +19,7 @@ struct DiverBookIOSApp: App {
                                     .toolbar(.hidden, for: .navigationBar)
                             case .userProfileSetting(let nickname):
                                 UserProfileSettingView(
-                                    nickname: nickname,
+                                    nickName: nickname,
                                     coordinator: self.coordinator
                                 )
                                     .toolbar(.hidden, for: .navigationBar)

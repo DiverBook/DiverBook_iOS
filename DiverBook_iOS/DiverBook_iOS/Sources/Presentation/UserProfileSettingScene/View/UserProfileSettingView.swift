@@ -9,13 +9,23 @@ import Combine
 import SwiftUI
 
 struct UserProfileSettingView: View {
-    @StateObject var viewModel: UserProfileSettingViewModel
-    var nickname: String
+    @StateObject private var viewModel: UserProfileSettingViewModel
+    var nickName: String
 
-    init(nickname: String, coordinator: Coordinator) {
-        self.nickname = nickname
+    init(nickName: String, coordinator: Coordinator) {
+        self.nickName = nickName
         _viewModel = StateObject(
-            wrappedValue: UserProfileSettingViewModel(coordinator: coordinator))
+            wrappedValue: UserProfileSettingViewModel(
+                coordinator: coordinator,
+                authUseCase: DefaultAuthUseCase(
+                    authRepository: DefaultAuthRepository(
+                        authService: DiverBookAuthService(),
+                        tokenService: DiverBookTokenService()
+                    )
+                ),
+                nickName: nickName
+            )
+        )
     }
 
     var body: some View {
@@ -26,7 +36,7 @@ struct UserProfileSettingView: View {
 
             if self.viewModel.state.profileSettingPhase
                 == .checkDetectedIDCardInfo {
-                CheckDetectedIDCardInfoView(nickname: self.nickname)
+                CheckDetectedIDCardInfoView(nickname: self.nickName)
             } else {
                 ScrollView {
                     InputUserDetailInfoView(viewModel: self.viewModel)
@@ -66,9 +76,4 @@ struct UserProfileSettingView: View {
             self.viewModel.action(.validateCurrentStepInfo)
         })
     }
-}
-
-#Preview {
-    @Previewable @StateObject var coordinator = Coordinator()
-    UserProfileSettingView(nickname: "abcd", coordinator: coordinator)
 }
