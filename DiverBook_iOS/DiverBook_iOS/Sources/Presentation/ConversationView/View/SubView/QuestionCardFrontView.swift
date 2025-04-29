@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuestionCardView: View {
+struct QuestionCardFrontView: View {
     @Binding var degree: Double
     
     let index: Int

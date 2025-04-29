@@ -17,8 +17,8 @@ struct FlipCardView: View {
     
     var body: some View {
         ZStack {
-            QuestionCardView(degree: $frontDegree, index: cardIndex)
-            QuestionCardCell(degree: $backDegree)
+            QuestionCardFrontView(degree: $frontDegree, index: cardIndex)
+            QuestionCardBackView(degree: $backDegree)
         }
         .onAppear {
             flipCard()

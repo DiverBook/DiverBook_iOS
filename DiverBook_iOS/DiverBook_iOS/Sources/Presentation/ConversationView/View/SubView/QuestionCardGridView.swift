@@ -29,7 +29,7 @@ struct QuestionCardGridView: View {
                     if viewModel.selectedCardIndex == index {
                         Color.clear
                     } else {
-                        QuestionCardCell(degree: $degree)
+                        QuestionCardBackView(degree: $degree)
                             .matchedGeometryEffect(id: index, in: animationNamespace)
                             .onTapGesture {
                                 viewModel.action(.selectCard(index: index))
