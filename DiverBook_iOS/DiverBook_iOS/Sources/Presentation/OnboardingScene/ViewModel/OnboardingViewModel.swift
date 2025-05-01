@@ -11,10 +11,12 @@ import SwiftUI
 class OnboardingViewModel: ViewModelable {
     struct State {
         var isSplashing: Bool = true
+        var initialOnboardingEnd: Bool = AppSettings.hasLaunched
     }
     
     enum Action {
         case splashEnd
+        case initialStartButtonTapped
         case signUpButtonTapped
     }
     
@@ -28,9 +30,12 @@ class OnboardingViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .splashEnd:
-            self.state.isSplashing = false
+            state.isSplashing = false
+        case .initialStartButtonTapped:
+            AppSettings.hasLaunched = true
+            state.initialOnboardingEnd = true
         case .signUpButtonTapped:
-            self.coordinator.push(.idCardScan)
+            coordinator.push(.idCardScan)
         }
     }
 }
