@@ -37,6 +37,8 @@ struct UserProfileSettingView: View {
             if self.viewModel.state.profileSettingPhase
                 == .checkDetectedIDCardInfo {
                 CheckDetectedIDCardInfoView(nickname: self.nickName)
+            } else if viewModel.state.profileSettingPhase == .inputPassword {
+                SignUpPasswordInputView(viewModel: viewModel)
             } else {
                 ScrollView {
                     InputUserDetailInfoView(viewModel: self.viewModel)
