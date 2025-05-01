@@ -18,7 +18,10 @@ struct DiverBookIOSApp: App {
                                 OnboardingView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .userProfileSetting(let nickname):
-                                UserProfileSettingView(nickname: nickname, coordinator: self.coordinator)
+                                UserProfileSettingView(
+                                    nickName: nickname,
+                                    coordinator: self.coordinator
+                                )
                                     .toolbar(.hidden, for: .navigationBar)
                             case .idCardScan:
                                 IDCardScannerView(coordinator: self.coordinator)
@@ -26,11 +29,19 @@ struct DiverBookIOSApp: App {
                             case .mainTab:
                                 DiverBookTabView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
+                                    .ignoresSafeArea(edges: [.vertical])
+                                    .background(.white)
                             case .searchingDiver:
                                 DiverSearchingView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .searchResult(nickname: let nickname):
-                                DiverSearchResultView(nickname: nickname)
+                                DiverSearchResultView(nickname: nickname, coordinator: self.coordinator)
+                                    .toolbar(.hidden, for: .navigationBar)
+                            case .startConversation:
+                                ConversationView(coordinator: self.coordinator)
+                                    .toolbar(.hidden, for: .navigationBar)
+                            case .finishConversation:
+                                ProfileView()
                             }
                         })
             }

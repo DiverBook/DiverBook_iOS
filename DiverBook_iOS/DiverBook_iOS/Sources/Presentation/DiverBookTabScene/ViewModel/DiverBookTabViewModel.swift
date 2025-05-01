@@ -8,13 +8,13 @@
 import Combine
 import SwiftUI
 
-class DiverBookTabViewModel: ViewModelable {
+final class DiverBookTabViewModel: ViewModelable {
     struct State {
         var selectedTab: TabType = .diverBook
     }
     
     enum Action {
-        
+        case selectSearchTab
     }
     
     @Published var state: State = State()
@@ -25,6 +25,9 @@ class DiverBookTabViewModel: ViewModelable {
     }
     
     func action(_ action: Action) {
-        
+        switch action {
+        case .selectSearchTab:
+            coordinator.push(.searchingDiver)
+        }
     }
 }

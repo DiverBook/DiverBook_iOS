@@ -8,10 +8,19 @@
 import SwiftUI
 
 struct DiverSearchResultView: View {
+    @StateObject var viewModel: DiverSearchResultViewModel
+        
     let nickname: String
+
+    init(nickname: String, coordinator: Coordinator) {
+        self.nickname = nickname
+        _viewModel = StateObject(
+            wrappedValue: DiverSearchResultViewModel(coordinator: coordinator))
+    }
     
     var body: some View {
         VStack {
+            TopBar()
             Spacer()
             Group {
                 Text("심해를 탐험하는")
@@ -27,13 +36,9 @@ struct DiverSearchResultView: View {
                 .padding(.top, 20)
             Spacer()
             PrimaryButton(title: "대화 시작", coordinator: Coordinator()) {
-                // TODO: - 대화 시작으로 이동
+                viewModel.action(.startConversation)
             }
-            .padding(.horizontal, 24)
         }
+        .padding(.horizontal, 24)
     }
-}
-
-#Preview {
-    DiverSearchResultView(nickname: "Berry")
 }
