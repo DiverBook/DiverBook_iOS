@@ -10,10 +10,10 @@ import SwiftUI
 struct DiverSearchResultView: View {
     @StateObject var viewModel: DiverSearchResultViewModel
         
-    let nickname: String
+    let diverID: String
 
-    init(nickname: String, coordinator: Coordinator) {
-        self.nickname = nickname
+    init(diverID: String, coordinator: Coordinator) {
+        self.diverID = diverID
         _viewModel = StateObject(
             wrappedValue: DiverSearchResultViewModel(coordinator: coordinator))
     }
@@ -25,7 +25,8 @@ struct DiverSearchResultView: View {
             Group {
                 Text("심해를 탐험하는")
                     .foregroundColor(DiveColor.gray4)
-                Text("\(nickname) ")
+                // TODO: id 이용해 닉네임과 이미지 받아와 표시
+                Text("\(diverID) ")
                     .foregroundColor(DiveColor.color6)
                 + Text("발견!")
                     .foregroundColor(DiveColor.gray4)

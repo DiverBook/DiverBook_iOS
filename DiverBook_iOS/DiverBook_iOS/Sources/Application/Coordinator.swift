@@ -29,7 +29,7 @@ enum Path: Hashable {
     case idCardScan
     case mainTab
     case searchingDiver
-    case searchResult(nickname: String)
+    case searchResult(diverID: String)
     case startConversation
     case finishConversation
 }
