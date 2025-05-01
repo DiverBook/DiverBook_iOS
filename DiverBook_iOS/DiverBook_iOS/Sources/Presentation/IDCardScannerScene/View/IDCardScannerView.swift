@@ -32,7 +32,7 @@ struct IDCardScannerView: View {
             Spacer()
             
             PrimaryButton(title: "촬영하기", coordinator: Coordinator()) {
-                startScanning()
+                viewModel.action(.scanningButtonTapped)
             }
             .padding(.bottom, 20)
         }
@@ -65,20 +65,21 @@ struct IDCardScannerView: View {
                         UIApplication.shared.open(settingURL, options: [:])
                     }), secondaryButton: .cancel())
         }
-    }
-    
-    func startScanning() {
-        CameraManager.shared.requestCameraAccess(
-            isNotAuthorized: {
-                DispatchQueue.main.async {
-                    self.viewModel.state.goSettingAlertState = true
-                }
-            },
-            authorized: {
-                DispatchQueue.main.async {
-                    self.viewModel.state.showCamera = true
-                }
-            })
+        .overlay(
+            VStack {
+                Spacer()
+                    .frame(height: 100)
+                Text("촬영 정보를 불러오는 중입니다")
+                    .font(DiveFont.headingH3)
+                Spacer()
+            }
+            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            .background(.white)
+            .overlay(
+                ProgressView()
+            )
+            .opacity(viewModel.state.isScanning ? 1 : 0)
+        )
     }
 }
 
