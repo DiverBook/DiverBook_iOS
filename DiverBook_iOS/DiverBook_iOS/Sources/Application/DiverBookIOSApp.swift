@@ -9,7 +9,8 @@ struct DiverBookIOSApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: self.$coordinator.path) {
-                OnboardingView(coordinator: self.coordinator)
+                DiverBookTabView(coordinator: self.coordinator)
+                    .toolbar(.hidden, for: .navigationBar)
                     .navigationDestination(
                         for: Path.self,
                         destination: { path in
@@ -46,8 +47,6 @@ struct DiverBookIOSApp: App {
                                 MyProfileView(viewModel: MyProfileViewModel())
                             case .privacyPolicy:
                                 PrivacyPolicyView()
-                            case .settingTab:
-                                SystemSettingView(coordinator: self.coordinator)
                             }
                         })
             }
