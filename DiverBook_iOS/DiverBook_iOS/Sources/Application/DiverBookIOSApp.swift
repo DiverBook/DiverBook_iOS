@@ -41,7 +41,7 @@ struct DiverBookIOSApp: App {
                                 ConversationView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .finishConversation:
-                                ProfileView()
+                                DiverProfileView(viewModel: DiverProfileViewModel())
                             }
                         })
             }
