@@ -10,8 +10,8 @@ import SwiftUI
 struct SystemSettingView: View {
     @StateObject private var viewModel: SystemSettingViewModel
 
-    init(viewModel: SystemSettingViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+    init(coordinator: Coordinator) {
+        _viewModel = StateObject(wrappedValue: SystemSettingViewModel(coordinator: coordinator))
     }
 
     var body: some View {
@@ -50,8 +50,4 @@ struct SystemSettingView: View {
             }
         }
     }
-}
-
-#Preview {
-    SystemSettingView(viewModel: SystemSettingViewModel())
 }

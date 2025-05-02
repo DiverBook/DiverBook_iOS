@@ -32,4 +32,7 @@ enum Path: Hashable {
     case searchResult(nickname: String)
     case startConversation
     case finishConversation
+    case myProfile
+    case privacyPolicy
+    case settingTab
 }
