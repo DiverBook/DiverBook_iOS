@@ -15,7 +15,15 @@ struct SystemSettingView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 32) {
+            HStack {
+                Spacer()
+                Text("설정")
+                    .font(DiveFont.bar)
+                    .foregroundColor(DiveColor.gray4)
+                Spacer()
+            }
+
             SettingRowView(title: "내 프로필 관리") {
                 viewModel.action(.tapProfile)
             }
@@ -36,8 +44,6 @@ struct SystemSettingView: View {
 
         }
         .padding(24)
-        .navigationTitle("설정")
-        .navigationBarTitleDisplayMode(.inline)
         .alert(
             "정말 회원탈퇴 하시겠습니까?",
             isPresented: $viewModel.state.showWithdrawAlert

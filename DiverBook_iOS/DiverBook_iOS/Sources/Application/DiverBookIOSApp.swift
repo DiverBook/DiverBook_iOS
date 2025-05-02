@@ -45,8 +45,10 @@ struct DiverBookIOSApp: App {
                                 DiverProfileView(viewModel: DiverProfileViewModel())
                             case .myProfile:
                                 MyProfileView(viewModel: MyProfileViewModel())
+                                    .toolbar(.hidden, for: .navigationBar)
                             case .privacyPolicy:
                                 PrivacyPolicyView()
+                                    .toolbar(.hidden, for: .navigationBar)
                             }
                         })
             }
