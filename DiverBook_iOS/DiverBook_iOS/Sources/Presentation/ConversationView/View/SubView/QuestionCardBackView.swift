@@ -7,9 +7,12 @@
 
 import SwiftUI
 
-struct QuestionCardCell: View {
+struct QuestionCardBackView: View {
+    @Binding var degree: Double
+    
     var body: some View {
         Image("questionCard")
             .applyShadow(DiveShadow.shadow3)
+            .rotation3DEffect(Angle(degrees: degree), axis: (x: 0, y: 1, z: 0))
     }
 }
