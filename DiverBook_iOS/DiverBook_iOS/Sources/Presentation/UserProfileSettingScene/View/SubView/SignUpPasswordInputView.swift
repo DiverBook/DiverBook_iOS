@@ -25,6 +25,9 @@ struct SignUpPasswordInputView: View {
             Group {
                 PasswordTextField(password: $viewModel.state.password)
                     .frame(height: 25)
+                    .onChange(of: viewModel.state.password) {
+                        viewModel.action(.validatePassword)
+                    }
                 Rectangle()
                     .fill(DiveColor.gray2)
                     .frame(height: 1)
