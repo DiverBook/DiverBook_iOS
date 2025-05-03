@@ -15,4 +15,8 @@ protocol AuthRepository {
         about: String,
         password: String
     ) async -> Result<Bool, Error>
+    
+    func refreshToken(
+        refreshToken: String
+    ) async -> Result<AuthInfo, Error>
 }
