@@ -15,7 +15,20 @@ struct DiverSearchResultView: View {
     init(diverID: String, coordinator: Coordinator) {
         self.diverID = diverID
         _viewModel = StateObject(
-            wrappedValue: DiverSearchResultViewModel(coordinator: coordinator))
+            wrappedValue: DiverSearchResultViewModel(
+                coordinator: coordinator,
+                fetchDiverProfileUseCase: DefaultFetchDiverProfileUseCase(
+                    repository: DefaultDiverRepository(
+                        diverProfileService: DiverProfileService()
+                    )
+                ), fetchRefreshTokenUseCase: DefaultFetchRefreshTokenUseCase(
+                    repository: DefaultAuthRepository(
+                        authService: DiverBookAuthService(),
+                        tokenService: DiverBookTokenService()
+                    )
+                )
+            )
+        )
     }
     
     var body: some View {
@@ -25,21 +38,27 @@ struct DiverSearchResultView: View {
             Group {
                 Text("심해를 탐험하는")
                     .foregroundColor(DiveColor.gray4)
-                // TODO: id 이용해 닉네임과 이미지 받아와 표시
-                Text("\(diverID) ")
-                    .foregroundColor(DiveColor.color6)
-                + Text("발견!")
-                    .foregroundColor(DiveColor.gray4)
+                if let diverInfo = viewModel.state.diverInfo {
+                    Text("\(diverInfo.userName) ")
+                        .foregroundColor(DiveColor.color6)
+                    + Text("발견!")
+                        .foregroundColor(DiveColor.gray4)
+                }
             }
             .font(DiveFont.headingH1)
             
-            PrimaryProfile(image: Image("exMemoji"), style: .found)
-                .padding(.top, 20)
+            if let diverImage = viewModel.state.diverInfo?.profileImageUrl {
+                PrimaryProfile(image: Image("\(diverImage)"), style: .found)
+                    .padding(.top, 20)
+            }
             Spacer()
             PrimaryButton(title: "대화 시작", coordinator: Coordinator()) {
                 viewModel.action(.startConversation)
             }
         }
         .padding(.horizontal, 24)
+        .onAppear {
+            viewModel.action(.loadDiverProfile(id: diverID))
+        }
     }
 }
