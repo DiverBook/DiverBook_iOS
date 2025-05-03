@@ -18,3 +18,13 @@ struct UserToken {
     @UserDefault(key: "id", defaultValue: "")
     static var id: String
 }
+
+// MARK: RefreshToken을 위한 update 메서드
+extension UserToken {
+    static func updateTokens(authInfo: AuthInfo) {
+        self.accessToken = authInfo.accessToken
+        self.refreshToken = authInfo.refreshToken
+        self.tokenType = authInfo.tokenType
+        self.id = authInfo.id
+    }
+}
