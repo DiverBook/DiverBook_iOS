@@ -18,6 +18,12 @@ struct DiverBookIOSApp: App {
                             case .splash:
                                 OnboardingView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
+                            case .login(let nickname):
+                                LoginView(
+                                    nickname: nickname,
+                                    coordinator: self.coordinator
+                                )
+                                    .toolbar(.hidden, for: .navigationBar)
                             case .userProfileSetting(let nickname):
                                 UserProfileSettingView(
                                     nickName: nickname,

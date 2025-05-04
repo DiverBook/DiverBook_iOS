@@ -52,7 +52,13 @@ extension HTTPClient {
             case 401:
                 return .failure(.unauthorized)
             default:
-                return .failure(.unexpectedStatusCode)
+                guard
+                    let decodeResponse = try? JSONDecoder().decode(
+                        responseModel, from: data)
+                else {
+                    return .failure(.decode)
+                }
+                return .success(decodeResponse)
             }
         } catch {
             return .failure(.unknown)

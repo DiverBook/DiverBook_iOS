@@ -1,19 +1,16 @@
 //
-//  SignUpPasswordInputView.swift
+//  LoginInputPaswordView.swift
 //  DiverBook_iOS
 //
-//  Created by 한건희 on 4/30/25.
+//  Created by 한건희 on 5/4/25.
 //
-
-import Combine
 import SwiftUI
 
-struct SignUpPasswordInputView: View {
-    @ObservedObject var viewModel: UserProfileSettingViewModel
-    
+struct LoginInputPaswordView: View {
+    @ObservedObject var viewModel: LoginViewModel
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("정보 확인을 위한 비밀번호를\n생성해주세요.")
+            Text("회원가입 시 등록한\n비밀번호를 입력해주세요.")
                 .font(DiveFont.headingH2)
                 .multilineTextAlignment(.leading)
                 .padding(.top, 20)

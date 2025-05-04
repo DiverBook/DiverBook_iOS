@@ -14,7 +14,7 @@ final class DiverBookAuthService: DiverBookAuthServicable {
         places: String,
         about: String,
         password: String
-    ) async -> Result<SignUpResModel, RequestError> {
+    ) async -> Result<BaseResponse<SignUpResModel>, RequestError> {
         return await request(
             endpoint: DiverBookAuthEndpoint.signUp(
                 userName: userName,
@@ -25,7 +25,7 @@ final class DiverBookAuthService: DiverBookAuthServicable {
                 about: about,
                 password: password
             ),
-            responseModel: SignUpResModel.self)
+            responseModel: BaseResponse<SignUpResModel>.self)
     }
 
     func refreshToken(
