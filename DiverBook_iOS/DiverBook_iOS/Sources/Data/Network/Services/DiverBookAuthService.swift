@@ -28,4 +28,11 @@ final class DiverBookAuthService: DiverBookAuthServicable {
             responseModel: SignUpResModel.self)
     }
 
+    func refreshToken(
+        refreshToken: String
+    ) async -> Result<BaseResponse<RefreshTokenResModel>, RequestError> {
+        return await request(
+            endpoint: DiverBookTokenEndpoint.refreshToken(refreshToken: refreshToken),
+            responseModel: BaseResponse<RefreshTokenResModel>.self)
+    }
 }
