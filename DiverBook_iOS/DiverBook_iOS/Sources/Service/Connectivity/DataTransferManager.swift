@@ -12,7 +12,7 @@ import NearbyInteraction
 final class DataTransferManager: NSObject, ObservableObject {
     var peerID: MCPeerID
     var session: MCSession
-    private let nickname: String
+    private let userID: String
     private var niSession: NISession?
     private var nearbyToken: NIDiscoveryToken?
     private var advertiserManager: AdvertiserManager?
@@ -24,12 +24,10 @@ final class DataTransferManager: NSObject, ObservableObject {
     private let minDistance: Float = 0.2
     private let maxDistance: Float = 0.3
 
-    // TODO: - 내 실제 닉네임 전달해주도록 변경
     @Published var isBrowser: Bool = false
-    @Published var receivedNickname: String = ""
 
-    init(nickname: String, viewModel: DiverSearchingViewModel) {
-        self.nickname = nickname
+    init(userID: String, viewModel: DiverSearchingViewModel) {
+        self.userID = userID
         self.viewModel = viewModel
         self.peerID = MCPeerID(displayName: UIDevice.current.name)
         self.session = MCSession(
@@ -80,7 +78,7 @@ final class DataTransferManager: NSObject, ObservableObject {
     
     private func sendNickname() {
         guard !session.connectedPeers.isEmpty,
-              let data = nickname.data(using: .utf8) else { return }
+              let data = userID.data(using: .utf8) else { return }
         try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
         print("✅ sendNickname")
     }
@@ -111,13 +109,12 @@ extension DataTransferManager: MCSessionDelegate {
             return
         }
 
-        if let nickname = String(data: data, encoding: .utf8) {
+        if let diverID = String(data: data, encoding: .utf8) {
             DispatchQueue.main.async {
                 self.hapticManager.cutstomStrongHaptic()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.receivedNickname = nickname
-                    self.viewModel?.action(.successSearchingDiver(nickname: nickname))
-                    print("✅ 받은 닉네임: \(nickname)")
+                    self.viewModel?.action(.successSearchingDiver(diverID: diverID))
+                    print("✅ 받은 닉네임: \(diverID)")
                 }
             }
         }

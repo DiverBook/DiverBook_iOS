@@ -45,4 +45,27 @@ final class DefaultAuthRepository: AuthRepository {
             return .failure(error)
         }
     }
+    
+    func refreshToken(
+        refreshToken: String
+    ) async -> Result<AuthInfo, Error> {
+        let refreshResult = await authService.request(
+            endpoint: DiverBookTokenEndpoint.refreshToken(refreshToken: refreshToken),
+            responseModel: BaseResponse<RefreshTokenResModel>.self
+        )
+        
+        switch refreshResult {
+        case .success(let baseResponse):
+            if baseResponse.success, let data = baseResponse.data {
+                let authInfo = data.toDomain()
+                tokenService.saveTokens(authInfo: authInfo)
+                return .success(authInfo)
+            } else {
+                let errorMessage = baseResponse.errorMessage ?? "Error"
+                return .failure(RequestError.unauthorized)
+            }
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
 }

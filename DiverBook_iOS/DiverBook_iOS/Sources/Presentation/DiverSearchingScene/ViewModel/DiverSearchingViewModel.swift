@@ -13,27 +13,26 @@ final class DiverSearchingViewModel: ViewModelable {
     }
     
     enum Action {
-        case successSearchingDiver(nickname: String)
+        case successSearchingDiver(diverID: String)
     }
     
     @Published var state: State = State()
     @ObservedObject var coordinator: Coordinator
     
-    private let nickname: String
+    private let userID: String
     private lazy var dataTransferManager: DataTransferManager = {
-        return DataTransferManager(nickname: nickname, viewModel: self)
+        return DataTransferManager(userID: userID, viewModel: self)
     }()
     
     init(coordinator: Coordinator) {
         self.coordinator = coordinator
-        // TODO: - 사용자 데이터에서 가져오기
-        self.nickname = "Berry"
+        self.userID = UserToken.id
     }
     
     func action(_ action: Action) {
         switch action {
-        case .successSearchingDiver(let nickname):
-            self.coordinator.push(.searchResult(nickname: nickname))
+        case .successSearchingDiver(let diverID):
+            self.coordinator.push(.searchResult(diverID: diverID))
         }
     }
     

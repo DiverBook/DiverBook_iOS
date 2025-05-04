@@ -21,7 +21,7 @@ struct DiverBookTabView: View {
                 MainView(coordinator: self.viewModel.coordinator)
                     .tag(TabType.diverBook)
                 
-                Text("setting")
+                SystemSettingView(coordinator: self.viewModel.coordinator)
                     .tag(TabType.setting)
             }
             .tabViewStyle(.page)

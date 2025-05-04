@@ -5,7 +5,7 @@
 //  Created by 한건희 on 4/28/25.
 //
 
-enum RequestError: Error {
+enum RequestError: Error, Equatable {
     case decode
     case invalidURL
     case noResponse
