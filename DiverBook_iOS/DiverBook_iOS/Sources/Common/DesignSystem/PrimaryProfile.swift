@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct PrimaryProfile: View {
-    let image: Image
+    let imageURL: URL?
     let nickname: String?
     let hasShadow: Bool
     let style: ProfileStyle
 
-    init(image: Image,
+    init(imageURL: URL?,
          nickname: String? = nil,
          hasShadow: Bool = true,
          style: ProfileStyle) {
-        self.image = image
+        self.imageURL = imageURL
         self.nickname = nickname
         self.hasShadow = hasShadow
         self.style = style
@@ -30,11 +30,11 @@ struct PrimaryProfile: View {
                     .fill((DiveColor.white))
                     .frame(width: style.imageSize, height: style.imageSize)
                     .applyShadow(hasShadow ? style.shadow : DiveShadow.noneShadow)
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: style.imageSize, height: style.imageSize)
-                    .clipShape(Circle())
+                ProfileImageView(
+                    imageURL: imageURL,
+                    style: style,
+                    placeholderImageName: "unfoundProfile"
+                )
             }
             
             if let nickname = nickname {
@@ -104,13 +104,19 @@ enum ProfileStyle {
 
 #Preview {
     // 러너 발견 시점 - found
-    PrimaryProfile(image: Image("exMemoji"), style: .found)
+    PrimaryProfile(imageURL: DiverProfile.mockData.profileImageUrl, style: .found)
     // 내 프로필 - mypage
-    PrimaryProfile(image: Image("exMemoji"), nickname: "Berry", style: .mypage)
+    PrimaryProfile(
+        imageURL: DiverProfile.mockData.profileImageUrl,
+        nickname: DiverProfile.mockData.userName,
+        style: .mypage)
     // 도감 목록 - diver
-    PrimaryProfile(image: Image("exMemoji"), nickname: "Berry", style: .diver)
+    PrimaryProfile(
+        imageURL: DiverProfile.mockData.profileImageUrl,
+        nickname: DiverProfile.mockData.userName,
+        style: .diver)
     // 기본 프로필(메인 화면과 다이버 카드) - basic
-    PrimaryProfile(image: Image("exMemoji"), style: .basic)
-    // shadow 필요없는 경우
-    PrimaryProfile(image: Image("exMemoji"), hasShadow: false, style: .basic)
+    PrimaryProfile(imageURL: DiverProfile.mockData.profileImageUrl, style: .basic)
+    // 미발견 프로필 - unfound
+    PrimaryProfile(imageURL: DiverProfile.unfoundMockData.profileImageUrl, style: .unfound)
 }
