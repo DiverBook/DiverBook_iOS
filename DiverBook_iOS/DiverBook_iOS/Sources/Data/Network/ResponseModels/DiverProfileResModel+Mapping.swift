@@ -28,7 +28,7 @@ extension DiverProfileResModel {
             interests: interests ?? "",
             places: places ?? "",
             about: about ?? "",
-            profileImageUrl: profileImageUrl
+            profileImageUrlString: profileImageUrl
         )
     }
 }
