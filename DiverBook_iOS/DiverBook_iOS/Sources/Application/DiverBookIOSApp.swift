@@ -10,6 +10,7 @@ struct DiverBookIOSApp: App {
         WindowGroup {
             NavigationStack(path: self.$coordinator.path) {
                 OnboardingView(coordinator: self.coordinator)
+                    .toolbar(.hidden, for: .navigationBar)
                     .navigationDestination(
                         for: Path.self,
                         destination: { path in
@@ -44,7 +45,13 @@ struct DiverBookIOSApp: App {
                                 ConversationView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .finishConversation:
-                                ProfileView()
+                                DiverProfileView(viewModel: DiverProfileViewModel())
+                            case .myProfile:
+                                MyProfileView(viewModel: MyProfileViewModel())
+                                    .toolbar(.hidden, for: .navigationBar)
+                            case .privacyPolicy:
+                                PrivacyPolicyView()
+                                    .toolbar(.hidden, for: .navigationBar)
                             }
                         })
             }

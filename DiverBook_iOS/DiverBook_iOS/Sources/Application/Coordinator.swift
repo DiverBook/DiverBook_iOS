@@ -32,4 +32,6 @@ enum Path: Hashable {
     case searchResult(diverID: String)
     case startConversation
     case finishConversation
+    case myProfile
+    case privacyPolicy
 }

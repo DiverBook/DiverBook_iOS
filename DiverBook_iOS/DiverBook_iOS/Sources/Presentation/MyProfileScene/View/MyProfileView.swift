@@ -15,29 +15,43 @@ struct MyProfileView: View {
     }
 
     var body: some View {
-        VStack(spacing: 34) {
-            VStack(spacing: 8) {
-                PrimaryProfile(image: Image("exMemoji"), style: .mypage)
+        VStack {
+            DiverProfileTopBarView()
+            
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 8) {
+                    PrimaryProfile(image: Image("exMemoji"), style: .mypage)
 
-                Text("Air")
-                    .font(DiveFont.headingH3)
+                    Text("Air")
+                        .font(DiveFont.headingH3)
+                }
+
+                TodayTalkSectionView(
+                    mode: .editable(binding: $viewModel.state.todayTalk)
+                )
+
+                Spacer().frame(height: 40)
+
+                ProfileDetailsInfoView(
+                    division: .editable(binding: $viewModel.state.division),
+                    phoneNumber: .editable(
+                        binding: $viewModel.state.phoneNumber
+                    ),
+                    interests: .editable(binding: $viewModel.state.interests),
+                    places: .editable(binding: $viewModel.state.places)
+                )
+
+                Spacer().frame(height: 32)
+
+                CollectedBadgeButtonView(badgeCount: viewModel.state.badgeCount)
+
+                Spacer()
+
             }
-
-            TodayTalkSectionView(mode: .editable(binding: $viewModel.state.todayTalk))
-
-            ProfileDetailsInfoView(
-                division: .editable(binding: $viewModel.state.division),
-                phoneNumber: .editable(binding: $viewModel.state.phoneNumber),
-                interests: .editable(binding: $viewModel.state.interests),
-                places: .editable(binding: $viewModel.state.places)
-            )
-            
-            CollectedBadgeButtonView(badgeCount: viewModel.state.badgeCount)
-            
-            Spacer()
         }
         .padding(.horizontal, 20)
     }
+
 }
 
 #Preview {
