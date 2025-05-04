@@ -61,11 +61,11 @@ final class MyProfileViewModel: ViewModelable {
     private func fetchProfileData() {
         // TODO: Mock 데이터 -> 서버 데이터 불러오기로 변경해야함
         self.state = State(
-            todayTalk: "공기는 눈에 보이지 않지만 어디에나 있습니다.",
-            division: "디자인",
-            phoneNumber: "010-1234-1234",
-            interests: "사진, 아마스빈",
-            places: "C5",
+            todayTalk: DiverProfile.mockData.about,
+            division: DiverProfile.mockData.divisions,
+            phoneNumber: DiverProfile.mockData.phoneNumber,
+            interests: DiverProfile.mockData.interests,
+            places: DiverProfile.mockData.places,
             badgeCount: 5
         )
     }

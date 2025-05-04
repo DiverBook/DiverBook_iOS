@@ -18,7 +18,7 @@ struct DiverProfileView: View {
         ScrollView {
             VStack(spacing: 26) {
                 DiverProfileHeaderSectionView(
-                    profileImageName: viewModel.state.profileImageName,
+                    profileImageURL: viewModel.state.profileImageURL,
                     name: viewModel.state.name,
                     foundDate: viewModel.state.foundDate
                 )

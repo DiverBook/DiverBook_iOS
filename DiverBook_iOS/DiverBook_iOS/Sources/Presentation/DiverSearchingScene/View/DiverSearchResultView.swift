@@ -48,7 +48,7 @@ struct DiverSearchResultView: View {
             .font(DiveFont.headingH1)
             
             if let diverImage = viewModel.state.diverInfo?.profileImageUrl {
-                PrimaryProfile(image: Image("\(diverImage)"), style: .found)
+                PrimaryProfile(imageURL: diverImage, style: .found)
                     .padding(.top, 20)
             }
             Spacer()

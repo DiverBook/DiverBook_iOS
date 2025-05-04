@@ -18,7 +18,11 @@ struct UnfoundDiverView: View {
         VStack {
             UnfoundDiverTopBarView()
             Spacer()
-            PrimaryProfile(image: Image("unfoundProfile"), nickname: "Air", style: .unfound)
+            PrimaryProfile(
+                imageURL: DiverProfile.unfoundMockData.profileImageUrl,
+                nickname: DiverProfile.unfoundMockData.userName,
+                style: .unfound
+            )
             Text("아직 발견되지 않은 다이버입니다.")
                 .font(DiveFont.bodyMedium1)
                 .foregroundColor(DiveColor.gray3)
