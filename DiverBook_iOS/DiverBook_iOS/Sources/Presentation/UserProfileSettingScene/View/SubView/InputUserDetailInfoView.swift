@@ -14,16 +14,19 @@ struct InputUserDetailInfoView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            Text(viewModel.state.profileSettingPhase.phaseNotifyString)
+                .font(DiveFont.headingH2)
+            
             Spacer().frame(height: 32)
 
-            if self.viewModel.state.profileSettingPhase.phaseStep > 5 {
+            if self.viewModel.state.profileSettingPhase.phaseStep > 6 {
                 Text("한 줄 소개")
                 Spacer().frame(height: 10)
                 InputInfoView(
                     userInfoType: .shortBio,
                     inputText: self.$viewModel.state.shortBio)
             }
-            if self.viewModel.state.profileSettingPhase.phaseStep > 4 {
+            if self.viewModel.state.profileSettingPhase.phaseStep > 5 {
                 infoField(
                     title: "자주 가는 장소",
                     view: InputInfoView(
@@ -32,7 +35,7 @@ struct InputUserDetailInfoView: View {
                     )
                 )
             }
-            if self.viewModel.state.profileSettingPhase.phaseStep > 3 {
+            if self.viewModel.state.profileSettingPhase.phaseStep > 4 {
                 infoField(
                     title: "관심사",
                     view: InputInfoView(
@@ -41,7 +44,7 @@ struct InputUserDetailInfoView: View {
                     )
                 )
             }
-            if self.viewModel.state.profileSettingPhase.phaseStep > 2 {
+            if self.viewModel.state.profileSettingPhase.phaseStep > 3 {
                 infoField(
                     title: "전화번호",
                     view: InputInfoView(
@@ -50,7 +53,7 @@ struct InputUserDetailInfoView: View {
                     )
                 )
             }
-            if self.viewModel.state.profileSettingPhase.phaseStep > 1 {
+            if self.viewModel.state.profileSettingPhase.phaseStep > 2 {
                 infoField(
                     title: "희망 분야",
                     view: SelectPreferredFieldView(

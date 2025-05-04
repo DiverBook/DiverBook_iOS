@@ -14,6 +14,7 @@ class UserProfileSettingViewModel: ViewModelable {
         var authUseCase: AuthUseCase
         var profileSettingPhase: ProfileSettingPhase = .checkDetectedIDCardInfo
         var nickName: String
+        var password: String = ""
         var preferredField: PreferredField = .tech
         var phoneNumber: String = ""
         var interests: String = ""
@@ -40,12 +41,6 @@ class UserProfileSettingViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .nextButtonTapped:
-            if self.state.profileSettingPhase != .checkDetectedIDCardInfo {
-                withAnimation {
-                    self.state.buttonAvailable = false
-                }
-            }
-            
             guard let nextPhase = self.state.profileSettingPhase.nextPhase else {
                 self.action(.profileSettingEnd)
                 return
@@ -55,41 +50,77 @@ class UserProfileSettingViewModel: ViewModelable {
                 self.state.profileSettingPhase = nextPhase
             }
             
+            if state.profileSettingPhase == .checkDetectedIDCardInfo || state.profileSettingPhase == .selectPreferredField {
+                withAnimation {
+                    self.state.buttonAvailable = true
+                }
+            } else {
+                withAnimation {
+                    self.state.buttonAvailable = false
+                }
+            }
+            
         case .profileSettingEnd:
             Task { [weak self] in
-                let result = await state.authUseCase.executeSignUp(
-                    userName: capitalizeNickname(nickName: state.nickName),
-                    divisions: state.preferredField.fieldDescription,
-                    phoneNumber: state.phoneNumber,
-                    interests: state.interests,
-                    places: state.preferredPlaces,
-                    about: state.shortBio,
-                    password: "9182"
-                )
-                switch result {
-                case .success:
-                    coordinator.push(.mainTab)
-                case .failure:
-                    print("fail")
+                if let self = self {
+                    let result = await self.state.authUseCase.executeSignUp(
+                        userName: self.capitalizeNickname(nickName: state.nickName),
+                        divisions: self.state.preferredField.fieldDescription,
+                        phoneNumber: self.state.phoneNumber,
+                        interests: self.state.interests,
+                        places: self.state.preferredPlaces,
+                        about: self.state.shortBio,
+                        password: self.state.password
+                    )
+                    switch result {
+                    case .success:
+                        coordinator.push(.mainTab)
+                    case .failure:
+                        print("fail")
+                    }
                 }
             }
             
         case .validateCurrentStepInfo:
-            switch self.state.profileSettingPhase {
+            switch state.profileSettingPhase {
             case .checkDetectedIDCardInfo:
-                self.state.buttonAvailable = true
+                state.buttonAvailable = true
+            case .inputPassword:
+                state.buttonAvailable = validatePassword(password: state.password)
             case .selectPreferredField:
-                self.state.buttonAvailable = true
+                state.buttonAvailable = true
             case .inputPhoneNumber:
-                self.state.buttonAvailable = validatePhoneNumber(self.state.phoneNumber)
+                state.buttonAvailable = validatePhoneNumber(state.phoneNumber)
             case .inputInterest: // validate 기준은?
-                self.state.buttonAvailable = true
+                state.buttonAvailable = validateInterests(interests: state.interests)
             case .inputFrequentPlaces: // validate 기준은?
-                self.state.buttonAvailable = true
+                state.buttonAvailable = validateFrequentPlaces(frequentPlaces: state.preferredPlaces)
             case .inputShortBio: // validate 기준은?
-                self.state.buttonAvailable = true
+                state.buttonAvailable = validateShortBio(shortBio: state.shortBio)
             }
         }
+    }
+    
+    private func validatePassword(password: String) -> Bool {
+        if password.count == 4 {
+            guard Int(password) != nil else {
+                return false
+            }
+            return true
+        }
+        return false
+    }
+
+    private func validateInterests(interests: String) -> Bool {
+        return !interests.isEmpty
+    }
+    
+    private func validateFrequentPlaces(frequentPlaces: String) -> Bool {
+        return !frequentPlaces.isEmpty
+    }
+    
+    private func validateShortBio(shortBio: String) -> Bool {
+        return !shortBio.isEmpty
     }
     
     private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
@@ -102,6 +133,7 @@ class UserProfileSettingViewModel: ViewModelable {
 }
 
 enum ProfileSettingPhase {
+    case inputPassword
     case checkDetectedIDCardInfo
     case selectPreferredField
     case inputPhoneNumber
@@ -112,7 +144,9 @@ enum ProfileSettingPhase {
     var nextPhase: Self? {
         switch self {
         case .checkDetectedIDCardInfo:
-            .selectPreferredField
+                .inputPassword
+        case .inputPassword:
+                .selectPreferredField
         case .selectPreferredField:
             .inputPhoneNumber
         case .inputPhoneNumber:
@@ -128,18 +162,37 @@ enum ProfileSettingPhase {
     
     var phaseStep: Int {
         switch self {
-        case .checkDetectedIDCardInfo:
+        case .inputPassword:
             return 1
-        case .selectPreferredField:
+        case .checkDetectedIDCardInfo:
             return 2
-        case .inputPhoneNumber:
+        case .selectPreferredField:
             return 3
-        case .inputInterest:
+        case .inputPhoneNumber:
             return 4
-        case .inputFrequentPlaces:
+        case .inputInterest:
             return 5
-        case .inputShortBio:
+        case .inputFrequentPlaces:
             return 6
+        case .inputShortBio:
+            return 7
+        }
+    }
+    
+    var phaseNotifyString: String {
+        switch self {
+        case .selectPreferredField:
+            return "희망분야를 선택해주세요."
+        case .inputPhoneNumber:
+            return "전화번호를 입력해주세요."
+        case .inputInterest:
+            return "관심사를 입력해주세요."
+        case .inputFrequentPlaces:
+            return "자주 가는 장소를 입력해주세요."
+        case .inputShortBio:
+            return "한 줄 소개를 입력해주세요."
+        default:
+            return ""
         }
     }
 }

@@ -16,11 +16,18 @@ struct OnboardingView: View {
         _viewModel = StateObject(wrappedValue: OnboardingViewModel(coordinator: coordinator))
     }
 
-    
     var body: some View {
         ZStack {
             OnboardingContentView(viewModel: self.viewModel)
             .padding(.horizontal, 20)
+            
+            InitialOnboardingStartView(
+                startButtonTapAction: {
+                    viewModel.action(.initialStartButtonTapped)
+                }
+            )
+            .opacity(viewModel.state.initialOnboardingEnd ? 0 : 1)
+            .animation(.spring(), value: viewModel.state.initialOnboardingEnd)
             
             Image("splash").resizable().frame(
                 width: UIScreen.main.bounds.width,
