@@ -12,7 +12,7 @@ struct MainDiverInfoView: View {
     @ObservedObject var viewModel: MainViewModel
     var body: some View {
         HStack(spacing: 0) {
-            PrimaryProfile(image: Image("diver-air"), style: .basic)
+            PrimaryProfile(imageURL: DiverProfile.mockData.profileImageUrl, style: .basic)
                 .padding(.trailing, 10)
             LearnerNicknameView(nickname: self.$viewModel.state.userNickname)
             Spacer()

@@ -25,7 +25,7 @@ struct DiverCollectionListView: View {
             GridItem(.flexible(minimum: 80, maximum: 200))
         ]) {
             ForEach(0..<100) { index in
-                PrimaryProfile(image: Image("diver-air"), nickname: "Air", style: .diver)
+                PrimaryProfile(imageURL: DiverProfile.mockData.profileImageUrl, nickname: DiverProfile.mockData.userName, style: .diver)
             }
         }
     }

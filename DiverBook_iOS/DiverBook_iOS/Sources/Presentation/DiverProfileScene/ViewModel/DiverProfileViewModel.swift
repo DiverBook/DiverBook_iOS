@@ -10,7 +10,7 @@ import Foundation
 
 final class DiverProfileViewModel: ViewModelable {
     struct State {
-        var profileImageName = ""
+        var profileImageURL: URL?
         var name: String = ""
         var foundDate: String = ""
         var todayTalk: String = ""
@@ -51,14 +51,14 @@ final class DiverProfileViewModel: ViewModelable {
 
     private func fetchDiverProfile() {
         self.state = State(
-            profileImageName: "exMemoji",
-            name: "Chloe",
+            profileImageURL: DiverProfile.mockData.profileImageUrl,
+            name: DiverProfile.mockData.userName,
             foundDate: "25.03.24",
-            todayTalk: "함께라서 즐거운 다이빙",
-            division: "iOS 개발",
-            phoneNumber: "010-1234-5678",
-            interests: "수영, 여행",
-            places: "C5"
+            todayTalk: DiverProfile.mockData.about,
+            division: DiverProfile.mockData.divisions,
+            phoneNumber: DiverProfile.mockData.phoneNumber,
+            interests: DiverProfile.mockData.interests,
+            places: DiverProfile.mockData.places
         )
         self.history = "처음 만난 날 기억나니?"
         self.originalHistory = history

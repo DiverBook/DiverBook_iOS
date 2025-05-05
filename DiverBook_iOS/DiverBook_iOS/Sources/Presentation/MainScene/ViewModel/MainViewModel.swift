@@ -10,7 +10,7 @@ import SwiftUI
 
 class MainViewModel: ViewModelable {
     struct State {
-        var userNickname: String = "Ted"
+        var userNickname: String = DiverProfile.mockData.userName
         var bookAttainmentRate: Double = 50
     }
     

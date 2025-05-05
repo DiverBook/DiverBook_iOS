@@ -20,9 +20,9 @@ struct MyProfileView: View {
             
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 8) {
-                    PrimaryProfile(image: Image("exMemoji"), style: .mypage)
+                    PrimaryProfile(imageURL: DiverProfile.mockData.profileImageUrl, style: .mypage)
 
-                    Text("Air")
+                    Text(DiverProfile.mockData.userName)
                         .font(DiveFont.headingH3)
                 }
 
