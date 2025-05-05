@@ -13,7 +13,14 @@ struct IDCardScannerView: View {
     @StateObject var viewModel: IDCardScannerViewModel
 
     init(coordinator: Coordinator) {
-        _viewModel = StateObject(wrappedValue: IDCardScannerViewModel(coordinator: coordinator))
+        _viewModel = StateObject(wrappedValue: IDCardScannerViewModel(
+            coordinator: coordinator,
+            checkUserActivationUseCase: DefaultCheckUserActivationUseCase(
+                checkUserActivationRepository: DefaultCheckUserActivationRepository(
+                    checkUserActivationService: DiverBookCheckUserActivationService()
+                )
+            )
+        ))
     }
 
     @Environment(\.dismiss) var dismiss

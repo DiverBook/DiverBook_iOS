@@ -35,4 +35,23 @@ enum RequestError: Error, Equatable {
             return "unknown"
         }
     }
+    
+    var localizedDescription: String {
+        switch self {
+        case .decode:
+            return "Decode"
+        case .invalidURL:
+            return "Session expired"
+        case .noResponse:
+            return "noResponse"
+        case .unauthorized:
+            return "unauthorized"
+        case .unexpectedStatusCode:
+            return "unexpected"
+        case .errorWithLog(let errorLog):
+            return errorLog
+        case .unknown:
+            return "unknown"
+        }
+    }
 }

@@ -9,7 +9,7 @@ import Combine
 import CoreImage
 import SwiftUI
 
-class IDCardScannerViewModel: ViewModelable {
+final class IDCardScannerViewModel: ViewModelable {
     struct State {
         var showCamera = false
         var isScanning = false
@@ -23,11 +23,14 @@ class IDCardScannerViewModel: ViewModelable {
         case inspectImage
     }
     
+    private let checkUserActivationUseCase: CheckUserActivationUseCase
+    
     @Published var state: State = State()
     @ObservedObject var coordinator: Coordinator
     
-    init(coordinator: Coordinator) {
+    init(coordinator: Coordinator, checkUserActivationUseCase: CheckUserActivationUseCase) {
         self.coordinator = coordinator
+        self.checkUserActivationUseCase = checkUserActivationUseCase
     }
     
     func action(_ action: Action) {
@@ -41,10 +44,23 @@ class IDCardScannerViewModel: ViewModelable {
                     let result = await inspectImage(image: image)
                     switch result {
                     case .success(let nickname):
-                        self.coordinator.push(.userProfileSetting(nickname: nickname))
-                    case .failure(let failure):
-                        // MARK: 실패 모달 띄우기
-                        print(failure)
+                        // 해당 닉네임의 유저 정보 존재 여부에 따라 profileSetting, login 분기
+                        let checkActivationResult = await self.checkUserActivationUseCase.executeCheckActivation(userName: nickname)
+                        switch checkActivationResult {
+                        case .success(let isActivated):
+                            if isActivated {
+                                self.coordinator.push(.login(nickname: nickname))
+                            }
+                            else {
+                                self.coordinator.push(.userProfileSetting(nickname: nickname))
+                            }
+                        case .failure(let error):
+                            // TODO: 네트워크 통신 관련 실패 모달 띄우기
+                            print(error)
+                        }
+                    case .failure(let error):
+                        // TODO: 출입증 카드 검사 실패 실패 모달 띄우기
+                        print(error)
                     }
                     state.isScanning = false
                 }

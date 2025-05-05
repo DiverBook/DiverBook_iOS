@@ -14,7 +14,7 @@ protocol DiverBookAuthServicable: HTTPClient {
         places: String,
         about: String,
         password: String
-    ) async -> Result<SignUpResModel, RequestError>
+    ) async -> Result<BaseResponse<SignUpResModel>, RequestError>
     
     func refreshToken(
         refreshToken: String

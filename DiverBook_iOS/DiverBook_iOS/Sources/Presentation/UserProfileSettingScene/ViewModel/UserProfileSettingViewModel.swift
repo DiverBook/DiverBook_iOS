@@ -27,7 +27,14 @@ class UserProfileSettingViewModel: ViewModelable {
     enum Action {
         case nextButtonTapped
         case profileSettingEnd
-        case validateCurrentStepInfo
+        
+        // MARK: validate
+        case validatePassword
+        case validateShortBio
+        case validatePreferredPlaces
+        case validateInterests
+        case validatePhoneNumber
+        case validatePreferredField
     }
     
     @ObservedObject var coordinator: Coordinator
@@ -81,23 +88,38 @@ class UserProfileSettingViewModel: ViewModelable {
                 }
             }
             
-        case .validateCurrentStepInfo:
-            switch state.profileSettingPhase {
-            case .checkDetectedIDCardInfo:
-                state.buttonAvailable = true
-            case .inputPassword:
-                state.buttonAvailable = validatePassword(password: state.password)
-            case .selectPreferredField:
-                state.buttonAvailable = true
-            case .inputPhoneNumber:
-                state.buttonAvailable = validatePhoneNumber(state.phoneNumber)
-            case .inputInterest: // validate 기준은?
-                state.buttonAvailable = validateInterests(interests: state.interests)
-            case .inputFrequentPlaces: // validate 기준은?
-                state.buttonAvailable = validateFrequentPlaces(frequentPlaces: state.preferredPlaces)
-            case .inputShortBio: // validate 기준은?
-                state.buttonAvailable = validateShortBio(shortBio: state.shortBio)
+        case .validatePassword:
+            state.buttonAvailable = validatePassword(password: state.password)
+            
+        case .validateShortBio:
+            self.action(.validatePreferredPlaces)
+            guard state.buttonAvailable else {
+                return
             }
+            state.buttonAvailable = validateShortBio(shortBio: state.shortBio)
+            if state.shortBio.count > 20 {
+                state.shortBio = String(state.shortBio.dropLast())
+            }
+            
+        case .validatePreferredPlaces:
+            self.action(.validateInterests)
+            guard state.buttonAvailable else {
+                return
+            }
+            state.buttonAvailable = validateFrequentPlaces(frequentPlaces: state.preferredPlaces)
+            
+        case .validateInterests:
+            self.action(.validatePhoneNumber)
+            guard state.buttonAvailable else {
+                return
+            }
+            state.buttonAvailable = validateInterests(interests: state.interests)
+            
+        case .validatePhoneNumber:
+            state.buttonAvailable = validatePhoneNumber(state.phoneNumber)
+            
+        case .validatePreferredField:
+            state.buttonAvailable = validatePreferredField(preferredField: state.preferredField)
         }
     }
     
@@ -125,6 +147,10 @@ class UserProfileSettingViewModel: ViewModelable {
     
     private func validatePhoneNumber(_ phoneNumber: String) -> Bool {
         return phoneNumber.count == 11
+    }
+    
+    private func validatePreferredField(preferredField: PreferredField) -> Bool {
+        return true
     }
     
     private func capitalizeNickname(nickName: String) -> String {

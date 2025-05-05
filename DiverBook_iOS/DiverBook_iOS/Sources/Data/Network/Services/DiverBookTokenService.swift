@@ -7,9 +7,6 @@
 
 final class DiverBookTokenService: DiverBookTokenServicable {
     func saveTokens(authInfo: AuthInfo) {
-        UserToken.accessToken = authInfo.accessToken
-        UserToken.refreshToken = authInfo.refreshToken
-        UserToken.tokenType = authInfo.tokenType
-        UserToken.id = authInfo.id
+        UserToken.updateTokens(authInfo: authInfo)
     }
 }

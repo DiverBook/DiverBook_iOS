@@ -37,10 +37,15 @@ final class DefaultAuthRepository: AuthRepository {
         )
         
         switch signUpResult {
-        case .success(let signUpResModel):
-            let authInfo = signUpResModel.toDomain()
-            tokenService.saveTokens(authInfo: authInfo)
-            return .success(true)
+        case .success(let baseResponse):
+            if baseResponse.success, let data = baseResponse.data {
+                let authInfo = data.toDomain()
+                UserToken.updateTokens(authInfo: authInfo)
+                return .success(true)
+            }
+            else {
+                return .success(false)
+            }
         case .failure(let error):
             return .failure(error)
         }

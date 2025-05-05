@@ -74,8 +74,6 @@ struct UserProfileSettingView: View {
         }
         .padding(.horizontal, 24)
         .background(Rectangle().fill(.white))
-        .hideKeyboardOnTap(action: {
-            self.viewModel.action(.validateCurrentStepInfo)
-        })
+        .hideKeyboardOnTap()
     }
 }

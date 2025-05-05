@@ -5,6 +5,8 @@
 //  Created by 한건희 on 4/28/25.
 //
 
+import Foundation
+
 enum DiverBookAuthEndpoint: Endpoint {
     case signUp(
         userName: String,
@@ -15,18 +17,31 @@ enum DiverBookAuthEndpoint: Endpoint {
         about: String,
         password: String
     )
+    case checkActivation(
+        userName: String
+    )
+    case login(
+        userName: String,
+        password: String
+    )
     
     var path: String {
         switch self {
         case .signUp:
             return "/api/auth/signup"
+        case .checkActivation(let userName):
+            return "/api/users/activation/\(userName)"
+        case .login:
+            return "/api/auth/login"
         }
     }
     
     var method: RequestMethod {
         switch self {
-        case .signUp:
+        case .signUp, .login:
             return .post
+        case .checkActivation:
+            return .get
         }
     }
     
@@ -39,7 +54,7 @@ enum DiverBookAuthEndpoint: Endpoint {
     
     var header: [String: String]? {
         switch self {
-        case .signUp:
+        case .signUp, .checkActivation, .login:
             return [
                 "accept": "*/*",
                 "Content-Type": "application/json"
@@ -59,6 +74,13 @@ enum DiverBookAuthEndpoint: Endpoint {
                 "about": params.about,
                 "password": params.password
             ]
+        case .login(let params):
+            return [
+                "userName": params.userName,
+                "password": params.password
+            ]
+        default:
+            return nil
         }
     }
 }

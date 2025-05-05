@@ -25,6 +25,9 @@ struct InputUserDetailInfoView: View {
                 InputInfoView(
                     userInfoType: .shortBio,
                     inputText: self.$viewModel.state.shortBio)
+                .onChange(of: viewModel.state.shortBio) {
+                    viewModel.action(.validateShortBio)
+                }
             }
             if self.viewModel.state.profileSettingPhase.phaseStep > 5 {
                 infoField(
@@ -34,6 +37,9 @@ struct InputUserDetailInfoView: View {
                         inputText: self.$viewModel.state.preferredPlaces
                     )
                 )
+                .onChange(of: viewModel.state.preferredPlaces) {
+                    viewModel.action(.validatePreferredPlaces)
+                }
             }
             if self.viewModel.state.profileSettingPhase.phaseStep > 4 {
                 infoField(
@@ -43,6 +49,9 @@ struct InputUserDetailInfoView: View {
                         inputText: self.$viewModel.state.interests
                     )
                 )
+                .onChange(of: viewModel.state.interests) {
+                    viewModel.action(.validateInterests)
+                }
             }
             if self.viewModel.state.profileSettingPhase.phaseStep > 3 {
                 infoField(
@@ -52,6 +61,9 @@ struct InputUserDetailInfoView: View {
                         inputText: self.$viewModel.state.phoneNumber
                     )
                 )
+                .onChange(of: viewModel.state.phoneNumber) {
+                    viewModel.action(.validatePhoneNumber)
+                }
             }
             if self.viewModel.state.profileSettingPhase.phaseStep > 2 {
                 infoField(
@@ -61,6 +73,9 @@ struct InputUserDetailInfoView: View {
                             .preferredField
                     )
                 )
+                .onChange(of: viewModel.state.preferredField) {
+                    viewModel.action(.validatePreferredField)
+                }
             }
         }
     }
