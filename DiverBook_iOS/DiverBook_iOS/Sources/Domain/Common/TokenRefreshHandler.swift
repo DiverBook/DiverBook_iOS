@@ -16,7 +16,7 @@ struct TokenRefreshHandler {
 
         if case .failure(let error) = result,
            let requestError = error as? RequestError,
-           requestError == .unauthorized {
+           requestError == .forbidden {
             let refreshToken = UserToken.refreshToken
             let refreshResult = await refreshTokenUseCase.exeute(refreshToken: refreshToken)
 

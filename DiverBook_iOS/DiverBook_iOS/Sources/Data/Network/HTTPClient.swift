@@ -51,6 +51,8 @@ extension HTTPClient {
                 return .success(decodeResponse)
             case 401:
                 return .failure(.unauthorized)
+            case 403:
+                return .failure(.forbidden)
             default:
                 return .failure(.unexpectedStatusCode)
             }
