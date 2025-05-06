@@ -46,6 +46,8 @@ enum RequestError: Error, Equatable {
             return "noResponse"
         case .unauthorized:
             return "unauthorized"
+        case .forbidden:
+            return "forbidden"
         case .unexpectedStatusCode:
             return "unexpected"
         case .errorWithLog(let errorLog):
