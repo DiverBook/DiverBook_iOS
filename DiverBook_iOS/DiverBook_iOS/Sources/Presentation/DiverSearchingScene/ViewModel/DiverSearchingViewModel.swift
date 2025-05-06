@@ -20,19 +20,28 @@ final class DiverSearchingViewModel: ViewModelable {
     @ObservedObject var coordinator: Coordinator
     
     private let userID: String
+    private var diverProfile: DiverProfile
     private lazy var dataTransferManager: DataTransferManager = {
         return DataTransferManager(userID: userID, viewModel: self)
     }()
+    private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
+    private let fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
     
-    init(coordinator: Coordinator) {
+    init(coordinator: Coordinator, fetchDiverProfileUseCase: FetchDiverProfileUseCase,
+         fetchRefreshTokenUseCase: FetchRefreshTokenUseCase) {
         self.coordinator = coordinator
         self.userID = UserToken.id
+        self.diverProfile = DiverProfile.mockData
+        self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
+        self.fetchRefreshTokenUseCase = fetchRefreshTokenUseCase
     }
     
     func action(_ action: Action) {
         switch action {
         case .successSearchingDiver(let diverID):
-            self.coordinator.push(.searchResult(diverID: diverID))
+            Task {
+                await loadDiverProfileData(id: diverID)
+            }
         }
     }
     
@@ -42,5 +51,21 @@ final class DiverSearchingViewModel: ViewModelable {
 
     func stopSearching() {
         dataTransferManager.stopSession()
+    }
+    
+    private func loadDiverProfileData(id: String) async {
+        async let diverResult = TokenRefreshHandler.withTokenRefresh(
+            operation: { await self.fetchDiverProfileUseCase.executeFetchProfile(id: id) },
+            refreshTokenUseCase: fetchRefreshTokenUseCase)
+        
+        let result = await diverResult
+        
+        switch result {
+        case .success(let info):
+            diverProfile = info
+            self.coordinator.push(.searchResult(diverProfile: diverProfile))
+        case .failure(let error):
+            print("Failed to fetch diver info: \(error)")
+        }
     }
 }
