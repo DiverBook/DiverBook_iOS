@@ -8,11 +8,13 @@
 import Combine
 import SwiftUI
 
-class LoginViewModel: ViewModelable {
+final class LoginViewModel: ViewModelable {
     struct State {
         var nickname: String
         var password: String = ""
         var phase: LoginPhase = .checkDetectedInfo
+        var errorMessage: String = ""
+        var errorAlertShowing: Bool = false
         var buttonAvailable: Bool = true
     }
     
@@ -34,8 +36,8 @@ class LoginViewModel: ViewModelable {
     
     func action(_ action: Action) {
         switch action {
-        case .validatePassword:
-            validatePassword(password: state.password)
+        case .validatePassword: // 4자리 비밀번호인지 확인
+            state.buttonAvailable = validatePassword(password: state.password)
         case .nextButtonTapped:
             switch state.phase {
             case .checkDetectedInfo:
@@ -49,6 +51,8 @@ class LoginViewModel: ViewModelable {
                     case .failure(let errorMessage):
                         // TODO: 로그인 실패 모달 띄우기 (비밀번호 불일치)
                         print(errorMessage)
+                        state.errorMessage = errorMessage
+                        state.errorAlertShowing = true
                     }
                 }
             }
