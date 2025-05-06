@@ -47,62 +47,12 @@ struct MainView: View {
     }
     
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                if viewModel.state.isDataFetching {
-                    VStack(spacing: 0) {
-                        MainTopInfoView(viewModel: self.viewModel)
-                            .background(DiveColor.color6)
-                            .id("top")
-                        DiverCollectionStatusView(viewModel: self.viewModel)
-                            .padding(.bottom, 60)
-                        Button(action: {
-                            withAnimation {
-                                proxy.scrollTo("top", anchor: .top)
-                            }
-                        }, label: {
-                            HStack {
-                                Image(systemName: "arrow.up")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 12)
-                                Text("위로 가기")
-                                    .font(.subheadline)
-                            }
-                        })
-                        .padding(.bottom, 140)
-                    }
-                    .redacted(reason: .placeholder)
-                }
-                else {
-                    VStack(spacing: 0) {
-                        MainTopInfoView(viewModel: self.viewModel)
-                            .background(DiveColor.color6)
-                            .id("top")
-                        DiverCollectionStatusView(viewModel: self.viewModel)
-                            .padding(.bottom, 60)
-                        Button(action: {
-                            withAnimation {
-                                proxy.scrollTo("top", anchor: .top)
-                            }
-                        }, label: {
-                            HStack {
-                                Image(systemName: "arrow.up")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 12)
-                                Text("위로 가기")
-                                    .font(.subheadline)
-                            }
-                        })
-                        .padding(.bottom, 140)
-                    }
-                }
-            }
-            .ignoresSafeArea(edges: [.top])
-        }
-        .onAppear {
-            viewModel.action(.viewAppeared)
+        ZStack {
+            MainContentView(viewModel: viewModel)
+            ServiceErrorAlert(
+                message: viewModel.state.errorMessage,
+                showErrorAlert: $viewModel.state.isErrorShowing
+            )
         }
     }
 }
