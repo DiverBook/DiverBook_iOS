@@ -8,11 +8,28 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var viewModel: MainViewModel
-    @GestureState var dragOffset: CGSize = .zero
     
     init(coordinator: Coordinator) {
-        self._viewModel = StateObject(wrappedValue: MainViewModel(coordinator: coordinator))
+        let collectionRateUseCase = DefaultDiverCollectionRateUseCase(
+            diverCollectionRateRepository: DefaultDiverCollectionRateRepository(
+                diverCollectionRateService: DiverCollectionRateService()))
+        
+        let collectionUseCase = DefaultDiverCollectionUseCase(
+            diverCollectionRepository: DefaultDiverCollectionRepository(
+                diverCollectionService: DiverCollectionService()))
+        
+        let fetchRefreshTokenUseCase = DefaultFetchRefreshTokenUseCase(
+            repository: DefaultAuthRepository(
+                authService: DiverBookAuthService(),
+                tokenService: DiverBookTokenService()))
+        
+        self._viewModel = StateObject(wrappedValue: MainViewModel(
+            coordinator: coordinator,
+            collectionRateUseCase: collectionRateUseCase,
+            collectionUseCase: collectionUseCase,
+            fetchRefreshTokenUseCase: fetchRefreshTokenUseCase))
     }
+    
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
@@ -40,6 +57,9 @@ struct MainView: View {
                 }
             }
             .ignoresSafeArea(edges: [.top])
+        }
+        .onAppear {
+            viewModel.action(.viewAppeared)
         }
     }
 }

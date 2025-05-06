@@ -33,8 +33,8 @@ struct UserBookSuccessRateView: View {
     }
 }
 
-#Preview {
-    @Previewable @StateObject var coordinator = Coordinator()
-    @Previewable @State var rate: Double = 50
-    UserBookSuccessRateView(viewModel: MainViewModel(coordinator: coordinator))
-}
+//#Preview {
+//    @Previewable @StateObject var coordinator = Coordinator()
+//    @Previewable @State var rate: Double = 50
+//    UserBookSuccessRateView(viewModel: MainViewModel(coordinator: coordinator))
+//}

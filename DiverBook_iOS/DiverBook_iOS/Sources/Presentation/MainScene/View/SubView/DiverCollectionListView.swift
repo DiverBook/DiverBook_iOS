@@ -9,12 +9,14 @@ import Combine
 import SwiftUI
 
 struct DiverCollectionListView: View {
-    @StateObject var viewModel: DiverCollectionListViewModel = DiverCollectionListViewModel()
-
-    #warning("TODO: diver 정보를 파라미터로 입력하도록 수정")
+    @ObservedObject var viewModel: MainViewModel
     var diverTapAction: () -> Void
     
-    init(diverTapAction: @escaping () -> Void) {
+    init(
+        viewModel: MainViewModel,
+        diverTapAction: @escaping () -> Void
+    ) {
+        self.viewModel = viewModel
         self.diverTapAction = diverTapAction
     }
     
@@ -24,31 +26,16 @@ struct DiverCollectionListView: View {
             GridItem(.flexible(minimum: 80, maximum: 200)),
             GridItem(.flexible(minimum: 80, maximum: 200))
         ]) {
-            ForEach(0..<100) { index in
-                PrimaryProfile(imageURL: DiverProfile.mockData.profileImageUrl, nickname: DiverProfile.mockData.userName, style: .diver)
+            ForEach(viewModel.state.diverProfiles, id: \.self) { diverProfile in
+                PrimaryProfile(
+                    imageURL: viewModel.state.isFoundedDiver[diverProfile.id] ?? false ? diverProfile.profileImageUrl : URL(string: ""),
+                    nickname: diverProfile.userName,
+                    style: .diver
+                )
             }
         }
+        .onAppear {
+            viewModel.action(.viewAppeared)
+        }
     }
-}
-
-class DiverCollectionListViewModel: ViewModelable {
-    struct State {
-
-    }
-
-    enum Action {
-
-    }
-
-    @Published var state: State = State()
-
-    func action(_ action: Action) {
-
-    }
-}
-
-#Preview {
-    DiverCollectionListView(diverTapAction: {
-        
-    })
 }
