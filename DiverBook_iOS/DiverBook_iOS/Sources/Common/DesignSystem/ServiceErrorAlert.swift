@@ -23,6 +23,13 @@ struct ServiceErrorAlert: View {
         .opacity(showErrorAlert ? 1 : 0)
         .scaleEffect(showErrorAlert ? 1.0 : 0.8)
         .animation(.easeInOut(duration: 0.4), value: showErrorAlert)
+        .onChange(of: showErrorAlert) {
+            if showErrorAlert {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                    showErrorAlert = false
+                }
+            }
+        }
     }
 }
 
