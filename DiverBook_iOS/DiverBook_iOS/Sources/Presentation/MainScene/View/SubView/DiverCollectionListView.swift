@@ -34,8 +34,5 @@ struct DiverCollectionListView: View {
                 )
             }
         }
-        .onAppear {
-            viewModel.action(.viewAppeared)
-        }
     }
 }

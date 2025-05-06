@@ -13,7 +13,7 @@ final class DefaultDiverCollectionRepository: DiverCollectionRepository {
         self.diverCollectionService = diverCollectionService
     }
     
-    func fetchAllDiverList() async -> Result<[DiverProfile], any Error> {
+    func fetchAllDiverList() async -> Result<[DiverProfile], Error> {
         let fetchAllDiverListResult = await diverCollectionService.fetchAllDiverList()
         switch fetchAllDiverListResult {
         case .success(let baseResponse):

@@ -7,4 +7,5 @@
 
 protocol FetchDiverProfileUseCase {
     func executeFetchProfile(id: String) async -> Result<DiverProfile, Error>
+    func executeFetchMyProfile() async -> Result<DiverProfile, Error>
 }

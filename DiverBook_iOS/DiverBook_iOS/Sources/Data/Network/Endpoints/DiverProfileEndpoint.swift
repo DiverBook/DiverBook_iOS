@@ -8,10 +8,13 @@
 import Foundation
 
 enum DiverProfileEndpoint: Endpoint {
+    case myProfile
     case diverProfile(id: String)
     
     var path: String {
         switch self {
+        case .myProfile:
+            return "/api/users/me"
         case .diverProfile(let id):
             return "/api/users/\(id)"
         }
