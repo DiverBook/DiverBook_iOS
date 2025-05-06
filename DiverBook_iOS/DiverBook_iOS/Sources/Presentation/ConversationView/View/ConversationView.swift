@@ -12,7 +12,19 @@ struct ConversationView: View {
     @StateObject var viewModel: ConversationViewModel
     
     init(coordinator: Coordinator) {
-        _viewModel = StateObject(wrappedValue: ConversationViewModel(coordinator: coordinator))
+        _viewModel = StateObject(
+            wrappedValue: ConversationViewModel(
+                coordinator: coordinator,
+                fetchQuestionUseCase: DefaultFetchQuestionUseCase(
+                    repository: DefaultQuestionRepository(questionService: QuestionService())
+                ), fetchRefreshTokenUseCase: DefaultFetchRefreshTokenUseCase(
+                    repository: DefaultAuthRepository(
+                        authService: DiverBookAuthService(),
+                        tokenService: DiverBookTokenService()
+                    )
+                )
+            )
+        )
     }
     
     var body: some View {
@@ -22,6 +34,9 @@ struct ConversationView: View {
                 animationNamespace: animationNamespace)
             
             popupCardView()
+        }
+        .onAppear {
+            viewModel.action(.loadQuestions)
         }
     }
     
@@ -38,7 +53,11 @@ struct ConversationView: View {
                 }
                 .zIndex(1)
 
-            FlipCardView(cardIndex: cardIndex, animationNamespace: animationNamespace)
+            FlipCardView(
+                cardIndex: cardIndex,
+                animationNamespace: animationNamespace,
+                question: viewModel.state.questions[cardIndex]
+            )
                 .transition(.scale.animation(.easeIn))
                 .zIndex(2)
         }
