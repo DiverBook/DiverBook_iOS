@@ -11,6 +11,7 @@ struct QuestionCardFrontView: View {
     @Binding var degree: Double
     
     let index: Int
+    let question: Question
     
     var body: some View {
         ZStack {
@@ -18,15 +19,15 @@ struct QuestionCardFrontView: View {
                 .frame(width: 230, height: 300)
                 .foregroundColor(DiveColor.white)
             VStack(alignment: .center) {
-                Image("questioncardImageLogo")
+                Image(systemName: "\(question.symbol)")
+                    .foregroundColor(DiveColor.color2)
                     .padding(.top, 60)
                     .padding(.bottom, 30)
                 Divider()
                     .foregroundColor(DiveColor.gray1)
                     .padding(.bottom, 11)
                     .frame(width: 14)
-                // TODO: - index 따라 데이터 사용으로 변경
-                Text("지친 일상에서 가장 힘이 되는 것은 무엇인가요?")
+                Text("\(question.question)")
                     .multilineTextAlignment(.center)
                     .frame(width: 180)
                     .font(DiveFont.bodyPretendard)
