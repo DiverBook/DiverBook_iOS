@@ -9,24 +9,33 @@ import Combine
 import SwiftUI
 
 final class ConversationViewModel: ViewModelable {
-    @Published var selectedCardIndex: Int?
-    @Published var isPopupCard: Bool = false
-    
     struct State {
-        
+        var questions: [Question] = []
     }
     
     enum Action {
         case finishConversation
         case selectCard(index: Int)
         case dismissCard
+        case loadQuestions
     }
     
+    @Published var selectedCardIndex: Int?
+    @Published var isPopupCard: Bool = false
     @Published var state: State = State()
     @ObservedObject var coordinator: Coordinator
     
-    init(coordinator: Coordinator) {
+    private let fetchQuestionUseCase: FetchQuestionUseCase
+    private let fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
+    
+    init(
+        coordinator: Coordinator,
+        fetchQuestionUseCase: FetchQuestionUseCase,
+        fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
+    ) {
         self.coordinator = coordinator
+        self.fetchQuestionUseCase = fetchQuestionUseCase
+        self.fetchRefreshTokenUseCase = fetchRefreshTokenUseCase
     }
     
     func action(_ action: Action) {
@@ -37,6 +46,8 @@ final class ConversationViewModel: ViewModelable {
             handleSelectCard(index: index)
         case .dismissCard:
             handleDismissCard()
+        case .loadQuestions:
+            loadQuestions()
         }
     }
     
@@ -51,6 +62,23 @@ final class ConversationViewModel: ViewModelable {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             self.selectedCardIndex = nil
+        }
+    }
+    
+    private func loadQuestions() {
+        Task {
+            async let questionResult = TokenRefreshHandler.withTokenRefresh(
+                operation: { await self.fetchQuestionUseCase.executeFetchQuestion(count: 4) },
+                refreshTokenUseCase: fetchRefreshTokenUseCase)
+            
+            let result = await questionResult
+            
+            switch result {
+            case .success(let questions):
+                state.questions = questions
+            case .failure(let error):
+                print("Failed to fetch questions: \(error)")
+            }
         }
     }
 }
