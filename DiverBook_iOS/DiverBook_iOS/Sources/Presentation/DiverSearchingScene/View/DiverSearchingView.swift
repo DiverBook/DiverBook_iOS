@@ -11,8 +11,21 @@ struct DiverSearchingView: View {
     @StateObject var viewModel: DiverSearchingViewModel
     
     init(coordinator: Coordinator) {
-        let viewModel = DiverSearchingViewModel(coordinator: coordinator)
-        _viewModel = StateObject(wrappedValue: viewModel)
+        _viewModel = StateObject(
+            wrappedValue: DiverSearchingViewModel(
+                coordinator: coordinator,
+                fetchDiverProfileUseCase: DefaultFetchDiverProfileUseCase(
+                    repository: DefaultDiverRepository(
+                        diverProfileService: DiverProfileService()
+                    )
+                ), fetchRefreshTokenUseCase: DefaultFetchRefreshTokenUseCase(
+                    repository: DefaultAuthRepository(
+                        authService: DiverBookAuthService(),
+                        tokenService: DiverBookTokenService()
+                    )
+                )
+            )
+        )
     }
     
     @Environment(\.dismiss) var dismiss
