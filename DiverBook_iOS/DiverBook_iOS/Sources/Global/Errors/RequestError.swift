@@ -52,6 +52,8 @@ enum RequestError: Error, Equatable {
             return errorLog
         case .unknown:
             return "unknown"
+        case .forbidden:
+            return "forbidden"
         }
     }
 }
