@@ -28,4 +28,21 @@ final class DefaultDiverRepository: DiverRepository {
             return .failure(error)
         }
     }
+    
+    func fetchMyProfile() async -> Result<DiverProfile, Error> {
+        let myProfileResult = await diverProfileService.fetchMyProfile()
+        
+        switch myProfileResult {
+        case .success(let baseResponse):
+            if baseResponse.success, let data = baseResponse.data {
+                let myProfile = data.toDomain()
+                return .success(myProfile)
+            }
+            else {
+                return .failure(RequestError.errorWithLog(baseResponse.errorMessage ?? ""))
+            }
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
 }

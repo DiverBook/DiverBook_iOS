@@ -12,9 +12,9 @@ struct MainDiverInfoView: View {
     @ObservedObject var viewModel: MainViewModel
     var body: some View {
         HStack(spacing: 0) {
-            PrimaryProfile(imageURL: DiverProfile.mockData.profileImageUrl, style: .basic)
+            PrimaryProfile(imageURL: viewModel.state.myProfile.profileImageUrl, style: .basic)
                 .padding(.trailing, 10)
-            LearnerNicknameView(nickname: self.$viewModel.state.userNickname)
+            LearnerNicknameView(nickname: $viewModel.state.myProfile.userName)
             Spacer()
             ProfileSettingButton(profileSettingButtonTapAction: {
                 self.viewModel.action(.profileSettingButtonTapped)

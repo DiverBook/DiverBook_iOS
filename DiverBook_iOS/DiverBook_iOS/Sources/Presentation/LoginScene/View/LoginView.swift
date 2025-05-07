@@ -20,43 +20,12 @@ struct LoginView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            TopBar()
-                .padding(.horizontal, -4)
-                .padding(.bottom, 10)
-            switch viewModel.state.phase {
-            case .checkDetectedInfo:
-                CheckDetectedIDCardInfoView(nickname: viewModel.state.nickname)
-            case .inputPassword:
-                LoginInputPaswordView(viewModel: viewModel)
-            }
-            Spacer()
-            Button(
-                action: {
-                    viewModel.action(.nextButtonTapped)
-                },
-                label: {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(
-                            viewModel.state.buttonAvailable
-                                ? DiveColor.color6 : DiveColor.gray2
-                        )
-                        .frame(height: 55)
-                        .overlay(
-                            Text("다음")
-                                .font(DiveFont.button)
-                                .foregroundStyle(
-                                    viewModel.state.buttonAvailable
-                                        ? .white : DiveColor.gray3)
-                        )
-                }
-            )
-            .buttonStyle(.plain)
-            .padding(.bottom, 10)
-            .disabled(!viewModel.state.buttonAvailable)
+        ZStack(alignment: .top) {
+            LoginContentView(viewModel: viewModel)
+            .padding(.horizontal, 24)
+            .background(Rectangle().fill(.white))
+            .hideKeyboardOnTap()
+            ServiceErrorAlert(message: viewModel.state.errorMessage, showErrorAlert: $viewModel.state.errorAlertShowing)
         }
-        .padding(.horizontal, 24)
-        .background(Rectangle().fill(.white))
-        .hideKeyboardOnTap()
     }
 }

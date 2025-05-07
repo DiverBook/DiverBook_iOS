@@ -7,4 +7,5 @@
 
 protocol DiverRepository {
     func fetchDiverProfile(id: String) async -> Result<DiverProfile, Error>
+    func fetchMyProfile() async -> Result<DiverProfile, Error>
 }

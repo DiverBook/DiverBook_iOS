@@ -14,4 +14,11 @@ final class DiverProfileService: DiverProfileServicable {
             responseModel: BaseResponse<DiverProfileResModel>.self
         )
     }
+    
+    func fetchMyProfile() async -> Result<BaseResponse<DiverProfileResModel>, RequestError> {
+        return await request(
+            endpoint: DiverProfileEndpoint.myProfile,
+            responseModel: BaseResponse<DiverProfileResModel>.self
+        )
+    }
 }

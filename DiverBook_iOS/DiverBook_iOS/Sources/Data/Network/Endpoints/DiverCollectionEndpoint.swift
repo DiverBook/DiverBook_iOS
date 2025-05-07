@@ -1,22 +1,24 @@
 //
-//  DiverInfoEndpoint.swift
+//  DiverCollectionEndpoint.swift
 //  DiverBook_iOS
 //
-//  Created by 배현진 on 4/30/25.
+//  Created by 한건희 on 5/6/25.
 //
 
-import Foundation
-
-enum DiverProfileEndpoint: Endpoint {
-    case myProfile
-    case diverProfile(id: String)
+enum DiverCollectionEndpoint: Endpoint {
+    
+    case diverCollection
+    case diverCollectionRate(id: String)
+    case allDiverList
     
     var path: String {
         switch self {
-        case .myProfile:
-            return "/api/users/me"
-        case .diverProfile(let id):
-            return "/api/users/\(id)"
+        case .diverCollection:
+            return "/api/collections"
+        case .diverCollectionRate(let id):
+            return "/api/users/\(id)/achievement-rate"
+        case .allDiverList:
+            return "/api/users"
         }
     }
     
@@ -27,7 +29,7 @@ enum DiverProfileEndpoint: Endpoint {
         }
     }
     
-    var query: [String: String]? {
+    var query: [String : String]? {
         switch self {
         default:
             return nil
@@ -45,10 +47,12 @@ enum DiverProfileEndpoint: Endpoint {
         }
     }
     
-    var body: [String: String]? {
+    var body: [String : String]? {
         switch self {
         default:
             return nil
         }
     }
+    
+    
 }
