@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct Badge: Identifiable {
-    let id = UUID()
+struct Badge {
+    let code: String
     let name: String
-    let requiredDiverCount: Int
-    let imageName: String
     let description: String
+    let imageUrl: String
+    let isCollected: Bool
 }

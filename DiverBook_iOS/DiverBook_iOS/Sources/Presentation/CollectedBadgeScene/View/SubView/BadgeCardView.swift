@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BadgeCardView: View {
-    let badge: BadgeState
+    let badge: Badge
     @State private var isSheetPresented = false
 
     var body: some View {
@@ -18,10 +18,33 @@ struct BadgeCardView: View {
             }
         }) {
             VStack(spacing: 8) {
-                Image(badge.displayImageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 62, height: 88)
+                if badge.isCollected, let url = URL(string: badge.imageUrl) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 62, height: 88)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 62, height: 88)
+                        case .failure:
+                            Image("lock")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 62, height: 88)
+                        @unknown default:
+                            EmptyView()
+                                .frame(width: 62, height: 88)
+                        }
+                    }
+                } else {
+                    Image("lock")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 62, height: 88)
+                }
 
                 Text(badge.name)
                     .font(DiveFont.bodyMedium1)
@@ -43,13 +66,3 @@ struct BadgeCardView: View {
     }
 }
 
-#Preview {
-    BadgeCardView(
-        badge: BadgeState(
-            name: "첫 입수",
-            displayImageName: "lock",
-            isCollected: false,
-            description: "첫 다이버를 등록했어요.\n당신의 탐험을 응원합니다!"
-        )
-    )
-}

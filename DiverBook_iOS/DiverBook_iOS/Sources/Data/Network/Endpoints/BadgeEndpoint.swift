@@ -1,0 +1,44 @@
+//
+//  BadgeEndpoint.swift
+//  DiverBook_iOS
+//
+//  Created by jun on 5/8/25.
+//
+
+import Foundation
+
+enum BadgeEndpoint: Endpoint {
+    case getBadges
+}
+
+extension BadgeEndpoint {
+    var path: String {
+        switch self {
+        case .getBadges:
+            return "/api/badges"
+        }
+    }
+
+    var method: RequestMethod {
+        switch self {
+        case .getBadges:
+            return .get
+        }
+    }
+
+    var query: [String : String]? {
+        return nil
+    }
+
+    var header: [String : String]? {
+        return [
+            "accept": "*/*",
+            "Content-Type": "application/json",
+            "Authorization": "\(UserToken.tokenType) \(UserToken.accessToken)"
+        ]
+    }
+
+    var body: [String : String]? {
+        return nil
+    }
+}

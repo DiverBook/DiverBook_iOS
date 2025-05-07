@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct BadgeDetailView: View {
-    let badge: BadgeState
+    let badge: Badge
 
     var body: some View {
         VStack(alignment: .center) {
-            Image(badge.displayImageName)
+            Image(badge.imageUrl)
 
             Text(badge.name)
                 .font(DiveFont.headingH3)
@@ -30,11 +30,12 @@ struct BadgeDetailView: View {
 
 #Preview {
     BadgeDetailView(
-        badge: BadgeState(
+        badge: Badge(
+            code: "B002",
             name: "수면 돌파",
-            displayImageName: "badge2",
-            isCollected: true,
-            description: "벌써 10명의 다이버를 만났어요.  \n수면 위의 세상이 눈 앞에!"
+            description: "벌써 10명의 다이버를 만났어요.  \n수면 위의 세상이 눈 앞에!",
+            imageUrl: "badge2",
+            isCollected: true
         )
     )
 }
