@@ -7,19 +7,28 @@
 
 import Combine
 import Foundation
+import SwiftUI
 
 final class MyProfileViewModel: ViewModelable {
     struct State {
+        var isDataFetching : Bool = false
+        var myProfile: DiverProfile = DiverProfile.mockData
+        
         var todayTalk: String = ""
         var division: String = ""
         var phoneNumber: String = ""
         var interests: String = ""
         var places: String = ""
         var badgeCount: Int = 0
+        var nickname: String = ""
+        
+        var errorMessage: String = ""
+        var isErrorShowing: Bool = false
+        
     }
 
     enum Action {
-        case fetchProfileData
+        case viewAppeared
         case updateTodayTalk(String)
         case updateDivision(String)
         case updatePhoneNumber(String)
@@ -29,59 +38,80 @@ final class MyProfileViewModel: ViewModelable {
 
     @Published var state = State()
     
-    private var cancellables = Set<AnyCancellable>()
+    @ObservedObject var coordinator: Coordinator
 
-    init() {
-        action(.fetchProfileData)
+    private var cancellables = Set<AnyCancellable>()
+    
+    //UseCases
+    private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
+    private let fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
+
+    init(
+        coordinator: Coordinator,
+        fetchDiverProfileUseCase: FetchDiverProfileUseCase,
+        fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
+    ) {
+        self.coordinator = coordinator
+        self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
+        self.fetchRefreshTokenUseCase = fetchRefreshTokenUseCase
         observeStateChanges()
     }
-    
+
     func action(_ action: Action) {
         switch action {
-        case .fetchProfileData:
-            fetchProfileData()
+        case .viewAppeared:
+            state.isDataFetching = true
+            Task{
+                await fetchMyProfile()
+                state.isDataFetching = false
+            }
             
         case .updateTodayTalk(let newTalk):
             state.todayTalk = newTalk
-            
         case .updateDivision(let newDivision):
             state.division = newDivision
-            
         case .updatePhoneNumber(let newPhoneNumber):
             state.phoneNumber = newPhoneNumber
-            
         case .updateInterests(let newInterests):
             state.interests = newInterests
-            
         case .updatePlaces(let newPlaces):
             state.places = newPlaces
         }
     }
-    
-    private func fetchProfileData() {
-        // TODO: Mock 데이터 -> 서버 데이터 불러오기로 변경해야함
-        self.state = State(
-            todayTalk: DiverProfile.mockData.about,
-            division: DiverProfile.mockData.divisions,
-            phoneNumber: DiverProfile.mockData.phoneNumber,
-            interests: DiverProfile.mockData.interests,
-            places: DiverProfile.mockData.places,
-            badgeCount: 5
+
+    private func fetchMyProfile() async {
+        let myProfileResult = await TokenRefreshHandler.withTokenRefresh(
+            operation: {
+                await self.fetchDiverProfileUseCase.executeFetchMyProfile()
+            },
+            refreshTokenUseCase: fetchRefreshTokenUseCase
         )
+
+        switch myProfileResult {
+        case .success(let profile):
+            state.myProfile = profile
+        case .failure(let error):
+            activateErrorAlert(message: "사용자 정보 조회에 실패하였습니다.")
+        }
     }
-    
+
     private func observeStateChanges() {
         $state
             .dropFirst()
             .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
             .sink { [weak self] newState in
-                self?.saveProfileData(newState)
+                self?.updateProfile()
             }
             .store(in: &cancellables)
     }
+
+    private func updateProfile() {
+        // TODO: PATCH 로직 연결 필요 (예: UpdateProfileUseCase)
+        print("✅ 자동 저장 요청 준비됨")
+    }
     
-    private func saveProfileData(_ state: State) {
-        // TODO: 서버 저장 로직으로 변경해야함
-        print("✅ 자동 저장: \(state.todayTalk), \(state.division), \(state.phoneNumber), \(state.interests), \(state.places)")
+    private func activateErrorAlert(message: String) {
+        state.errorMessage = message
+        state.isErrorShowing = true
     }
 }

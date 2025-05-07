@@ -10,6 +10,10 @@ struct DiverBookIOSApp: App {
         WindowGroup {
             NavigationStack(path: self.$coordinator.path) {
                 OnboardingView(coordinator: self.coordinator)
+//                UserProfileSettingView(
+//                    nickName: "HappyJay",
+//                    coordinator: self.coordinator
+//                )
                     .toolbar(.hidden, for: .navigationBar)
                     .navigationDestination(
                         for: Path.self,
@@ -53,7 +57,7 @@ struct DiverBookIOSApp: App {
                             case .finishConversation:
                                 DiverProfileView(viewModel: DiverProfileViewModel())
                             case .myProfile:
-                                MyProfileView(viewModel: MyProfileViewModel())
+                                MyProfileView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .privacyPolicy:
                                 PrivacyPolicyView()
