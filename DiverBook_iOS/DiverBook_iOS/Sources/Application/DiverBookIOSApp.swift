@@ -10,7 +10,7 @@ struct DiverBookIOSApp: App {
         WindowGroup {
             NavigationStack(path: self.$coordinator.path) {
 //                OnboardingView(coordinator: self.coordinator)
-                DiverProfileView(coordinator: self.coordinator, diverId: "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                SystemSettingView(coordinator: self.coordinator)
 //                UserProfileSettingView(
 //                    nickName: "HappyJay",
 //                    coordinator: self.coordinator
@@ -60,9 +60,6 @@ struct DiverBookIOSApp: App {
                                 DiverProfileView(coordinator: self.coordinator, diverId: "")
                             case .myProfile:
                                 MyProfileView(coordinator: self.coordinator)
-                                    .toolbar(.hidden, for: .navigationBar)
-                            case .privacyPolicy:
-                                PrivacyPolicyView()
                                     .toolbar(.hidden, for: .navigationBar)
                             }
                         })

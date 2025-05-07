@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import SwiftUICore
+import UIKit
 
 final class SystemSettingViewModel: ViewModelable {
     struct State {
@@ -34,7 +35,9 @@ final class SystemSettingViewModel: ViewModelable {
         case .tapProfile:
             coordinator.push(.myProfile)
         case .tapPolicy:
-            coordinator.push(.privacyPolicy)
+            if let url = URL(string: "https://comnovia.notion.site/1d87c806d35a80bea6dee416d05db411?pvs=4") {
+                UIApplication.shared.open(url)
+            }
         case .tapWithdraw:
             state.showWithdrawAlert = true
         case .dismissAlert:

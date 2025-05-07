@@ -34,5 +34,4 @@ enum Path: Hashable {
     case startConversation
     case finishConversation
     case myProfile
-    case privacyPolicy
 }
