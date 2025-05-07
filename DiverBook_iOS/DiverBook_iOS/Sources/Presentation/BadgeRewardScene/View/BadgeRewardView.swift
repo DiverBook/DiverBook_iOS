@@ -20,16 +20,16 @@ struct BadgeRewardView: View {
         VStack {
             Spacer()
             
-            Image("badge1")
+            Image(viewModel.state.badge)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 125, height: 177)
                 .applyShadow(DiveShadow.shadow1)
 
-            VStack {
-                Text("다이버시티에서의 첫 발견!")
+            VStack(spacing: 4) {
+                Text("다이버시티에서 \(viewModel.state.badgeDescription)!")
                 HStack {
-                    Text("‘첫 입수’")
+                    Text("'\(viewModel.state.badgeName)'")
                         .foregroundStyle(DiveColor.color6)
                     Text("뱃지를 획득했어요.")
                 }

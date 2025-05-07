@@ -10,7 +10,9 @@ import SwiftUI
 
 class BadenRewardViewModel: ObservableObject {
     struct State {
-        var badge = ""
+        var badge = "badge1"
+        var badgeName = "첫 입수"
+        var badgeDescription = "첫 다이버 등록"
     }
 
     enum Action {
