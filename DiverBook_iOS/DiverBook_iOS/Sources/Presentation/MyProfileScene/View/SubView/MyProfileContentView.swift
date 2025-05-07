@@ -1,0 +1,57 @@
+//
+//  MyProfileContentView.swift
+//  DiverBook_iOS
+//
+//  Created by jun on 5/8/25.
+//
+
+import Foundation
+import SwiftUI
+
+struct MyProfileContentView: View {
+    @Binding var myProfile: DiverProfile
+    let badgeCount: Int
+
+    var body: some View {
+        VStack(spacing: 8) {
+            PrimaryProfile(
+                imageURL: myProfile.profileImageUrl,
+                style: .mypage
+            )
+
+            Text(myProfile.userName)
+                .font(DiveFont.headingH3)
+
+            TodayTalkSectionView(
+                mode: .editable(
+                    binding: $myProfile.about
+                )
+            )
+
+            Spacer().frame(height: 40)
+
+            ProfileDetailsInfoView(
+                division: .editable(
+                    binding: $myProfile.divisions
+                ),
+                phoneNumber: .editable(
+                    binding: $myProfile.phoneNumber
+                ),
+                interests: .editable(
+                    binding: $myProfile.interests
+                ),
+                places: .editable(
+                    binding: $myProfile.places
+                )
+            )
+
+            Spacer().frame(height: 32)
+
+            CollectedBadgeButtonView(
+                badgeCount: badgeCount
+            )
+
+            Spacer()
+        }
+    }
+}
