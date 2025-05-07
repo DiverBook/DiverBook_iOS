@@ -53,6 +53,8 @@ struct ServiceErrorContent: View {
             Text(message)
                 .foregroundColor(DiveColor.color6)
                 .font(DiveFont.bodyMediumPretendard)
+                .padding(.vertical, 10)
+                .minimumScaleFactor(0.5) // 최대 50%까지 줄어들도록 허용
             Spacer()
         }
     }
