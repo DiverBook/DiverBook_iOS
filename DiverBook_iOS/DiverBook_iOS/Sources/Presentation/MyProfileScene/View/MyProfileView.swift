@@ -41,7 +41,10 @@ struct MyProfileView: View {
                 ScrollView(showsIndicators: false) {
                     MyProfileContentView(
                         myProfile: $viewModel.state.myProfile,
-                        badgeCount: viewModel.state.badgeCount
+                        badgeCount: viewModel.state.badgeCount,
+                        onCollectedBadgeTap: {
+                            viewModel.action(.tapCollectedBadge)
+                        }
                     )
                 }
                 .redacted(reason: .placeholder)
@@ -49,7 +52,10 @@ struct MyProfileView: View {
                 ScrollView(showsIndicators: false) {
                     MyProfileContentView(
                         myProfile: $viewModel.state.myProfile,
-                        badgeCount: viewModel.state.badgeCount
+                        badgeCount: viewModel.state.badgeCount,
+                        onCollectedBadgeTap: {
+                            viewModel.action(.tapCollectedBadge)
+                        }
                     )
                 }
             }
@@ -60,4 +66,3 @@ struct MyProfileView: View {
         }
     }
 }
-

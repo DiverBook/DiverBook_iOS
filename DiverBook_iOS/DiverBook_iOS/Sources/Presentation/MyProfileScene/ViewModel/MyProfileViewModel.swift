@@ -34,6 +34,7 @@ final class MyProfileViewModel: ViewModelable {
         case updatePhoneNumber(String)
         case updateInterests(String)
         case updatePlaces(String)
+        case tapCollectedBadge
     }
 
     @Published var state = State()
@@ -65,7 +66,6 @@ final class MyProfileViewModel: ViewModelable {
                 await fetchMyProfile()
                 state.isDataFetching = false
             }
-            
         case .updateTodayTalk(let newTalk):
             state.todayTalk = newTalk
         case .updateDivision(let newDivision):
@@ -76,6 +76,8 @@ final class MyProfileViewModel: ViewModelable {
             state.interests = newInterests
         case .updatePlaces(let newPlaces):
             state.places = newPlaces
+        case .tapCollectedBadge:
+            coordinator.push(.collectedBadge)
         }
     }
 

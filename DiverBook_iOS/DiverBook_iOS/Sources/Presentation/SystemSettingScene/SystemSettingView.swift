@@ -43,7 +43,7 @@ struct SystemSettingView: View {
             Spacer()
 
         }
-        .padding(24)
+        .padding(.horizontal, 24)
         .alert(
             "정말 회원탈퇴 하시겠습니까?",
             isPresented: $viewModel.state.showWithdrawAlert

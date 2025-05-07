@@ -11,6 +11,7 @@ import SwiftUI
 struct MyProfileContentView: View {
     @Binding var myProfile: DiverProfile
     let badgeCount: Int
+    let onCollectedBadgeTap: () -> Void
 
     var body: some View {
         VStack(spacing: 8) {
@@ -45,10 +46,11 @@ struct MyProfileContentView: View {
                 )
             )
 
-            Spacer().frame(height: 32)
+            Spacer().frame(height: 14)
 
             CollectedBadgeButtonView(
-                badgeCount: badgeCount
+                badgeCount: badgeCount,
+                onCollectedBadgeTap: onCollectedBadgeTap
             )
 
             Spacer()
