@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct DiverProfileTopBarView: View {
+struct MyProfileTopBarView: View {
     var body: some View {
         ZStack {
             TopBar()

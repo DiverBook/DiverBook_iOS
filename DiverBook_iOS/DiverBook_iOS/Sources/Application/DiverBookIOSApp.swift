@@ -9,7 +9,8 @@ struct DiverBookIOSApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: self.$coordinator.path) {
-                OnboardingView(coordinator: self.coordinator)
+//                OnboardingView(coordinator: self.coordinator)
+                DiverProfileView(coordinator: self.coordinator, diverId: "3fa85f64-5717-4562-b3fc-2c963f66afa6")
 //                UserProfileSettingView(
 //                    nickName: "HappyJay",
 //                    coordinator: self.coordinator
@@ -55,7 +56,8 @@ struct DiverBookIOSApp: App {
                                 ConversationView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .finishConversation:
-                                DiverProfileView(viewModel: DiverProfileViewModel())
+                                //TODO: diverId 불러오기
+                                DiverProfileView(coordinator: self.coordinator, diverId: "")
                             case .myProfile:
                                 MyProfileView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)

@@ -35,7 +35,7 @@ struct MyProfileView: View {
     
     var body: some View {
         VStack{
-            DiverProfileTopBarView()
+            MyProfileTopBarView()
             
             if viewModel.state.isDataFetching {
                 ScrollView(showsIndicators: false){
