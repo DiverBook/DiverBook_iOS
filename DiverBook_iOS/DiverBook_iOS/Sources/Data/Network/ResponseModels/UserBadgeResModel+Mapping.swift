@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+struct UserBadgeResponseModel: Codable {
+    let badgeCode: String
+}
+
+extension UserBadgeResponseModel {
+    func toDomain() -> String {
+        return badgeCode
+    }
+}

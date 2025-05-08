@@ -8,5 +8,5 @@
 import Foundation
 
 protocol BadgeRepository {
-    func fetchBadges(collectedCount: Int) async throws -> [Badge]
+    func fetchAllBadges() async throws -> [Badge]
 }

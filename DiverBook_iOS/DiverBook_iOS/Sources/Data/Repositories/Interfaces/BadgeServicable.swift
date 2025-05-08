@@ -7,6 +7,7 @@
 
 import Foundation
 
-protocol BadgeServicable {
+protocol BadgeServicable: HTTPClient {
     func fetchBadges() async -> Result<BaseResponse<[BadgeResponseModel]>, RequestError>
+    func fetchUserBadges() async -> Result<BaseResponse<[UserBadgeResponseModel]>, RequestError>
 }

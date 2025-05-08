@@ -14,7 +14,7 @@ final class DefaultFetchBadgesUseCase: FetchBadgesUseCase {
         self.repository = repository
     }
 
-    func execute(collectedCount: Int) async throws -> [Badge] {
-        return try await repository.fetchBadges(collectedCount: collectedCount)
+    func execute() async throws -> [Badge] {
+        try await repository.fetchAllBadges()
     }
 }

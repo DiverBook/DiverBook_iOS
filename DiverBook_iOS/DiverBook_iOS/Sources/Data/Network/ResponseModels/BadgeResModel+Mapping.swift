@@ -15,13 +15,13 @@ struct BadgeResponseModel: Codable {
 }
 
 extension BadgeResponseModel {
-    func toDomain(requiredCount: Int, collectedCount: Int) -> Badge {
+    func toDomain(isCollected: Bool) -> Badge {
         return Badge(
             code: code,
             name: name,
             description: description,
             imageUrl: imageUrl,
-            isCollected: collectedCount >= requiredCount
+            isCollected: isCollected
         )
     }
 }

@@ -10,7 +10,7 @@ import SwiftUI
 struct CollectedBadgeView: View {
     @StateObject private var viewModel: CollectedBadgeViewModel
 
-    init(registeredDiverCount: Int) {
+    init() {
         let fetchBadgesUseCase = DefaultFetchBadgesUseCase(
             repository: DefaultBadgeRepository(
                 badgeService: BadgeService()
@@ -19,7 +19,6 @@ struct CollectedBadgeView: View {
         
         _viewModel = StateObject(
             wrappedValue: CollectedBadgeViewModel(
-                registeredDiverCount: registeredDiverCount,
                 fetchBadgesUseCase: fetchBadgesUseCase
             )
         )

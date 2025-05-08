@@ -14,29 +14,29 @@ class CollectedBadgeViewModel: ViewModelable {
     }
 
     enum Action {
-        case fetchBadges(registeredDiverCount: Int)
+        case fetchBadges
     }
 
     @Published var state = State()
 
     private let fetchBadgesUseCase: FetchBadgesUseCase
 
-    init(registeredDiverCount: Int, fetchBadgesUseCase: FetchBadgesUseCase) {
+    init(fetchBadgesUseCase: FetchBadgesUseCase) {
         self.fetchBadgesUseCase = fetchBadgesUseCase
-        action(.fetchBadges(registeredDiverCount: registeredDiverCount))
+        action(.fetchBadges)
     }
 
     func action(_ action: Action) {
         switch action {
-        case .fetchBadges(let registeredDiverCount):
-            loadBadges(for: registeredDiverCount)
+        case .fetchBadges:
+            loadBadges()
         }
     }
 
-    private func loadBadges(for count: Int) {
+    private func loadBadges() {
         Task {
             do {
-                let badges = try await fetchBadgesUseCase.execute(collectedCount: count)
+                let badges = try await fetchBadgesUseCase.execute()
                 await MainActor.run {
                     self.state.badges = badges
                 }

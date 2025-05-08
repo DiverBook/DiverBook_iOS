@@ -8,6 +8,5 @@
 import Foundation
 
 protocol FetchBadgesUseCase {
-    func execute(collectedCount: Int) async throws -> [Badge]
+    func execute() async throws -> [Badge]
 }
-

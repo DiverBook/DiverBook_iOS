@@ -14,46 +14,51 @@ struct MyProfileContentView: View {
     let onCollectedBadgeTap: () -> Void
 
     var body: some View {
-        VStack(spacing: 8) {
-            PrimaryProfile(
-                imageURL: myProfile.profileImageUrl,
-                style: .mypage
-            )
-
-            Text(myProfile.userName)
-                .font(DiveFont.headingH3)
-
-            TodayTalkSectionView(
-                mode: .editable(
-                    binding: $myProfile.about
+        VStack {
+            VStack(spacing: 8) {
+                PrimaryProfile(
+                    imageURL: myProfile.profileImageUrl,
+                    style: .mypage
                 )
-            )
 
-            Spacer().frame(height: 40)
+                Text(myProfile.userName)
+                    .font(DiveFont.headingH3)
 
-            ProfileDetailsInfoView(
-                division: .editable(
-                    binding: $myProfile.divisions
-                ),
-                phoneNumber: .editable(
-                    binding: $myProfile.phoneNumber
-                ),
-                interests: .editable(
-                    binding: $myProfile.interests
-                ),
-                places: .editable(
-                    binding: $myProfile.places
+                Spacer().frame(height: 20)
+
+                TodayTalkSectionView(
+                    mode: .editable(
+                        binding: $myProfile.about
+                    )
                 )
-            )
 
-            Spacer().frame(height: 14)
+                Spacer().frame(height: 40)
 
-            CollectedBadgeButtonView(
-                badgeCount: badgeCount,
-                onCollectedBadgeTap: onCollectedBadgeTap
-            )
+                ProfileDetailsInfoView(
+                    division: .editable(
+                        binding: $myProfile.divisions
+                    ),
+                    phoneNumber: .editable(
+                        binding: $myProfile.phoneNumber
+                    ),
+                    interests: .editable(
+                        binding: $myProfile.interests
+                    ),
+                    places: .editable(
+                        binding: $myProfile.places
+                    )
+                )
 
-            Spacer()
+                Spacer().frame(height: 14)
+
+                CollectedBadgeButtonView(
+                    badgeCount: badgeCount,
+                    onCollectedBadgeTap: onCollectedBadgeTap
+                )
+
+                Spacer()
+            }
+
         }
     }
 }

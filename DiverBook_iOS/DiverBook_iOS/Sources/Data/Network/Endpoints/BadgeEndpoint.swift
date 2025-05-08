@@ -9,6 +9,7 @@ import Foundation
 
 enum BadgeEndpoint: Endpoint {
     case getBadges
+    case getUserBadges
 }
 
 extension BadgeEndpoint {
@@ -16,6 +17,8 @@ extension BadgeEndpoint {
         switch self {
         case .getBadges:
             return "/api/badges"
+        case .getUserBadges:
+            return "/api/user-badge"
         }
     }
 
@@ -23,22 +26,24 @@ extension BadgeEndpoint {
         switch self {
         case .getBadges:
             return .get
+        case .getUserBadges:
+            return .get
         }
     }
 
-    var query: [String : String]? {
+    var query: [String: String]? {
         return nil
     }
 
-    var header: [String : String]? {
+    var header: [String: String]? {
         return [
             "accept": "*/*",
             "Content-Type": "application/json",
-            "Authorization": "\(UserToken.tokenType) \(UserToken.accessToken)"
+            "Authorization": "\(UserToken.tokenType) \(UserToken.accessToken)",
         ]
     }
 
-    var body: [String : String]? {
+    var body: [String: String]? {
         return nil
     }
 }
