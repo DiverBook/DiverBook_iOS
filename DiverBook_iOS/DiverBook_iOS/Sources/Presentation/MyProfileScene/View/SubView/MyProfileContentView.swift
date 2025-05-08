@@ -31,6 +31,7 @@ struct MyProfileContentView: View {
                         binding: $myProfile.about
                     )
                 )
+                .padding(.horizontal, 4)
 
                 Spacer().frame(height: 40)
 

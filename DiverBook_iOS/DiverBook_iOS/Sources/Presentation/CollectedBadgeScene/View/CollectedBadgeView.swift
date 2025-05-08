@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CollectedBadgeView: View {
     @StateObject private var viewModel: CollectedBadgeViewModel
+    @State private var selectedBadge: Badge?
 
     init() {
         let fetchBadgesUseCase = DefaultFetchBadgesUseCase(
@@ -43,7 +44,9 @@ struct CollectedBadgeView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(viewModel.state.badges.sorted(by: { $0.code < $1.code }), id: \.code) { badge in
-                        BadgeCardView(badge: badge)
+                        BadgeCardView(badge: badge) {
+                            selectedBadge = badge
+                        }
                     }
                 }
                 .padding()
@@ -52,5 +55,9 @@ struct CollectedBadgeView: View {
 
         }
         .frame(maxHeight: .infinity)
+        .sheet(item: $selectedBadge) { badge in
+            BadgeDetailView(badge: badge)
+                .presentationDetents([.height(300)])
+        }
     }
 }

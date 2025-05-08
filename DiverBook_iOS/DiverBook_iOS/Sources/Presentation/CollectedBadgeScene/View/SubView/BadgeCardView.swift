@@ -9,14 +9,10 @@ import SwiftUI
 
 struct BadgeCardView: View {
     let badge: Badge
-    @State private var isSheetPresented = false
+    let onTap: () -> Void
 
     var body: some View {
-        Button(action: {
-            if badge.isCollected {
-                isSheetPresented = true
-            }
-        }) {
+        Button(action: onTap) {
             VStack(spacing: 8) {
                 if badge.isCollected, let url = URL(string: badge.imageUrl) {
                     AsyncImage(url: url) { phase in
@@ -59,10 +55,5 @@ struct BadgeCardView: View {
             .cornerRadius(8)
             .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 2)
         }
-        .sheet(isPresented: $isSheetPresented) {
-            BadgeDetailView(badge: badge)
-                .presentationDetents([.height(300)])
-        }
     }
 }
-
