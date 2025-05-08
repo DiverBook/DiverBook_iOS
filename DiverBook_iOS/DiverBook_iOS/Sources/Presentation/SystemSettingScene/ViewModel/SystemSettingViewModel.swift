@@ -26,11 +26,17 @@ final class SystemSettingViewModel: ViewModelable {
     @Published var state = State()
     @ObservedObject var coordinator: Coordinator
 
+    private let deactivateUserUseCase: DeactivateUserUseCase
+
     private let privacyPolicyURLString =
         "https://comnovia.notion.site/1d87c806d35a80bea6dee416d05db411?pvs=4"
 
-    init(coordinator: Coordinator) {
+    init(
+        coordinator: Coordinator,
+        deactivateUserUseCase: DeactivateUserUseCase,
+    ) {
         self.coordinator = coordinator
+        self.deactivateUserUseCase = deactivateUserUseCase
     }
 
     func action(_ action: Action) {
@@ -46,9 +52,16 @@ final class SystemSettingViewModel: ViewModelable {
         case .dismissAlert:
             state.showWithdrawAlert = false
         case .confirmWithdraw:
-            print("탈퇴 처리")
-            //TODO: 탈퇴 로직 추가
             state.showWithdrawAlert = false
+            Task {
+                let result = await deactivateUserUseCase.execute()
+                switch result {
+                case .success:
+                    print("✅ 회원 탈퇴 성공")
+                case .failure(let error):
+                    print("❌ 회원 탈퇴 실패: \(error)")
+                }
+            }
         }
     }
 }

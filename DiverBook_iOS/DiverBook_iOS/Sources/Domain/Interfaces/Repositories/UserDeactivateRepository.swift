@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol UserDeactivateRepository {
+    func deactivateUser() async -> Result<DiverProfile, Error>
+}

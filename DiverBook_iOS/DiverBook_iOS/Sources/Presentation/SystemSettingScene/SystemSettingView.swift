@@ -11,7 +11,17 @@ struct SystemSettingView: View {
     @StateObject private var viewModel: SystemSettingViewModel
 
     init(coordinator: Coordinator) {
-        _viewModel = StateObject(wrappedValue: SystemSettingViewModel(coordinator: coordinator))
+        let deactivateUserUseCase = DefaultDeactivateUserUseCase(
+            repository: DefaultUserDeactivateRepository(
+                userDeactivateService: UserDeactivateService()
+            )
+        )
+        _viewModel = StateObject(
+            wrappedValue: SystemSettingViewModel(
+                coordinator: coordinator,
+                deactivateUserUseCase: deactivateUserUseCase
+            )
+        )
     }
 
     var body: some View {
