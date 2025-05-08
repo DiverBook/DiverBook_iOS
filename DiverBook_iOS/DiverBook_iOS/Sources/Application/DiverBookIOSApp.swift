@@ -9,7 +9,12 @@ struct DiverBookIOSApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: self.$coordinator.path) {
-                OnboardingView(coordinator: self.coordinator)
+//                OnboardingView(coordinator: self.coordinator)
+                SystemSettingView(coordinator: self.coordinator)
+//                UserProfileSettingView(
+//                    nickName: "HappyJay",
+//                    coordinator: self.coordinator
+//                )
                     .toolbar(.hidden, for: .navigationBar)
                     .navigationDestination(
                         for: Path.self,

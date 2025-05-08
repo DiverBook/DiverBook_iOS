@@ -26,6 +26,9 @@ final class SystemSettingViewModel: ViewModelable {
     @Published var state = State()
     @ObservedObject var coordinator: Coordinator
 
+    private let privacyPolicyURLString =
+        "https://comnovia.notion.site/1d87c806d35a80bea6dee416d05db411?pvs=4"
+
     init(coordinator: Coordinator) {
         self.coordinator = coordinator
     }
@@ -35,7 +38,7 @@ final class SystemSettingViewModel: ViewModelable {
         case .tapProfile:
             coordinator.push(.myProfile)
         case .tapPolicy:
-            if let url = URL(string: "https://comnovia.notion.site/1d87c806d35a80bea6dee416d05db411?pvs=4") {
+            if let url = URL(string: privacyPolicyURLString) {
                 UIApplication.shared.open(url)
             }
         case .tapWithdraw:
