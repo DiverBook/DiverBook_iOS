@@ -23,6 +23,13 @@ struct ServiceErrorAlert: View {
         .opacity(showErrorAlert ? 1 : 0)
         .scaleEffect(showErrorAlert ? 1.0 : 0.8)
         .animation(.easeInOut(duration: 0.4), value: showErrorAlert)
+        .onChange(of: showErrorAlert) {
+            if showErrorAlert {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                    showErrorAlert = false
+                }
+            }
+        }
     }
 }
 
@@ -46,6 +53,8 @@ struct ServiceErrorContent: View {
             Text(message)
                 .foregroundColor(DiveColor.color6)
                 .font(DiveFont.bodyMediumPretendard)
+                .padding(.vertical, 10)
+                .minimumScaleFactor(0.5) // 최대 50%까지 줄어들도록 허용
             Spacer()
         }
     }

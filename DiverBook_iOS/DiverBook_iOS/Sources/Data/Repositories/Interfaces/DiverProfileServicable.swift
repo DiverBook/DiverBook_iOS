@@ -9,4 +9,6 @@ protocol DiverProfileServicable: HTTPClient {
     func fetchDiverProfile(
         id: String
     ) async -> Result<BaseResponse<DiverProfileResModel>, RequestError>
+    
+    func fetchMyProfile() async -> Result<BaseResponse<DiverProfileResModel>, RequestError>
 }

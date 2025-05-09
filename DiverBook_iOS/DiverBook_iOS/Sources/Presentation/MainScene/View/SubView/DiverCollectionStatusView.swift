@@ -18,7 +18,9 @@ struct DiverCollectionStatusView: View {
                 .padding(.vertical, 20)
                 .padding(.horizontal, 38)
             
-            DiverCollectionListView(diverTapAction: {
+            DiverCollectionListView(
+                viewModel: viewModel,
+                diverTapAction: {
                 self.viewModel.action(.diverTapped)
             })
         }

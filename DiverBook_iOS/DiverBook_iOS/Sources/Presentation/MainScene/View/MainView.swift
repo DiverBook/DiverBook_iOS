@@ -8,44 +8,56 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject var viewModel: MainViewModel
-    @GestureState var dragOffset: CGSize = .zero
     
     init(coordinator: Coordinator) {
-        self._viewModel = StateObject(wrappedValue: MainViewModel(coordinator: coordinator))
+        let fetchDiverProfileUseCase = DefaultFetchDiverProfileUseCase(
+            repository: DefaultDiverRepository(
+                diverProfileService: DiverProfileService()
+            )
+        )
+        
+        let collectionRateUseCase = DefaultDiverCollectionRateUseCase(
+            diverCollectionRateRepository: DefaultDiverCollectionRateRepository(
+                diverCollectionRateService: DiverCollectionRateService()
+            )
+        )
+        
+        let collectionUseCase = DefaultDiverCollectionUseCase(
+            diverCollectionRepository: DefaultDiverCollectionRepository(
+                diverCollectionService: DiverCollectionService()
+            )
+        )
+        
+        let fetchRefreshTokenUseCase = DefaultFetchRefreshTokenUseCase(
+            repository: DefaultAuthRepository(
+                authService: DiverBookAuthService(),
+                tokenService: DiverBookTokenService()
+            )
+        )
+        
+        self._viewModel = StateObject(
+            wrappedValue: MainViewModel(
+                coordinator: coordinator,
+                fetchDiverProfileUseCase: fetchDiverProfileUseCase,
+                collectionRateUseCase: collectionRateUseCase,
+                collectionUseCase: collectionUseCase,
+                fetchRefreshTokenUseCase: fetchRefreshTokenUseCase
+            )
+        )
     }
+    
     var body: some View {
-        ScrollViewReader { proxy in
-            ScrollView {
-                VStack(spacing: 0) {
-                    MainTopInfoView(viewModel: self.viewModel)
-                        .background(DiveColor.color6)
-                        .id("top")
-                    DiverCollectionStatusView(viewModel: self.viewModel)
-                        .padding(.bottom, 60)
-                    Button(action: {
-                        withAnimation {
-                            proxy.scrollTo("top", anchor: .top)
-                        }
-                    }, label: {
-                        HStack {
-                            Image(systemName: "arrow.up")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 12)
-                            Text("위로 가기")
-                                .font(.subheadline)
-                        }
-                    })
-                    .padding(.bottom, 140)
-                }
-            }
-            .ignoresSafeArea(edges: [.top])
+        ZStack {
+            MainContentView(viewModel: viewModel)
+            ServiceErrorAlert(
+                message: viewModel.state.errorMessage,
+                showErrorAlert: $viewModel.state.isErrorShowing
+            )
         }
     }
 }
 
 #Preview {
     @Previewable @StateObject var coordinator = Coordinator()
-    
     MainView(coordinator: coordinator)
 }

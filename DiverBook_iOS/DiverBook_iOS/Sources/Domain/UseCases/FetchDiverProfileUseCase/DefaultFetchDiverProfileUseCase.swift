@@ -15,4 +15,8 @@ final class DefaultFetchDiverProfileUseCase: FetchDiverProfileUseCase {
     func executeFetchProfile(id: String) async -> Result<DiverProfile, Error> {
         return await repository.fetchDiverProfile(id: id)
     }
+    
+    func executeFetchMyProfile() async -> Result<DiverProfile, Error> {
+        return await repository.fetchMyProfile()
+    }
 }

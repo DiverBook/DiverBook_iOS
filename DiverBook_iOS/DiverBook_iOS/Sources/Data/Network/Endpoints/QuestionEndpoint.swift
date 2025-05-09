@@ -1,28 +1,27 @@
 //
-//  DiverInfoEndpoint.swift
+//  QuestionEndpoint.swift
 //  DiverBook_iOS
 //
-//  Created by 배현진 on 4/30/25.
+//  Created by 배현진 on 5/6/25.
 //
 
 import Foundation
 
-enum DiverProfileEndpoint: Endpoint {
-    case myProfile
-    case diverProfile(id: String)
+enum QuestionEndpoint: Endpoint {
+    case fetchQuestions(
+        count: Int
+    )
     
     var path: String {
         switch self {
-        case .myProfile:
-            return "/api/users/me"
-        case .diverProfile(let id):
-            return "/api/users/\(id)"
+        case .fetchQuestions(let count):
+            return "/api/questions/\(count)"
         }
     }
     
     var method: RequestMethod {
         switch self {
-        default:
+        case .fetchQuestions:
             return .get
         }
     }
@@ -36,7 +35,7 @@ enum DiverProfileEndpoint: Endpoint {
     
     var header: [String: String]? {
         switch self {
-        default:
+        case .fetchQuestions:
             return [
                 "accept": "*/*",
                 "Content-Type": "application/json",

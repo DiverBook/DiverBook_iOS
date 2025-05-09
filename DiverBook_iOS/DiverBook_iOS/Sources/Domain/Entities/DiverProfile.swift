@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DiverProfile {
+struct DiverProfile: Hashable {
     var id: String
     var userName: String
     var divisions: String
