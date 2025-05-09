@@ -57,9 +57,8 @@ struct DiverBookIOSApp: App {
                                 MyProfileView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .collectedBadge:
-                                CollectedBadgeView()
+                                CollectedBadgeView(viewModel: CollectedBadgeViewModel(registeredDiverCount: 5))
                                     .toolbar(.hidden, for: .navigationBar)
-                                    
                             }
                         })
             }
