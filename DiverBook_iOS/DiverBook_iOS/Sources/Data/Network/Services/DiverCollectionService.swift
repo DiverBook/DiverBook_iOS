@@ -13,10 +13,10 @@ final class DiverCollectionService: DiverCollectionServicable {
         )
     }
     
-    func fetchDiverCollection() async -> Result<BaseResponse<[DiverProfileResModel]>, RequestError> {
+    func fetchDiverCollection() async -> Result<BaseResponse<[CollectedDiverResModel]>, RequestError> {
         return await request(
             endpoint: DiverCollectionEndpoint.diverCollection,
-            responseModel: BaseResponse<[DiverProfileResModel]>.self
+            responseModel: BaseResponse<[CollectedDiverResModel]>.self
         )
     }
 }

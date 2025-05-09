@@ -28,7 +28,7 @@ final class DefaultDiverCollectionRepository: DiverCollectionRepository {
         }
     }
     
-    func fetchDiverCollection() async -> Result<[DiverProfile], Error> {
+    func fetchDiverCollection() async -> Result<[CollectedDiverInfo], Error> {
         let fetchDiverCollectionResult = await diverCollectionService.fetchDiverCollection()
         switch fetchDiverCollectionResult {
         case .success(let baseResponse):

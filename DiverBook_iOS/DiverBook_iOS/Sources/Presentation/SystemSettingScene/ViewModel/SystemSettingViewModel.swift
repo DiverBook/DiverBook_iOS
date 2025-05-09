@@ -33,7 +33,7 @@ final class SystemSettingViewModel: ViewModelable {
 
     init(
         coordinator: Coordinator,
-        deactivateUserUseCase: DeactivateUserUseCase,
+        deactivateUserUseCase: DeactivateUserUseCase
     ) {
         self.coordinator = coordinator
         self.deactivateUserUseCase = deactivateUserUseCase

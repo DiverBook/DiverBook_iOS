@@ -7,5 +7,5 @@
 
 protocol DiverCollectionUseCase {
     func executeFetchAllDiverList() async -> Result<[DiverProfile], Error>
-    func executeFetchDiverCollection() async -> Result<[DiverProfile], Error>
+    func executeFetchDiverCollection() async -> Result<[CollectedDiverInfo], Error>
 }

@@ -9,7 +9,8 @@ struct DiverBookIOSApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: self.$coordinator.path) {
-                OnboardingView(coordinator: self.coordinator)
+//                OnboardingView(coordinator: self.coordinator)
+                LoginView(nickname: "Jun", coordinator: coordinator)
                     .toolbar(.hidden, for: .navigationBar)
                     .navigationDestination(
                         for: Path.self,
@@ -57,8 +58,10 @@ struct DiverBookIOSApp: App {
                                 MyProfileView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .collectedBadge:
-                                CollectedBadgeView(viewModel: CollectedBadgeViewModel(registeredDiverCount: 5))
+                                CollectedBadgeView()
                                     .toolbar(.hidden, for: .navigationBar)
+                            case .privacyPolicy:
+                                Text("Privacy policy")
                             }
                         })
             }
