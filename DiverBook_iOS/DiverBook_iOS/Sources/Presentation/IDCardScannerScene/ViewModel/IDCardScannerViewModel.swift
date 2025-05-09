@@ -16,6 +16,10 @@ final class IDCardScannerViewModel: ViewModelable {
         var capturedImage: UIImage?
         var inspectionResult: String?
         var goSettingAlertState: Bool = false
+        
+        // error alert
+        var isErrorShowing: Bool = false
+        var errorMessage: String = ""
     }
     
     enum Action {
@@ -60,6 +64,12 @@ final class IDCardScannerViewModel: ViewModelable {
                         }
                     case .failure(let error):
                         // TODO: 출입증 카드 검사 실패 실패 모달 띄우기
+                        switch error {
+                        case .isNotIdCard:
+                            activateErrorAlert(message: "아카데미 출입증 인식에 실패하였습니다. 아카데미 출입증을 쾌적한 환경에서 촬영해주세요.")
+                        case .readIdCardNicknameFailed:
+                            activateErrorAlert(message: "닉네임 인식에 실패하였습니다.")
+                        }
                         print(error)
                     }
                     state.isScanning = false
@@ -105,5 +115,10 @@ final class IDCardScannerViewModel: ViewModelable {
                     self.state.showCamera = true
                 }
             })
+    }
+    
+    private func activateErrorAlert(message: String) {
+        state.errorMessage = message
+        state.isErrorShowing = true
     }
 }
