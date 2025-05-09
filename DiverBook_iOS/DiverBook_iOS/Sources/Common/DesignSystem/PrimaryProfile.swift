@@ -30,11 +30,21 @@ struct PrimaryProfile: View {
                     .fill((DiveColor.white))
                     .frame(width: style.imageSize, height: style.imageSize)
                     .applyShadow(hasShadow ? style.shadow : DiveShadow.noneShadow)
-                ProfileImageView(
-                    imageURL: imageURL,
-                    style: style,
-                    placeholderImageName: "unfoundProfile"
-                )
+                if style == .diver {
+                    ProfileImageView(
+                        imageURL: imageURL,
+                        style: style,
+                        placeholderImageName: "unfoundProfile",
+                        loadingMethod: .kingfisher
+                    )
+                } else {
+                    ProfileImageView(
+                        imageURL: imageURL,
+                        style: style,
+                        placeholderImageName: "unfoundProfile",
+                        loadingMethod: .asyncImage
+                    )
+                }
             }
             
             if let nickname = nickname {
