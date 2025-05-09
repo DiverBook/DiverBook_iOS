@@ -58,6 +58,9 @@ struct DiverBookIOSApp: App {
                             case .privacyPolicy:
                                 PrivacyPolicyView()
                                     .toolbar(.hidden, for: .navigationBar)
+                            case .collectedBadge:
+                                CollectedBadgeView(viewModel: CollectedBadgeViewModel(registeredDiverCount: 5))
+                                    .toolbar(.hidden, for: .navigationBar)
                             }
                         })
             }
