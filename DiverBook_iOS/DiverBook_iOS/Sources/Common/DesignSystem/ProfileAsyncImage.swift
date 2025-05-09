@@ -6,14 +6,31 @@
 //
 
 import Foundation
+import Kingfisher
 import SwiftUI
+
+enum ImageLoadingMethod {
+    case asyncImage
+    case kingfisher
+}
 
 struct ProfileImageView: View {
     let imageURL: URL?
     let style: ProfileStyle
     let placeholderImageName: String
+    let loadingMethod: ImageLoadingMethod
     
     var body: some View {
+        switch loadingMethod {
+        case .asyncImage:
+            asyncImageView
+        case .kingfisher:
+            kingfisherImageView
+        }
+    }
+    
+    @ViewBuilder
+    private var asyncImageView: some View {
         if let imageURL = imageURL {
             AsyncImage(url: imageURL) { phase in
                 switch phase {
@@ -26,22 +43,39 @@ struct ProfileImageView: View {
                         .frame(width: style.imageSize, height: style.imageSize)
                         .clipShape(Circle())
                 case .failure:
-                    Image(systemName: placeholderImageName)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: style.imageSize, height: style.imageSize)
-                        .clipShape(Circle())
-                        .foregroundColor(.gray)
+                    placeholderImage
                 @unknown default:
-                    EmptyView()
+                    placeholderImage
                 }
             }
         } else {
-            Image(placeholderImageName)
+            placeholderImage
+        }
+    }
+    
+    @ViewBuilder
+    private var kingfisherImageView: some View {
+        if let imageURL = imageURL {
+            KFImage(imageURL)
+                .placeholder {
+                    Image(placeholderImageName)
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                }
                 .resizable()
                 .scaledToFit()
-                .frame(width: style.imageSize, height: style.imageSize)
                 .clipShape(Circle())
+        } else {
+            placeholderImage
         }
+    }
+    
+    private var placeholderImage: some View {
+        Image(placeholderImageName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: style.imageSize, height: style.imageSize)
+            .clipShape(Circle())
     }
 }
