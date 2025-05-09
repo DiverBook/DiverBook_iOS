@@ -26,7 +26,7 @@ final class MainViewModel: ViewModelable {
     enum Action {
         case viewAppeared
         case profileSettingButtonTapped
-        case diverTapped
+        case collectionDiverTapped(id: String)
     }
     
     @Published var state: State = State()
@@ -67,8 +67,13 @@ final class MainViewModel: ViewModelable {
             
         case .profileSettingButtonTapped:
             print("profile setting button tapped!")
-        case .diverTapped:
-            print("diver tapped!")
+        case .collectionDiverTapped(let diverId):
+            if state.isFoundedDiver[diverId] ?? false {
+                coordinator.push(.diverProfile(id: diverId))
+            }
+            else {
+                coordinator.push(.unfoundDiver)
+            }
         }
     }
     
@@ -135,7 +140,7 @@ final class MainViewModel: ViewModelable {
             // MARK: 현재 내가 수집한 다이버 리스트
             LocalUserData.collectedUserCount = diverProfiles.count
             for diverProfile in diverProfiles {
-                state.isFoundedDiver[String(diverProfile.id)] = true
+                state.isFoundedDiver[String(diverProfile.foundUserId)] = true
             }
         case .failure:
             activateErrorAlert(message: "도감 사용자 리스트 조회에 실패하였습니다.")

@@ -59,6 +59,12 @@ struct DiverBookIOSApp: App {
                             case .collectedBadge:
                                 CollectedBadgeView()
                                     .toolbar(.hidden, for: .navigationBar)
+                            case .unfoundDiver:
+                                UnfoundDiverView(coordinator: coordinator)
+                                    .toolbar(.hidden, for: .navigationBar)
+                            case .diverProfile(let diverId):
+                                DiverProfileView(coordinator: coordinator, diverId: diverId)
+                                    .toolbar(.hidden, for: .navigationBar)
                             }
                         })
             }

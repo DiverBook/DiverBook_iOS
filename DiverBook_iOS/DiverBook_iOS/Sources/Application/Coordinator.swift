@@ -30,9 +30,11 @@ enum Path: Hashable {
     case idCardScan
     case mainTab
     case searchingDiver
+    case unfoundDiver
     case searchResult(diverProfile: DiverProfile)
     case startConversation
     case finishConversation
     case myProfile
+    case diverProfile(id: String)
     case collectedBadge
 }

@@ -20,8 +20,8 @@ struct DiverCollectionStatusView: View {
             
             DiverCollectionListView(
                 viewModel: viewModel,
-                diverTapAction: {
-                self.viewModel.action(.diverTapped)
+                diverTapAction: { diverId in
+                    self.viewModel.action(.collectionDiverTapped(id: diverId))
             })
         }
     }
