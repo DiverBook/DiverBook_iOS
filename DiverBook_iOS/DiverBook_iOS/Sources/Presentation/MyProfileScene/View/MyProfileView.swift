@@ -48,6 +48,11 @@ struct MyProfileView: View {
                 ScrollView(showsIndicators: false) {
                     MyProfileContentView(
                         myProfile: $viewModel.state.myProfile,
+                        todayTalk: $viewModel.state.todayTalk,
+                        division: $viewModel.state.division,
+                        phoneNumber: $viewModel.state.phoneNumber,
+                        interests: $viewModel.state.interests,
+                        places: $viewModel.state.places,
                         badgeCount: viewModel.state.badgeCount,
                         onCollectedBadgeTap: {
                             viewModel.action(.tapCollectedBadge)
@@ -59,6 +64,11 @@ struct MyProfileView: View {
                 ScrollView(showsIndicators: false) {
                     MyProfileContentView(
                         myProfile: $viewModel.state.myProfile,
+                        todayTalk: $viewModel.state.todayTalk,
+                        division: $viewModel.state.division,
+                        phoneNumber: $viewModel.state.phoneNumber,
+                        interests: $viewModel.state.interests,
+                        places: $viewModel.state.places,
                         badgeCount: viewModel.state.badgeCount,
                         onCollectedBadgeTap: {
                             viewModel.action(.tapCollectedBadge)

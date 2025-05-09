@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ProfileDetailsInfoView: View {
-    var division: ProfileInfoMode
-    var phoneNumber: ProfileInfoMode
-    var interests: ProfileInfoMode
-    var places: ProfileInfoMode
+    let division: ProfileInfoMode
+    let phoneNumber: ProfileInfoMode
+    let interests: ProfileInfoMode
+    let places: ProfileInfoMode
 
     var body: some View {
         VStack(spacing: 32) {
@@ -23,11 +23,3 @@ struct ProfileDetailsInfoView: View {
     }
 }
 
-#Preview {
-    ProfileDetailsInfoView(
-        division: .readOnly(text: "디자인"),
-        phoneNumber: .readOnly(text: "010-0000-0000"),
-        interests: .readOnly(text: "사진"),
-        places: .readOnly(text: "C5")
-    )
-}
