@@ -8,10 +8,21 @@
 import SwiftUI
 
 struct CollectedBadgeView: View {
-    @ObservedObject private var viewModel: CollectedBadgeViewModel
+    @StateObject private var viewModel: CollectedBadgeViewModel
+    @State private var selectedBadge: Badge?
 
-    init(viewModel: CollectedBadgeViewModel) {
-        self.viewModel = viewModel
+    init() {
+        let fetchBadgesUseCase = DefaultFetchBadgesUseCase(
+            repository: DefaultBadgeRepository(
+                badgeService: BadgeService()
+            )
+        )
+        
+        _viewModel = StateObject(
+            wrappedValue: CollectedBadgeViewModel(
+                fetchBadgesUseCase: fetchBadgesUseCase
+            )
+        )
     }
 
     let columns = [
@@ -21,20 +32,32 @@ struct CollectedBadgeView: View {
     ]
 
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(viewModel.state.badges) { badge in
-                    BadgeCardView(badge: badge)
-                        .frame(maxWidth: .infinity)
-                }
+        VStack {
+            ZStack {
+                TopBar()
+                Text("수집한 뱃지")
+                    .font(DiveFont.bar)
+                    .foregroundColor(DiveColor.gray4)
             }
-            .padding()
-            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 24)
+
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(viewModel.state.badges.sorted(by: { $0.code < $1.code }), id: \.code) { badge in
+                        BadgeCardView(badge: badge) {
+                            selectedBadge = badge
+                        }
+                    }
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+            }
+
         }
         .frame(maxHeight: .infinity)
+        .sheet(item: $selectedBadge) { badge in
+            BadgeDetailView(badge: badge)
+                .presentationDetents([.height(300)])
+        }
     }
-}
-
-#Preview {
-    CollectedBadgeView(viewModel: CollectedBadgeViewModel(registeredDiverCount: 5))
 }

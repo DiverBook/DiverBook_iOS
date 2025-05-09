@@ -11,7 +11,17 @@ struct SystemSettingView: View {
     @StateObject private var viewModel: SystemSettingViewModel
 
     init(coordinator: Coordinator) {
-        _viewModel = StateObject(wrappedValue: SystemSettingViewModel(coordinator: coordinator))
+        let deactivateUserUseCase = DefaultDeactivateUserUseCase(
+            repository: DefaultUserDeactivateRepository(
+                userDeactivateService: UserDeactivateService()
+            )
+        )
+        _viewModel = StateObject(
+            wrappedValue: SystemSettingViewModel(
+                coordinator: coordinator,
+                deactivateUserUseCase: deactivateUserUseCase
+            )
+        )
     }
 
     var body: some View {
@@ -43,7 +53,7 @@ struct SystemSettingView: View {
             Spacer()
 
         }
-        .padding(24)
+        .padding(.horizontal, 24)
         .alert(
             "정말 회원탈퇴 하시겠습니까?",
             isPresented: $viewModel.state.showWithdrawAlert

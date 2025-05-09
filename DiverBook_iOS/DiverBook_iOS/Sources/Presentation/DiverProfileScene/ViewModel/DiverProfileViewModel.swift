@@ -5,74 +5,56 @@
 //  Created by jun on 4/27/25.
 //
 
-import Combine
 import Foundation
 
 final class DiverProfileViewModel: ViewModelable {
     struct State {
-        var profileImageURL: URL?
-        var name: String = ""
-        var foundDate: String = ""
-        var todayTalk: String = ""
-        var division: String = ""
-        var phoneNumber: String = ""
-        var interests: String = ""
-        var places: String = ""
+        var isDataFetching: Bool = false
+        var diverProfile: DiverProfile = DiverProfile.unfoundMockData
+        var diverId: String = ""
     }
 
     enum Action {
-        case fetchDiverProfile
-        case updateHistory(String)
+        case viewAppeared
     }
 
     @Published var state = State()
-
+    
     @Published var history: String = ""
-    private var originalHistory: String = ""
-
     @Published private(set) var isSaveEnabled: Bool = false
-
-    private var cancellables = Set<AnyCancellable>()
-
-    init() {
-        action(.fetchDiverProfile)
-        observeHistoryChanges()
+    
+    private var originalHistory: String = ""
+    
+    private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
+    
+    init(
+        fetchDiverProfileUseCase: FetchDiverProfileUseCase,
+        diverId: String
+    ) {
+        self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
+        self.state.diverId = diverId
     }
 
     func action(_ action: Action) {
         switch action {
-        case .fetchDiverProfile:
-            fetchDiverProfile()
-
-        case .updateHistory(let newHistory):
-            history = newHistory
+        case .viewAppeared:
+            state.isDataFetching = true
+            Task {
+                await fetchDiverProfileById()
+            }
         }
     }
-
-    private func fetchDiverProfile() {
-        self.state = State(
-            profileImageURL: DiverProfile.mockData.profileImageUrl,
-            name: DiverProfile.mockData.userName,
-            foundDate: "25.03.24",
-            todayTalk: DiverProfile.mockData.about,
-            division: DiverProfile.mockData.divisions,
-            phoneNumber: DiverProfile.mockData.phoneNumber,
-            interests: DiverProfile.mockData.interests,
-            places: DiverProfile.mockData.places
-        )
-        self.history = "처음 만난 날 기억나니?"
-        self.originalHistory = history
-    }
-
-    private func observeHistoryChanges() {
-        $history
-            .map { [weak self] newHistory in
-                return newHistory != self?.originalHistory
-            }
-            .removeDuplicates()
-            .sink { [weak self] isChanged in
-                self?.isSaveEnabled = isChanged
-            }
-            .store(in: &cancellables)
+    
+    private func fetchDiverProfileById() async {
+        let result = await fetchDiverProfileUseCase.executeFetchProfile(id: state.diverId)
+        
+        switch result {
+        case .success(let profile):
+            state.diverProfile = profile
+        case .failure(let error):
+            print("❌ 다이버 프로필 조회 실패: \(error)")
+        }
+        
+        state.isDataFetching = false
     }
 }

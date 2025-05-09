@@ -8,20 +8,39 @@
 import SwiftUI
 
 struct BadgeCardView: View {
-    let badge: BadgeState
-    @State private var isSheetPresented = false
+    let badge: Badge
+    let onTap: () -> Void
 
     var body: some View {
-        Button(action: {
-            if badge.isCollected {
-                isSheetPresented = true
-            }
-        }) {
+        Button(action: onTap) {
             VStack(spacing: 8) {
-                Image(badge.displayImageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 62, height: 88)
+                if badge.isCollected, let url = URL(string: badge.imageUrl) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 62, height: 88)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 62, height: 88)
+                        case .failure:
+                            Image("lock")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 62, height: 88)
+                        @unknown default:
+                            EmptyView()
+                                .frame(width: 62, height: 88)
+                        }
+                    }
+                } else {
+                    Image("lock")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 62, height: 88)
+                }
 
                 Text(badge.name)
                     .font(DiveFont.bodyMedium1)
@@ -36,20 +55,5 @@ struct BadgeCardView: View {
             .cornerRadius(8)
             .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 2)
         }
-        .sheet(isPresented: $isSheetPresented) {
-            BadgeDetailView(badge: badge)
-                .presentationDetents([.height(300)])
-        }
     }
-}
-
-#Preview {
-    BadgeCardView(
-        badge: BadgeState(
-            name: "첫 입수",
-            displayImageName: "lock",
-            isCollected: false,
-            description: "첫 다이버를 등록했어요.\n당신의 탐험을 응원합니다!"
-        )
-    )
 }

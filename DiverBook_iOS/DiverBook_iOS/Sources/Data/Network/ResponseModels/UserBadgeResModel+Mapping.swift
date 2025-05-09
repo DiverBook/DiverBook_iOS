@@ -1,0 +1,18 @@
+//
+//  UserBadgeResModel+Mapping.swift
+//  DiverBook_iOS
+//
+//  Created by jun on 5/8/25.
+//
+
+import Foundation
+
+struct UserBadgeResponseModel: Codable {
+    let badgeCode: String
+}
+
+extension UserBadgeResponseModel {
+    func toDomain() -> String {
+        return badgeCode
+    }
+}

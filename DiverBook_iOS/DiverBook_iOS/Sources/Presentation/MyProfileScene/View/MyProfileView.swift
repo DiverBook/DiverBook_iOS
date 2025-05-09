@@ -9,51 +9,60 @@ import SwiftUI
 
 struct MyProfileView: View {
     @StateObject private var viewModel: MyProfileViewModel
-
-    init(viewModel: MyProfileViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+    
+    init(coordinator: Coordinator) {
+        let fetchDiverProfileUseCase = DefaultFetchDiverProfileUseCase(
+            repository: DefaultDiverRepository(
+                diverProfileService: DiverProfileService()
+            )
+        )
+        
+        let fetchRefreshTokenUseCase = DefaultFetchRefreshTokenUseCase(
+            repository: DefaultAuthRepository(
+                authService: DiverBookAuthService(),
+                tokenService: DiverBookTokenService()
+            )
+        )
+        
+        _viewModel = StateObject(
+            wrappedValue: MyProfileViewModel(
+                coordinator: coordinator,
+                fetchDiverProfileUseCase: fetchDiverProfileUseCase,
+                fetchRefreshTokenUseCase: fetchRefreshTokenUseCase
+            )
+        )
     }
-
+    
     var body: some View {
         VStack {
-            DiverProfileTopBarView()
-            
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 8) {
-                    PrimaryProfile(imageURL: DiverProfile.mockData.profileImageUrl, style: .mypage)
+            MyProfileTopBarView()
 
-                    Text(DiverProfile.mockData.userName)
-                        .font(DiveFont.headingH3)
+            if viewModel.state.isDataFetching {
+                ScrollView(showsIndicators: false) {
+                    MyProfileContentView(
+                        myProfile: $viewModel.state.myProfile,
+                        badgeCount: viewModel.state.badgeCount,
+                        onCollectedBadgeTap: {
+                            viewModel.action(.tapCollectedBadge)
+                        }
+                    )
                 }
-
-                TodayTalkSectionView(
-                    mode: .editable(binding: $viewModel.state.todayTalk)
-                )
-
-                Spacer().frame(height: 40)
-
-                ProfileDetailsInfoView(
-                    division: .editable(binding: $viewModel.state.division),
-                    phoneNumber: .editable(
-                        binding: $viewModel.state.phoneNumber
-                    ),
-                    interests: .editable(binding: $viewModel.state.interests),
-                    places: .editable(binding: $viewModel.state.places)
-                )
-
-                Spacer().frame(height: 32)
-
-                CollectedBadgeButtonView(badgeCount: viewModel.state.badgeCount)
-
-                Spacer()
-
+                .redacted(reason: .placeholder)
+            } else {
+                ScrollView(showsIndicators: false) {
+                    MyProfileContentView(
+                        myProfile: $viewModel.state.myProfile,
+                        badgeCount: viewModel.state.badgeCount,
+                        onCollectedBadgeTap: {
+                            viewModel.action(.tapCollectedBadge)
+                        }
+                    )
+                }
             }
         }
         .padding(.horizontal, 20)
+        .onAppear {
+            viewModel.action(.viewAppeared)
+        }
     }
-
-}
-
-#Preview {
-    MyProfileView(viewModel: MyProfileViewModel())
 }

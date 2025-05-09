@@ -51,12 +51,10 @@ struct DiverBookIOSApp: App {
                                 ConversationView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .finishConversation:
-                                DiverProfileView(viewModel: DiverProfileViewModel())
+                                //TODO: diverId 불러오기
+                                DiverProfileView(coordinator: self.coordinator, diverId: "")
                             case .myProfile:
-                                MyProfileView(viewModel: MyProfileViewModel())
-                                    .toolbar(.hidden, for: .navigationBar)
-                            case .privacyPolicy:
-                                PrivacyPolicyView()
+                                MyProfileView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .collectedBadge:
                                 CollectedBadgeView(viewModel: CollectedBadgeViewModel(registeredDiverCount: 5))

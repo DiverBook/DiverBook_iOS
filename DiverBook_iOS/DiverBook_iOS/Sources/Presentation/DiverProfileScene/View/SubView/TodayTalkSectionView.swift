@@ -18,10 +18,10 @@ struct TodayTalkSectionView: View {
 
     var body: some View {
         ZStack(alignment: .center) {
-            Image("todayTalk")
-                .resizable()
-                .scaledToFill()
-                .clipped()
+            Rectangle()
+                .fill(Color(DiveColor.white))
+                .cornerRadius(8)
+                .applyShadow(DiveShadow.shadow1)
 
             switch mode {
             case .editable(let binding):
@@ -43,7 +43,8 @@ struct TodayTalkSectionView: View {
 
 #Preview {
     VStack(spacing: 40) {
-        TodayTalkSectionView(mode: .editable(binding: .constant("")))
-        TodayTalkSectionView(mode: .readOnly(text: "오늘은 날씨가 좋네요"))
+        TodayTalkSectionView(mode: .editable(binding: .constant("오늘 날씨가 좋네요")))
+            .padding()
+//        TodayTalkSectionView(mode: .readOnly(text: "오늘은 날씨가 좋네요"))
     }
 }

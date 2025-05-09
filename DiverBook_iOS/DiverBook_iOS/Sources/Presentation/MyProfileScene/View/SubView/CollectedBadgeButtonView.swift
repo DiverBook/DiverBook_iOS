@@ -9,10 +9,11 @@ import SwiftUI
 
 struct CollectedBadgeButtonView: View {
     var badgeCount: Int
-    
+    let onCollectedBadgeTap: () -> Void
+
     var body: some View {
         Button(action: {
-            print("수집한 뱃지 리스트 보기")
+            onCollectedBadgeTap()
         }, label: {
             HStack {
                 Text("수집한 뱃지")
@@ -34,5 +35,5 @@ struct CollectedBadgeButtonView: View {
 }
 
 #Preview {
-    CollectedBadgeButtonView(badgeCount: 5)
+    CollectedBadgeButtonView(badgeCount: 5, onCollectedBadgeTap: {})
 }

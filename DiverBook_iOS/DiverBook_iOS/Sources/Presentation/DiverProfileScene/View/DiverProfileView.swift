@@ -9,50 +9,58 @@ import SwiftUI
 
 struct DiverProfileView: View {
     @StateObject private var viewModel: DiverProfileViewModel
-
-    init(viewModel: DiverProfileViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+    
+    init(coordinator: Coordinator, diverId: String) {
+        let fetchDiverProfileUseCase = DefaultFetchDiverProfileUseCase(
+            repository: DefaultDiverRepository(
+                diverProfileService: DiverProfileService()
+            )
+        )
+        _viewModel = StateObject(
+            wrappedValue: DiverProfileViewModel(
+                fetchDiverProfileUseCase: fetchDiverProfileUseCase,
+                diverId: diverId
+            )
+        )
     }
-
+    
+    // profileContent extracted to DiverProfileContentView below
+    
     var body: some View {
-        ScrollView {
-            VStack(spacing: 26) {
-                DiverProfileHeaderSectionView(
-                    profileImageURL: viewModel.state.profileImageURL,
-                    name: viewModel.state.name,
-                    foundDate: viewModel.state.foundDate
-                )
-
-                TodayTalkSectionView(
-                    mode: .readOnly(text: viewModel.state.todayTalk)
-                )
-
-                ProfileDetailsInfoView(
-                    division: .readOnly(text: viewModel.state.division),
-                    phoneNumber: .readOnly(text: viewModel.state.phoneNumber),
-                    interests: .readOnly(text: viewModel.state.interests),
-                    places: .readOnly(text: viewModel.state.places)
-                )
-
-                Spacer().frame(height: 12)
-
-                DiverHistorySectionView(history: $viewModel.history)
-
-                PrimaryButton(
-                    title: "저장",
-                    isEnabled: viewModel.isSaveEnabled,
-                    color: .lighter,
-                    coordinator: Coordinator(),
-                    action: {
-                        // 저장 액션 처리 예정
-                    }
-                )
+        VStack {
+            DiverProfileTopBarView()
+            
+            if viewModel.state.isDataFetching {
+                ScrollView(showsIndicators: false) {
+                    DiverProfileContentView(
+                        diverProfile: viewModel.state.diverProfile,
+                        history: $viewModel.history,
+                        isSaveEnabled: viewModel.isSaveEnabled,
+                        saveAction: {
+                            // 저장 액션 처리 예정
+                        }
+                    )
+                }
+                .redacted(reason: .placeholder)
+            } else {
+                ScrollView(showsIndicators: false) {
+                    DiverProfileContentView(
+                        diverProfile: viewModel.state.diverProfile,
+                        history: $viewModel.history,
+                        isSaveEnabled: viewModel.isSaveEnabled,
+                        saveAction: {
+                            // 저장 액션 처리 예정
+                        }
+                    )
+                }
             }
-            .padding(.horizontal, 24)
         }
+        .padding(.horizontal, 24)
+        .onAppear {
+            viewModel.action(.viewAppeared)
+        }
+        
     }
 }
 
-#Preview {
-    DiverProfileView(viewModel: DiverProfileViewModel())
-}
+
