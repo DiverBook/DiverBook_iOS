@@ -10,11 +10,11 @@ import SwiftUI
 
 struct DiverCollectionListView: View {
     @ObservedObject var viewModel: MainViewModel
-    var diverTapAction: () -> Void
+    var diverTapAction: (String) -> Void
     
     init(
         viewModel: MainViewModel,
-        diverTapAction: @escaping () -> Void
+        diverTapAction: @escaping (String) -> Void
     ) {
         self.viewModel = viewModel
         self.diverTapAction = diverTapAction
@@ -32,6 +32,9 @@ struct DiverCollectionListView: View {
                     nickname: diverProfile.userName,
                     style: .diver
                 )
+                .onTapGesture {
+                    diverTapAction(diverProfile.id)
+                }
             }
         }
     }
