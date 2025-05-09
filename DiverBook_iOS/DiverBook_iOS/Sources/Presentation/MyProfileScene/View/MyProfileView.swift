@@ -9,30 +9,37 @@ import SwiftUI
 
 struct MyProfileView: View {
     @StateObject private var viewModel: MyProfileViewModel
-    
+
     init(coordinator: Coordinator) {
         let fetchDiverProfileUseCase = DefaultFetchDiverProfileUseCase(
             repository: DefaultDiverRepository(
                 diverProfileService: DiverProfileService()
             )
         )
-        
+
         let fetchRefreshTokenUseCase = DefaultFetchRefreshTokenUseCase(
             repository: DefaultAuthRepository(
                 authService: DiverBookAuthService(),
                 tokenService: DiverBookTokenService()
             )
         )
-        
+
+        let updateMyProfileUseCase = DefaultUpdateMyProfileUseCase(
+            repository: DefaultDiverRepository(
+                diverProfileService: DiverProfileService()
+            )
+        )
+
         _viewModel = StateObject(
             wrappedValue: MyProfileViewModel(
                 coordinator: coordinator,
                 fetchDiverProfileUseCase: fetchDiverProfileUseCase,
-                fetchRefreshTokenUseCase: fetchRefreshTokenUseCase
+                fetchRefreshTokenUseCase: fetchRefreshTokenUseCase,
+                updateMyProfileUseCase: updateMyProfileUseCase
             )
         )
     }
-    
+
     var body: some View {
         VStack {
             MyProfileTopBarView()

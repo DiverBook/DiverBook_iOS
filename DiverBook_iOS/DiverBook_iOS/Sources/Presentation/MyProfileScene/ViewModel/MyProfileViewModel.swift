@@ -46,15 +46,18 @@ final class MyProfileViewModel: ViewModelable {
     //UseCases
     private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
     private let fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
+    private var updateMyProfileUseCase: UpdateMyProfileUseCase
 
     init(
         coordinator: Coordinator,
         fetchDiverProfileUseCase: FetchDiverProfileUseCase,
-        fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
+        fetchRefreshTokenUseCase: FetchRefreshTokenUseCase,
+        updateMyProfileUseCase: UpdateMyProfileUseCase
     ) {
         self.coordinator = coordinator
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
         self.fetchRefreshTokenUseCase = fetchRefreshTokenUseCase
+        self.updateMyProfileUseCase = updateMyProfileUseCase
         observeStateChanges()
     }
 
