@@ -8,13 +8,13 @@
 import Foundation
 
 final class DefaultFetchBadgesUseCase: FetchBadgesUseCase {
-    private let repository: BadgeRepository
+    private let badgeRepository: BadgeRepository
 
-    init(repository: BadgeRepository) {
-        self.repository = repository
+    init(badgeRepository: BadgeRepository) {
+        self.badgeRepository = badgeRepository
     }
 
-    func execute() async throws -> [Badge] {
-        try await repository.fetchAllBadges()
+    func executeFetchBadges() async throws -> [Badge] {
+        try await badgeRepository.fetchBadges()
     }
 }

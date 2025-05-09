@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DiverProfileResModel: Decodable {
+struct DiverProfileResModel: Codable {
     var id: String
     var userName: String
     var divisions: String?

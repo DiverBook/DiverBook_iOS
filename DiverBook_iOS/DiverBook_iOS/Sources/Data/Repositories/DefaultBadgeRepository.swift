@@ -14,7 +14,7 @@ final class DefaultBadgeRepository: BadgeRepository {
         self.badgeService = badgeService
     }
 
-    func fetchAllBadges() async throws -> [Badge] {
+    func fetchBadges() async throws -> [Badge] {
         async let allBadgesResult = badgeService.fetchBadges()
         async let userBadgesResult = badgeService.fetchUserBadges()
 

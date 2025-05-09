@@ -10,6 +10,11 @@ import SwiftUI
 
 struct MyProfileContentView: View {
     @Binding var myProfile: DiverProfile
+    @Binding var todayTalk: String
+    @Binding var division: String
+    @Binding var phoneNumber: String
+    @Binding var interests: String
+    @Binding var places: String
     let badgeCount: Int
     let onCollectedBadgeTap: () -> Void
 
@@ -28,7 +33,7 @@ struct MyProfileContentView: View {
 
                 TodayTalkSectionView(
                     mode: .editable(
-                        binding: $myProfile.about
+                        binding: $todayTalk
                     )
                 )
                 .padding(.horizontal, 4)
@@ -36,20 +41,12 @@ struct MyProfileContentView: View {
                 Spacer().frame(height: 40)
 
                 ProfileDetailsInfoView(
-                    division: .editable(
-                        binding: $myProfile.divisions
-                    ),
-                    phoneNumber: .editable(
-                        binding: $myProfile.phoneNumber
-                    ),
-                    interests: .editable(
-                        binding: $myProfile.interests
-                    ),
-                    places: .editable(
-                        binding: $myProfile.places
-                    )
+                    division: .editable(binding: $division),
+                    phoneNumber: .editable(binding: $phoneNumber),
+                    interests: .editable(binding: $interests),
+                    places: .editable(binding: $places)
                 )
-
+                
                 Spacer().frame(height: 14)
 
                 CollectedBadgeButtonView(

@@ -8,4 +8,11 @@
 protocol DiverRepository {
     func fetchDiverProfile(id: String) async -> Result<DiverProfile, Error>
     func fetchMyProfile() async -> Result<DiverProfile, Error>
+    func updateMyProfile(
+        divisions: String,
+        phoneNumber: String,
+        interests: String,
+        places: String,
+        about: String
+    ) async -> Result<DiverProfile, Error>
 }
