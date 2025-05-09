@@ -133,10 +133,10 @@ final class MainViewModel: ViewModelable {
         switch diverCollectionResult {
         case .success(let diverProfiles):
             // MARK: 현재 내가 수집한 다이버 리스트
+            LocalUserData.collectedUserCount = diverProfiles.count
             for diverProfile in diverProfiles {
-                state.isFoundedDiver[diverProfile.id] = true
+                state.isFoundedDiver[String(diverProfile.id)] = true
             }
-            print(diverProfiles)
         case .failure:
             activateErrorAlert(message: "도감 사용자 리스트 조회에 실패하였습니다.")
         }

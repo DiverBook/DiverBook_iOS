@@ -23,7 +23,7 @@ final class DefaultDiverCollectionUseCase: DiverCollectionUseCase {
         }
     }
     
-    func executeFetchDiverCollection() async -> Result<[DiverProfile], Error> {
+    func executeFetchDiverCollection() async -> Result<[CollectedDiverInfo], Error> {
         let diverCollectionResult = await diverCollectionRepository.fetchDiverCollection()
         switch diverCollectionResult {
         case .success(let diverProfiles):

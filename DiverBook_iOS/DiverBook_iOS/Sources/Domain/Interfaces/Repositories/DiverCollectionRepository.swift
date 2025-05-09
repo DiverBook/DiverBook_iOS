@@ -7,5 +7,5 @@
 
 protocol DiverCollectionRepository {
     func fetchAllDiverList() async -> Result<[DiverProfile], Error>
-    func fetchDiverCollection() async -> Result<[DiverProfile], Error>
+    func fetchDiverCollection() async -> Result<[CollectedDiverInfo], Error>
 }
