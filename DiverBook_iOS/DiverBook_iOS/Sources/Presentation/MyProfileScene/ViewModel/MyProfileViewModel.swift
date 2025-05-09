@@ -39,17 +39,20 @@ final class MyProfileViewModel: ViewModelable {
     private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
     private let fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
     private var updateMyProfileUseCase: UpdateMyProfileUseCase
+    private let fetchBadgeUseCase: FetchBadgesUseCase
 
     init(
         coordinator: Coordinator,
         fetchDiverProfileUseCase: FetchDiverProfileUseCase,
         fetchRefreshTokenUseCase: FetchRefreshTokenUseCase,
-        updateMyProfileUseCase: UpdateMyProfileUseCase
+        updateMyProfileUseCase: UpdateMyProfileUseCase,
+        fetchBadgeUseCase: FetchBadgesUseCase
     ) {
         self.coordinator = coordinator
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
         self.fetchRefreshTokenUseCase = fetchRefreshTokenUseCase
         self.updateMyProfileUseCase = updateMyProfileUseCase
+        self.fetchBadgeUseCase = fetchBadgeUseCase
         observeStateChanges()
     }
 
@@ -82,6 +85,8 @@ final class MyProfileViewModel: ViewModelable {
             state.phoneNumber = profile.phoneNumber
             state.interests = profile.interests
             state.places = profile.places
+            
+            await fetchBadgeCount()
         case .failure:
             activateErrorAlert(message: "사용자 정보 조회에 실패하였습니다.")
         }
@@ -113,6 +118,18 @@ final class MyProfileViewModel: ViewModelable {
             case .failure(let error):
                 print("❌ 프로필 업데이트 실패: \(error)")
             }
+        }
+    }
+    
+    private func fetchBadgeCount() async {
+        do {
+            let badges = try await fetchBadgeUseCase.executeFetchBadges()
+            let count = badges.filter { $0.isCollected }.count
+            await MainActor.run {
+                state.badgeCount = count
+            }
+        } catch {
+            print("❌ 뱃지 수 불러오기 실패: \(error)")
         }
     }
 

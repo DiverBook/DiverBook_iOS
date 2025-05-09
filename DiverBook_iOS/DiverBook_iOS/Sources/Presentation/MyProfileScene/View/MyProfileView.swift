@@ -29,13 +29,16 @@ struct MyProfileView: View {
                 diverProfileService: DiverProfileService()
             )
         )
+        
+        let fetchBadgeUseCase = DefaultFetchBadgesUseCase(badgeRepository: DefaultBadgeRepository(badgeService: BadgeService()))
 
         _viewModel = StateObject(
             wrappedValue: MyProfileViewModel(
                 coordinator: coordinator,
                 fetchDiverProfileUseCase: fetchDiverProfileUseCase,
                 fetchRefreshTokenUseCase: fetchRefreshTokenUseCase,
-                updateMyProfileUseCase: updateMyProfileUseCase
+                updateMyProfileUseCase: updateMyProfileUseCase,
+                fetchBadgeUseCase: fetchBadgeUseCase
             )
         )
     }
