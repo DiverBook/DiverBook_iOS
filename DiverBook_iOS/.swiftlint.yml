@@ -20,6 +20,8 @@ analyzer_rules:
 excluded:                       # 검사에서 제외할 파일
     - DerivedData
     - Tests/Mocks
+    - Tuist/
+
 
 reporter: "xcode"
 
