@@ -29,19 +29,20 @@ class CollectedBadgeViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .fetchBadges:
-            loadBadges()
+            loadAllBadges()
         }
     }
 
-    private func loadBadges() {
+    private func loadAllBadges() {
         Task {
             do {
-                let badges = try await fetchBadgesUseCase.execute()
+                let allBadgeModels = try await fetchBadgesUseCase.executeFetchBadges()
+                let allBadges = allBadgeModels
                 await MainActor.run {
-                    self.state.badges = badges
+                    self.state.badges = allBadges
                 }
             } catch {
-                print("❌ Failed to load badges: \(error)")
+                print("❌ Failed to load all badges: \(error)")
             }
         }
     }
