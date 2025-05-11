@@ -10,7 +10,7 @@ import SwiftUI
 struct DiverProfileView: View {
     @StateObject private var viewModel: DiverProfileViewModel
     
-    init(coordinator: Coordinator, diverId: String) {
+    init(coordinator: Coordinator, diverId: String, mode: DiverProfileMode) {
         let fetchDiverProfileUseCase = DefaultFetchDiverProfileUseCase(
             repository: DefaultDiverRepository(
                 diverProfileService: DiverProfileService()
@@ -23,6 +23,7 @@ struct DiverProfileView: View {
         
         _viewModel = StateObject(
             wrappedValue: DiverProfileViewModel(
+                mode: mode,
                 fetchDiverProfileUseCase: fetchDiverProfileUseCase,
                 fetchDIverCollectionUseCase: fetchDiverCollectionUsecase,
                 updateDiverMemoUseCase: updateDiverMemoUseCase,

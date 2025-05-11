@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum DiverProfileMode{
+    case create
+    case edit
+}
+
 final class DiverProfileViewModel: ViewModelable {
     struct State {
         var isDataFetching: Bool = false
@@ -25,17 +30,20 @@ final class DiverProfileViewModel: ViewModelable {
     @Published var memo: String = ""
     @Published private(set) var isSaveEnabled: Bool = false
     
+    private let mode: DiverProfileMode
     private var originalMemo: String = ""
     private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
     private let fetchDiverCollectionUseCase: DiverCollectionUseCase
     private let updateDiverMemoUseCase: UpdateDiverMemoUseCase
     
     init(
+        mode: DiverProfileMode,
         fetchDiverProfileUseCase: FetchDiverProfileUseCase,
         fetchDIverCollectionUseCase: DiverCollectionUseCase,
         updateDiverMemoUseCase: UpdateDiverMemoUseCase,
         diverId: String
     ) {
+        self.mode = mode
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
         self.fetchDiverCollectionUseCase = fetchDIverCollectionUseCase
         self.updateDiverMemoUseCase = updateDiverMemoUseCase
@@ -89,18 +97,38 @@ final class DiverProfileViewModel: ViewModelable {
         case .failure(let error):
             print("다이버 도감 정보 조회 실패: \(error))")
         }
+        
+        state.isDataFetching = false
     }
     
-    private func saveMemo() async {
-        let result = await updateDiverMemoUseCase.executeUpdateDiverMemoUseCase(foundUserId: state.diverId, memo: memo)
-        
+    private func createDiverMemo() async {
+        // TODO: POST로 첫 메모 작성하기
+        print("메모 최초 등록")
+    }
+
+    private func updateDiverMemo() async {
+        let result = await updateDiverMemoUseCase.executeUpdateDiverMemoUseCase(
+            foundUserId: state.diverId,
+            memo: memo
+        )
+
         switch result {
         case .success(let updated):
             originalMemo = updated.memo
             isSaveEnabled = false
-            print("✅ 메모 저장 성공")
+            print("✅ PATCH 성공")
         case .failure(let error):
-            print("❌ 메모 저장 실패: \(error)")
+            print("❌ PATCH 실패: \(error)")
+        }
+    }
+    
+    private func saveMemo() async {
+        switch mode {
+        case .create:
+            await createDiverMemo()
+
+        case .edit:
+            await updateDiverMemo()
         }
     }
 }

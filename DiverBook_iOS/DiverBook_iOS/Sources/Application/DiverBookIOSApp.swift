@@ -52,8 +52,8 @@ struct DiverBookIOSApp: App {
                                 ConversationView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .finishConversation:
-                                //TODO: diverId 불러오기
-                                DiverProfileView(coordinator: self.coordinator, diverId: "")
+                                DiverProfileView(coordinator: self.coordinator, diverId: "", mode: .create)
+                                    .toolbar(.hidden, for: .navigationBar)
                             case .myProfile:
                                 MyProfileView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
@@ -64,7 +64,7 @@ struct DiverBookIOSApp: App {
                                 UnfoundDiverView(coordinator: coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .diverProfile(let diverId):
-                                DiverProfileView(coordinator: coordinator, diverId: diverId)
+                                DiverProfileView(coordinator: coordinator, diverId: diverId, mode: .edit)
                                     .toolbar(.hidden, for: .navigationBar)
                             }
                         })
