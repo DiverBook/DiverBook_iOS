@@ -22,12 +22,7 @@ struct CustomTextEditor: View {
                 .scrollContentBackground(.hidden)
         }
         .background(Color(DiveColor.color2).opacity(0.4))
-        .shadow(
-            color: Color.black.opacity(0.15),
-            radius: 7,
-            x: 0,
-            y: 2
-        )
+        .applyShadow(DiveShadow.shadow1)
         .frame(height: 140)
         .overlay(alignment: .bottomTrailing) {
             Text("\(text.count)/140")

@@ -25,33 +25,35 @@ struct SystemSettingView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 32) {
-            HStack {
-                Spacer()
+        VStack {
+            ZStack {
+                TopBar(showBackButton: false)
                 Text("설정")
                     .font(DiveFont.bar)
                     .foregroundColor(DiveColor.gray4)
-                Spacer()
             }
 
-            SettingRowView(title: "내 프로필 관리") {
-                viewModel.action(.tapProfile)
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 32) {
+                    SettingRowView(title: "내 프로필 관리") {
+                        viewModel.action(.tapProfile)
+                    }
+
+                    SettingRowView(title: "개인정보 이용 약관") {
+                        viewModel.action(.tapPolicy)
+                    }
+
+                    SettingRowView(title: "회원탈퇴") {
+                        viewModel.action(.tapWithdraw)
+                    }
+
+                    Spacer().frame(height: 10)
+
+                    VersionInfoView()
+
+                    Spacer()
+                }
             }
-
-            SettingRowView(title: "개인정보 이용 약관") {
-                viewModel.action(.tapPolicy)
-            }
-
-            SettingRowView(title: "회원탈퇴") {
-                viewModel.action(.tapWithdraw)
-            }
-
-            Spacer().frame(height: 10)
-
-            VersionInfoView()
-
-            Spacer()
-
         }
         .padding(.horizontal, 24)
         .alert(

@@ -9,8 +9,9 @@ import Foundation
 import SwiftUI
 
 struct DiverProfileContentView: View {
+    @Binding var memo: String
     let diverProfile: DiverProfile
-    @Binding var history: String
+    let foundDate: String
     let isSaveEnabled: Bool
     let saveAction: () -> Void
 
@@ -19,8 +20,7 @@ struct DiverProfileContentView: View {
             DiverProfileHeaderSectionView(
                 profileImageURL: diverProfile.profileImageUrl,
                 name: diverProfile.userName,
-                //TODO: 서버에 발견일자 불러와야함, fetch 했을 때, foundDate 변수 없음
-                foundDate: "25.03.04"
+                foundDate: foundDate
             )
 
             TodayTalkSectionView(
@@ -46,7 +46,7 @@ struct DiverProfileContentView: View {
 
             Spacer().frame(height: 12)
 
-            DiverHistorySectionView(history: $history)
+            DiverHistorySectionView(history: $memo)
 
             PrimaryButton(
                 title: "저장",

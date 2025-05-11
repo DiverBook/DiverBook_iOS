@@ -8,4 +8,5 @@
 protocol DiverCollectionRepository {
     func fetchAllDiverList() async -> Result<[DiverProfile], Error>
     func fetchDiverCollection() async -> Result<[CollectedDiverInfo], Error>
+    func updateDiverMemo(foundUserId: String, memo: String) async -> Result<CollectedDiverInfo, Error>
 }

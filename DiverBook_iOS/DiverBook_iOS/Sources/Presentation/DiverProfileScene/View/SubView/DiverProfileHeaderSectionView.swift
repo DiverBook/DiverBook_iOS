@@ -27,6 +27,7 @@ struct DiverProfileHeaderSectionView: View {
             }
             Spacer()
         }
+        .padding(.horizontal, 4)
     }
 }
 
