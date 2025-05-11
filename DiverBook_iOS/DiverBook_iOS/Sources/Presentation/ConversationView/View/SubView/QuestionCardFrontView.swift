@@ -19,7 +19,7 @@ struct QuestionCardFrontView: View {
                 .frame(width: 230, height: 300)
                 .foregroundColor(DiveColor.white)
             VStack(alignment: .center) {
-                Image(systemName: "\(question.symbol)")
+                Image("questioncardImageLogo")
                     .foregroundColor(DiveColor.color2)
                     .padding(.top, 60)
                     .padding(.bottom, 30)

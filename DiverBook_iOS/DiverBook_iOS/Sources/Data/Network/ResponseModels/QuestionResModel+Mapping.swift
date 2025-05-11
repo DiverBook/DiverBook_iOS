@@ -8,15 +8,13 @@
 struct QuestionResModel: Decodable {
     let id: Int
     let question: String
-    let symbol: String
 }
 
 extension QuestionResModel {
     func toDomain() -> Question {
         return .init(
             id: id,
-            question: question,
-            symbol: symbol
+            question: question
         )
     }
 }
