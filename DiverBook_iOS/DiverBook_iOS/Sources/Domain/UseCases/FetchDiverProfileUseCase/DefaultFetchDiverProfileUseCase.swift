@@ -12,6 +12,10 @@ final class DefaultFetchDiverProfileUseCase: FetchDiverProfileUseCase {
         self.repository = repository
     }
     
+    func executeFetchProfileImageUrl(nickName: String) async -> Result<String, Error> {
+        return await repository.fetchProfileImageUrl(nickName: nickName)
+    }
+    
     func executeFetchProfile(id: String) async -> Result<DiverProfile, Error> {
         return await repository.fetchDiverProfile(id: id)
     }

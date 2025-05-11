@@ -18,7 +18,10 @@ struct LoginContentView: View {
                 .padding(.bottom, 10)
             switch viewModel.state.phase {
             case .checkDetectedInfo:
-                CheckDetectedIDCardInfoView(nickname: viewModel.state.nickname)
+                CheckDetectedIDCardInfoView(diverProfileImageUrl: viewModel.state.diverProfileImageUrl, nickname: viewModel.state.nickname)
+                    .onAppear {
+                        viewModel.action(.fetchProfileImageUrl)
+                    }
             case .inputPassword:
                 LoginInputPaswordView(viewModel: viewModel)
             }
