@@ -13,7 +13,9 @@ final class DefaultSaveDiverMemoUseCase: SaveDiverMemoUseCase{
         = diverCollectionRepository
     }
     
-    func executeSaveDiverMemoUseCase(foundUserId: String, memo: String) async -> Result<CollectedDiverInfo, any Error> {
+    func executeSaveDiverMemoUseCase(
+        foundUserId: String,
+        memo: String) async -> Result<CollectedDiverInfo, any Error> {
         return await diverCollectionRepository.saveDiverMemo(foundUserId: foundUserId, memo: memo)
     }
 }

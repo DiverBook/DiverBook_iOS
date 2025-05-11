@@ -6,5 +6,7 @@
 //
 
 protocol SaveDiverMemoUseCase{
-    func executeSaveDiverMemoUseCase(foundUserId: String, memo: String) async -> Result<CollectedDiverInfo, Error>
+    func executeSaveDiverMemoUseCase(
+        foundUserId: String,
+        memo: String) async -> Result<CollectedDiverInfo, Error>
 }

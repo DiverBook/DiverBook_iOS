@@ -15,7 +15,9 @@ final class DefaultUpdateDiverMemoUseCase: UpdateDiverMemoUseCase{
         = diverCollectionRepository
     }
     
-    func executeUpdateDiverMemoUseCase(foundUserId: String, memo: String) async -> Result<CollectedDiverInfo, any Error> {
+    func executeUpdateDiverMemoUseCase(
+        foundUserId: String,
+        memo: String) async -> Result<CollectedDiverInfo, any Error> {
         return await diverCollectionRepository.updateDiverMemo(foundUserId: foundUserId, memo: memo)
     }
 }
