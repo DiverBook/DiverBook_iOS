@@ -8,5 +8,4 @@
 struct Question {
     let id: Int
     let question: String
-    let symbol: String
 }
