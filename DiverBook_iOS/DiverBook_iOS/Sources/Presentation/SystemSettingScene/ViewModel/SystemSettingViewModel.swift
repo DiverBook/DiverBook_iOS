@@ -58,6 +58,9 @@ final class SystemSettingViewModel: ViewModelable {
                 switch result {
                 case .success:
                     print("✅ 회원 탈퇴 성공")
+                    await MainActor.run {
+                        coordinator.path = [.splash]
+                    }
                 case .failure(let error):
                     print("❌ 회원 탈퇴 실패: \(error)")
                 }
