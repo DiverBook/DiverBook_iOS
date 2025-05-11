@@ -28,6 +28,12 @@ struct DiverProfileView: View {
                 diverCollectionService: DiverCollectionService()
             )
         )
+        
+        let saveDiverMemoUseCase = DefaultSaveDiverMemoUseCase(
+            diverCollectionRepository: DefaultDiverCollectionRepository(
+                diverCollectionService: DiverCollectionService()
+            )
+        )
 
         _viewModel = StateObject(
             wrappedValue: DiverProfileViewModel(
@@ -36,6 +42,7 @@ struct DiverProfileView: View {
                 fetchDiverProfileUseCase: fetchDiverProfileUseCase,
                 fetchDIverCollectionUseCase: fetchDiverCollectionUsecase,
                 updateDiverMemoUseCase: updateDiverMemoUseCase,
+                saveDiverMemoUseCase: saveDiverMemoUseCase,
                 diverId: diverId
             )
         )

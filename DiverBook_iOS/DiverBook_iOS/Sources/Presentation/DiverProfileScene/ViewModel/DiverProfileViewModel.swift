@@ -36,6 +36,7 @@ final class DiverProfileViewModel: ViewModelable {
     private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
     private let fetchDiverCollectionUseCase: DiverCollectionUseCase
     private let updateDiverMemoUseCase: UpdateDiverMemoUseCase
+    private let saveDiverMemoUseCase: SaveDiverMemoUseCase
     
     init(
         coordinator: Coordinator,
@@ -43,6 +44,7 @@ final class DiverProfileViewModel: ViewModelable {
         fetchDiverProfileUseCase: FetchDiverProfileUseCase,
         fetchDIverCollectionUseCase: DiverCollectionUseCase,
         updateDiverMemoUseCase: UpdateDiverMemoUseCase,
+        saveDiverMemoUseCase: SaveDiverMemoUseCase,
         diverId: String
     ) {
         self.coordinator = coordinator
@@ -50,6 +52,7 @@ final class DiverProfileViewModel: ViewModelable {
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
         self.fetchDiverCollectionUseCase = fetchDIverCollectionUseCase
         self.updateDiverMemoUseCase = updateDiverMemoUseCase
+        self.saveDiverMemoUseCase = saveDiverMemoUseCase
         self.state.diverId = diverId
     }
 
@@ -105,8 +108,20 @@ final class DiverProfileViewModel: ViewModelable {
     }
     
     private func createDiverMemo() async {
-        // TODO: POST로 첫 메모 작성하기
-        print("메모 최초 등록")
+        let createResult = await saveDiverMemoUseCase.executeSaveDiverMemoUseCase(
+            foundUserId: state.diverId,
+            memo: memo
+        )
+        
+        switch createResult {
+        case .success(let updated):
+            originalMemo = updated.memo
+            isSaveEnabled = false
+            // TODO: 뱃지 획득 or 메인 화면으로 이동
+            print("✅ POST 성공")
+        case .failure(let error):
+            print("❌ POST 실패: \(error)")
+        }
     }
 
     private func updateDiverMemo() async {
