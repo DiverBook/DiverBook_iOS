@@ -9,4 +9,5 @@ protocol DiverCollectionServicable: HTTPClient {
     func fetchAllDiverList() async -> Result<BaseResponse<[DiverProfileResModel]>, RequestError>
     func fetchDiverCollection() async -> Result<BaseResponse<[CollectedDiverResModel]>, RequestError>
     func updateDiverMemo(foundUserId: String, memo: String) async -> Result<BaseResponse<CollectedDiverResModel>, RequestError>
+    func saveDiverMemo(foundUserId: String, memo: String) async -> Result<BaseResponse<CollectedDiverResModel>, RequestError>
 }
