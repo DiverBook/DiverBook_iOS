@@ -60,6 +60,9 @@ struct DiverProfileView: View {
                         }
                     )
                 }
+                .onChange(of: viewModel.memo) { newValue in
+                    viewModel.action(.memoChanged(newValue))
+                }
             }
         }
         .padding(.horizontal, 24)

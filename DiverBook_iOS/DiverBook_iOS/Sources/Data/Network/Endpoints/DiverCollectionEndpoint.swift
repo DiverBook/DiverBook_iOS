@@ -28,7 +28,7 @@ enum DiverCollectionEndpoint: Endpoint {
     var method: RequestMethod {
         switch self {
         case .updateDiverMemo:
-            return .post
+            return .patch
         default:
             return .get
         }
