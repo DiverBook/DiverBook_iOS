@@ -118,6 +118,7 @@ final class DiverProfileViewModel: ViewModelable {
             originalMemo = updated.memo
             isSaveEnabled = false
             // TODO: 뱃지 획득 or 메인 화면으로 이동
+            coordinator.path = [.mainTab]
             print("✅ POST 성공")
         case .failure(let error):
             print("❌ POST 실패: \(error)")
