@@ -8,26 +8,31 @@
 import SwiftUI
 
 struct BadgeRewardView: View {
-    @StateObject var viewModel: BadenRewardViewModel
+    @StateObject private var viewModel: BadenRewardViewModel
 
-    init(coordinator: Coordinator) {
+    init(coordinator: Coordinator, badgeCode: String) {
         _viewModel = StateObject(
-            wrappedValue: BadenRewardViewModel(coordinator: coordinator)
+            wrappedValue: BadenRewardViewModel(coordinator: coordinator, badgeCode: badgeCode)
         )
     }
 
     var body: some View {
         VStack {
             Spacer()
-            
-            Image(viewModel.state.badge)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 125, height: 177)
-                .applyShadow(DiveShadow.shadow1)
+
+            if let imageURL = URL(string: viewModel.state.badgeImage) {
+                AsyncImage(url: imageURL) { image in
+                    image.resizable()
+                         .scaledToFit()
+                         .frame(width: 125, height: 177)
+                         .applyShadow(DiveShadow.shadow1)
+                } placeholder: {
+                    ProgressView()
+                        .frame(width: 125, height: 177)
+                }
+            }
 
             VStack(spacing: 4) {
-                Text("다이버시티에서 \(viewModel.state.badgeDescription)!")
                 HStack {
                     Text("'\(viewModel.state.badgeName)'")
                         .foregroundStyle(DiveColor.color6)
@@ -35,7 +40,7 @@ struct BadgeRewardView: View {
                 }
             }
             .font(DiveFont.headingH3)
-            
+
             Spacer()
 
             PrimaryButton(title: "확인", coordinator: viewModel.coordinator) {
@@ -43,9 +48,8 @@ struct BadgeRewardView: View {
             }
         }
         .padding(.horizontal, 24)
+        .onAppear {
+            viewModel.loadBadge()
+        }
     }
-}
-
-#Preview {
-    BadgeRewardView(coordinator: Coordinator())
 }

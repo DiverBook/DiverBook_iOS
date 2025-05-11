@@ -37,4 +37,5 @@ enum Path: Hashable {
     case myProfile
     case diverProfile(id: String)
     case collectedBadge
+    case badgeReward(badgeCode: String)
 }

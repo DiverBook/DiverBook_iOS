@@ -12,7 +12,11 @@ struct BadgeCardView: View {
     let onTap: () -> Void
 
     var body: some View {
-        Button(action: onTap) {
+        Button {
+            if badge.isCollected {
+                onTap()
+            }
+        } label: {
             VStack(spacing: 8) {
                 if badge.isCollected, let url = URL(string: badge.imageUrl) {
                     AsyncImage(url: url) { phase in
@@ -53,7 +57,7 @@ struct BadgeCardView: View {
             .frame(height: 150)
             .background(DiveColor.white)
             .cornerRadius(8)
-            .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 2)
+            .applyShadow(DiveShadow.shadow1)
         }
     }
 }
