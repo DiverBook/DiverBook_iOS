@@ -19,8 +19,7 @@ final class DefaultDiverCollectionRepository: DiverCollectionRepository {
         case .success(let baseResponse):
             if baseResponse.success, let data = baseResponse.data {
                 return .success(data.map { $0.toDomain() })
-            }
-            else {
+            } else {
                 return .failure(RequestError.errorWithLog(baseResponse.errorMessage ?? ""))
             }
         case .failure(let error):
@@ -34,8 +33,7 @@ final class DefaultDiverCollectionRepository: DiverCollectionRepository {
         case .success(let baseResponse):
             if baseResponse.success, let data = baseResponse.data {
                 return .success(data.map { $0.toDomain() })
-            }
-            else {
+            } else {
                 return .failure(RequestError.errorWithLog(baseResponse.errorMessage ?? ""))
             }
         case .failure(let error):
@@ -43,8 +41,12 @@ final class DefaultDiverCollectionRepository: DiverCollectionRepository {
         }
     }
     
-    func updateDiverMemo(foundUserId: String, memo: String) async -> Result<CollectedDiverInfo, Error> {
-        let result = await diverCollectionService.updateDiverMemo(foundUserId: foundUserId, memo: memo)
+    func updateDiverMemo(
+        foundUserId: String,
+        memo: String) async -> Result<CollectedDiverInfo, Error> {
+        let result = await diverCollectionService.updateDiverMemo(
+            foundUserId: foundUserId,
+            memo: memo)
         
         switch result {
         case .success(let baseResponse):
@@ -54,6 +56,25 @@ final class DefaultDiverCollectionRepository: DiverCollectionRepository {
                 return .failure(RequestError.errorWithLog(baseResponse.errorMessage ?? "메모 업데이트 실패"))
             }
 
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    
+    func saveDiverMemo(
+        foundUserId: String,
+        memo: String) async -> Result<CollectedDiverInfo, Error> {
+        let result = await diverCollectionService.saveDiverMemo(
+            foundUserId: foundUserId,
+            memo: memo)
+        
+        switch result {
+        case .success(let baseResponse):
+            if baseResponse.success, let data = baseResponse.data {
+                return .success(data.toDomain())
+            } else {
+                return .failure(RequestError.errorWithLog(baseResponse.errorMessage ?? "메모 저장 실패"))
+            }
         case .failure(let error):
             return .failure(error)
         }

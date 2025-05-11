@@ -11,6 +11,7 @@ enum DiverCollectionEndpoint: Endpoint {
     case diverCollectionRate(id: String)
     case allDiverList
     case updateDiverMemo(foundUserId: String, memo: String)
+    case saveDiverMemo(foundUserId: String, memo: String)
 
     var path: String {
         switch self {
@@ -22,6 +23,9 @@ enum DiverCollectionEndpoint: Endpoint {
             return "/api/users"
         case .updateDiverMemo:
             return "/api/collections"
+        case .saveDiverMemo:
+            return "/api/collections"
+            
         }
     }
 
@@ -29,6 +33,8 @@ enum DiverCollectionEndpoint: Endpoint {
         switch self {
         case .updateDiverMemo:
             return .patch
+        case .saveDiverMemo:
+            return .post
         default:
             return .get
         }
@@ -59,6 +65,11 @@ enum DiverCollectionEndpoint: Endpoint {
             return [
                 "foundUserId": foundUserId,
                 "memo": memo,
+            ]
+        case .saveDiverMemo(let foundUserId, let memo):
+            return [
+                "foundUserId": foundUserId,
+                "memo": memo
             ]
         default:
             return nil

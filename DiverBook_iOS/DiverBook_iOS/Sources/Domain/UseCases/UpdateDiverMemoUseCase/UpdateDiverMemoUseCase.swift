@@ -8,5 +8,7 @@
 import Foundation
 
 protocol UpdateDiverMemoUseCase{
-    func executeUpdateDiverMemoUseCase(foundUserId: String, memo: String) async -> Result<CollectedDiverInfo, Error>
+    func executeUpdateDiverMemoUseCase(
+        foundUserId: String,
+        memo: String) async -> Result<CollectedDiverInfo, Error>
 }

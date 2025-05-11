@@ -23,4 +23,8 @@ final class DiverCollectionService: DiverCollectionServicable {
     func updateDiverMemo(foundUserId: String, memo: String) async -> Result<BaseResponse<CollectedDiverResModel>, RequestError> {
         return await request(endpoint: DiverCollectionEndpoint.updateDiverMemo(foundUserId: foundUserId, memo: memo), responseModel: BaseResponse<CollectedDiverResModel>.self)
     }
+    
+    func saveDiverMemo(foundUserId: String, memo: String) async -> Result<BaseResponse<CollectedDiverResModel>, RequestError> {
+        return await request(endpoint: DiverCollectionEndpoint.saveDiverMemo(foundUserId: foundUserId, memo: memo), responseModel: BaseResponse<CollectedDiverResModel>.self)
+    }
 }

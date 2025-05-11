@@ -40,7 +40,7 @@ struct DiverSearchResultView: View {
             
             Spacer()
             PrimaryButton(title: "대화 시작", coordinator: Coordinator()) {
-                viewModel.action(.startConversation)
+                viewModel.action(.startConversation(diverId: diverProfile.id))
             }
         }
         .padding(.horizontal, 24)

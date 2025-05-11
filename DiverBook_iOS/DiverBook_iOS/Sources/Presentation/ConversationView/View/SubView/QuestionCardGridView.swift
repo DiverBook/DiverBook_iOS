@@ -13,6 +13,7 @@ struct QuestionCardGridView: View {
     
     let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
     let animationNamespace: Namespace.ID
+    let diverId: String
     
     var body: some View {
         VStack {
@@ -40,7 +41,7 @@ struct QuestionCardGridView: View {
             
             Spacer()
             PrimaryButton(title: "대화 완료", coordinator: Coordinator()) {
-                viewModel.action(.finishConversation)
+                viewModel.action(.finishConversation(diverId: diverId))
             }
         }
         .padding(.horizontal, 24)
