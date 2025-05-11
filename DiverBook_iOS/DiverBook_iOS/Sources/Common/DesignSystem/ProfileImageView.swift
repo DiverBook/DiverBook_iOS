@@ -62,7 +62,7 @@ struct ProfileImageView: View {
     }
 
     private var placeholderImageView: some View {
-        Image(systemName: placeholderImageName)
+        Image(placeholderImageName)
             .resizable()
             .scaledToFill()
             .frame(width: style.imageSize, height: style.imageSize)
