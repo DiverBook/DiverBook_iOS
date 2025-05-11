@@ -21,4 +21,23 @@ final class DiverProfileService: DiverProfileServicable {
             responseModel: BaseResponse<DiverProfileResModel>.self
         )
     }
+    
+    func updateMyProfile(
+        divisions: String,
+        phoneNumber: String,
+        interests: String,
+        places: String,
+        about: String
+    ) async -> Result<BaseResponse<DiverProfileResModel>, RequestError> {
+        return await request(
+            endpoint: DiverProfileEndpoint.updateMyProfile(
+                divisions: divisions,
+                phoneNumber: phoneNumber,
+                interests: interests,
+                places: places,
+                about: about
+            ),
+            responseModel: BaseResponse<DiverProfileResModel>.self
+        )
+    }
 }
