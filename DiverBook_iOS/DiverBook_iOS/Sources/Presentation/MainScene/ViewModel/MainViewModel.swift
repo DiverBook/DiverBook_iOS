@@ -66,7 +66,7 @@ final class MainViewModel: ViewModelable {
             }
             
         case .profileSettingButtonTapped:
-            print("profile setting button tapped!")
+            coordinator.push(.myProfile)
         case .collectionDiverTapped(let diverId):
             if state.isFoundedDiver[diverId] ?? false {
                 coordinator.push(.diverProfile(id: diverId))

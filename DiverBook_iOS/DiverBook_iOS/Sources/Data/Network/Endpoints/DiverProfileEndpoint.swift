@@ -15,7 +15,7 @@ enum DiverProfileEndpoint: Endpoint {
         phoneNumber: String,
         interests: String,
         places: String,
-        about: String,
+        about: String
     )
 
     var path: String {
