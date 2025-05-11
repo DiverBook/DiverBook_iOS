@@ -30,6 +30,7 @@ final class DiverProfileViewModel: ViewModelable {
     @Published var memo: String = ""
     @Published private(set) var isSaveEnabled: Bool = false
     
+    private let coordinator: Coordinator
     private let mode: DiverProfileMode
     private var originalMemo: String = ""
     private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
@@ -37,12 +38,14 @@ final class DiverProfileViewModel: ViewModelable {
     private let updateDiverMemoUseCase: UpdateDiverMemoUseCase
     
     init(
+        coordinator: Coordinator,
         mode: DiverProfileMode,
         fetchDiverProfileUseCase: FetchDiverProfileUseCase,
         fetchDIverCollectionUseCase: DiverCollectionUseCase,
         updateDiverMemoUseCase: UpdateDiverMemoUseCase,
         diverId: String
     ) {
+        self.coordinator = coordinator
         self.mode = mode
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
         self.fetchDiverCollectionUseCase = fetchDIverCollectionUseCase
@@ -116,6 +119,7 @@ final class DiverProfileViewModel: ViewModelable {
         case .success(let updated):
             originalMemo = updated.memo
             isSaveEnabled = false
+            coordinator.pop()
             print("✅ PATCH 성공")
         case .failure(let error):
             print("❌ PATCH 실패: \(error)")

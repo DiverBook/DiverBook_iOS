@@ -9,20 +9,29 @@ import SwiftUI
 
 struct DiverProfileView: View {
     @StateObject private var viewModel: DiverProfileViewModel
-    
+
     init(coordinator: Coordinator, diverId: String, mode: DiverProfileMode) {
         let fetchDiverProfileUseCase = DefaultFetchDiverProfileUseCase(
             repository: DefaultDiverRepository(
                 diverProfileService: DiverProfileService()
             )
         )
-        
-        let fetchDiverCollectionUsecase = DefaultDiverCollectionUseCase(diverCollectionRepository: DefaultDiverCollectionRepository(diverCollectionService: DiverCollectionService()))
-        
-        let updateDiverMemoUseCase = DefaultUpdateDiverMemoUseCase(diverCollectionRepository: DefaultDiverCollectionRepository(diverCollectionService: DiverCollectionService()))
-        
+
+        let fetchDiverCollectionUsecase = DefaultDiverCollectionUseCase(
+            diverCollectionRepository: DefaultDiverCollectionRepository(
+                diverCollectionService: DiverCollectionService()
+            )
+        )
+
+        let updateDiverMemoUseCase = DefaultUpdateDiverMemoUseCase(
+            diverCollectionRepository: DefaultDiverCollectionRepository(
+                diverCollectionService: DiverCollectionService()
+            )
+        )
+
         _viewModel = StateObject(
             wrappedValue: DiverProfileViewModel(
+                coordinator: coordinator,
                 mode: mode,
                 fetchDiverProfileUseCase: fetchDiverProfileUseCase,
                 fetchDIverCollectionUseCase: fetchDiverCollectionUsecase,
@@ -31,17 +40,16 @@ struct DiverProfileView: View {
             )
         )
     }
-    
-    // profileContent extracted to DiverProfileContentView below
-    
+
     var body: some View {
         VStack {
             DiverProfileTopBarView()
-            
+
             if viewModel.state.isDataFetching {
                 ScrollView(showsIndicators: false) {
                     DiverProfileContentView(
-                        memo: $viewModel.memo, diverProfile: viewModel.state.diverProfile,
+                        memo: $viewModel.memo,
+                        diverProfile: viewModel.state.diverProfile,
                         foundDate: viewModel.state.foundDate,
                         isSaveEnabled: viewModel.isSaveEnabled,
                         saveAction: {
@@ -53,7 +61,8 @@ struct DiverProfileView: View {
             } else {
                 ScrollView(showsIndicators: false) {
                     DiverProfileContentView(
-                        memo: $viewModel.memo, diverProfile: viewModel.state.diverProfile,
+                        memo: $viewModel.memo,
+                        diverProfile: viewModel.state.diverProfile,
                         foundDate: viewModel.state.foundDate,
                         isSaveEnabled: viewModel.isSaveEnabled,
                         saveAction: {
@@ -70,6 +79,6 @@ struct DiverProfileView: View {
         .onAppear {
             viewModel.action(.viewAppeared)
         }
-        
+
     }
 }
