@@ -47,11 +47,15 @@ struct DiverBookIOSApp: App {
                                     coordinator: self.coordinator
                                 )
                                     .toolbar(.hidden, for: .navigationBar)
-                            case .startConversation:
-                                ConversationView(coordinator: self.coordinator)
+                            case .startConversation(let diverId):
+                                ConversationView(coordinator: self.coordinator, diverId: diverId)
                                     .toolbar(.hidden, for: .navigationBar)
-                            case .finishConversation:
-                                DiverProfileView(coordinator: self.coordinator, diverId: "", mode: .create)
+                            case .finishConversation(let diverId):
+                                DiverProfileView(
+                                    coordinator: self.coordinator,
+                                    diverId: diverId,
+                                    mode: .create
+                                )
                                     .toolbar(.hidden, for: .navigationBar)
                             case .myProfile:
                                 MyProfileView(coordinator: self.coordinator)
@@ -63,7 +67,11 @@ struct DiverBookIOSApp: App {
                                 UnfoundDiverView(coordinator: coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
                             case .diverProfile(let diverId):
-                                DiverProfileView(coordinator: coordinator, diverId: diverId, mode: .edit)
+                                DiverProfileView(
+                                    coordinator: coordinator,
+                                    diverId: diverId,
+                                    mode: .edit
+                                )
                                     .toolbar(.hidden, for: .navigationBar)
                             }
                         })

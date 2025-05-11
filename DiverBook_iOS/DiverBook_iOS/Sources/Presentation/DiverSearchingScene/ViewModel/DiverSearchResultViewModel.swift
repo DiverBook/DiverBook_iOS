@@ -13,7 +13,7 @@ final class DiverSearchResultViewModel: ViewModelable {
     }
     
     enum Action {
-        case startConversation
+        case startConversation(diverId: String)
     }
     
     @Published var state: State = State()
@@ -27,8 +27,8 @@ final class DiverSearchResultViewModel: ViewModelable {
     
     func action(_ action: Action) {
         switch action {
-        case .startConversation:
-            coordinator.push(.startConversation)
+        case .startConversation(let diverId):
+            coordinator.push(.startConversation(id: diverId))
         }
     }
 }

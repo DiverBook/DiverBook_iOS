@@ -11,7 +11,9 @@ struct ConversationView: View {
     @Namespace private var animationNamespace
     @StateObject var viewModel: ConversationViewModel
     
-    init(coordinator: Coordinator) {
+    let diverId: String
+    
+    init(coordinator: Coordinator, diverId: String) {
         _viewModel = StateObject(
             wrappedValue: ConversationViewModel(
                 coordinator: coordinator,
@@ -25,13 +27,16 @@ struct ConversationView: View {
                 )
             )
         )
+        self.diverId = diverId
     }
     
     var body: some View {
         ZStack {
             QuestionCardGridView(
                 viewModel: viewModel,
-                animationNamespace: animationNamespace)
+                animationNamespace: animationNamespace,
+                diverId: diverId
+            )
             
             popupCardView()
         }

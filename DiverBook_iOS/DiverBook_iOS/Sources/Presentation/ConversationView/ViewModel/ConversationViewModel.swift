@@ -14,7 +14,7 @@ final class ConversationViewModel: ViewModelable {
     }
     
     enum Action {
-        case finishConversation
+        case finishConversation(diverId: String)
         case selectCard(index: Int)
         case dismissCard
         case loadQuestions
@@ -40,8 +40,8 @@ final class ConversationViewModel: ViewModelable {
     
     func action(_ action: Action) {
         switch action {
-        case .finishConversation:
-            coordinator.push(.finishConversation)
+        case .finishConversation(let diverID):
+            coordinator.push(.finishConversation(id: diverID))
         case .selectCard(let index):
             handleSelectCard(index: index)
         case .dismissCard:

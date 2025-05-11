@@ -32,8 +32,8 @@ enum Path: Hashable {
     case searchingDiver
     case unfoundDiver
     case searchResult(diverProfile: DiverProfile)
-    case startConversation
-    case finishConversation
+    case startConversation(id: String)
+    case finishConversation(id: String)
     case myProfile
     case diverProfile(id: String)
     case collectedBadge
