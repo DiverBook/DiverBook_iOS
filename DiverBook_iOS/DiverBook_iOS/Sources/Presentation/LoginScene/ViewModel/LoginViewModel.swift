@@ -11,6 +11,7 @@ import SwiftUI
 final class LoginViewModel: ViewModelable {
     struct State {
         var nickname: String
+        var diverProfileImageUrl: URL?
         var password: String = ""
         var phase: LoginPhase = .checkDetectedInfo
         var errorMessage: String = ""
@@ -19,23 +20,30 @@ final class LoginViewModel: ViewModelable {
     }
     
     enum Action {
+        case fetchProfileImageUrl
         case validatePassword
         case nextButtonTapped
     }
     
+    private var diverProfileUseCase: FetchDiverProfileUseCase
     private var loginUseCase: LoginUseCase
     
     @ObservedObject var coordinator: Coordinator
     @Published var state: State
     
-    init(coordinator: Coordinator, loginUseCase: LoginUseCase, nickname: String) {
+    init(coordinator: Coordinator, diverProfileUseCase: FetchDiverProfileUseCase, loginUseCase: LoginUseCase, nickname: String) {
         self.coordinator = coordinator
+        self.diverProfileUseCase = diverProfileUseCase
         self.loginUseCase = loginUseCase
         self.state = State(nickname: nickname)
     }
     
     func action(_ action: Action) {
         switch action {
+        case .fetchProfileImageUrl:
+            Task {
+                await fetchProfileImageUrl()
+            }
         case .validatePassword: // 4자리 비밀번호인지 확인
             state.buttonAvailable = validatePassword(password: state.password)
         case .nextButtonTapped:
@@ -51,11 +59,20 @@ final class LoginViewModel: ViewModelable {
                     case .failure(let errorMessage):
                         // TODO: 로그인 실패 모달 띄우기 (비밀번호 불일치)
                         print(errorMessage)
-                        state.errorMessage = errorMessage
-                        state.errorAlertShowing = true
+                        activateErrorAlert(message: errorMessage)
                     }
                 }
             }
+        }
+    }
+    
+    private func fetchProfileImageUrl() async {
+        let fetchProfileImageResult = await diverProfileUseCase.executeFetchProfileImageUrl(nickName: state.nickname)
+        switch fetchProfileImageResult {
+        case .success(let imageUrl):
+            state.diverProfileImageUrl = URL(string: imageUrl)
+        case .failure(let error):
+            activateErrorAlert(message: "서버 에러가 발생하였습니다.")
         }
     }
     
@@ -75,6 +92,11 @@ final class LoginViewModel: ViewModelable {
             }
             return .failure("알 수 없는 에러가 발생하였습니다.")
         }
+    }
+    
+    private func activateErrorAlert(message: String) {
+        state.errorMessage = message
+        state.errorAlertShowing = true
     }
 }
 

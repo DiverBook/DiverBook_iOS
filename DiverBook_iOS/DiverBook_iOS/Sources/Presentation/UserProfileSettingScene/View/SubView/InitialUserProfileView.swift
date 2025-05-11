@@ -9,17 +9,20 @@ import Combine
 import SwiftUI
 
 struct InitialUserProfileView: View {
+    var diverProfileImageUrl: URL?
     var nickname: String
     
     @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack {
             // MARK: diver 이미지 뷰 컴포넌트 적용
-            Image("diver-air")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 135)
-                .padding(.bottom, 15)
+            ProfileImageView(
+                imageURL: diverProfileImageUrl,
+                style: .mypage,
+                placeholderImageName: "unfoundProfile",
+                loadingMethod: .kingfisher
+            )
+            .padding(.bottom, 15)
             Text(self.nickname).font(DiveFont.bodyMedium1)
                 .padding(.bottom, 10)
             Rectangle().fill(Color(.lightGray)).frame(width: 210, height: 1)

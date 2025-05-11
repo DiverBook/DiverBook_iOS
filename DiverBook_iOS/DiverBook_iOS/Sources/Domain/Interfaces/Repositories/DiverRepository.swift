@@ -6,6 +6,7 @@
 //
 
 protocol DiverRepository {
+    func fetchProfileImageUrl(nickName: String) async -> Result<String, Error>
     func fetchDiverProfile(id: String) async -> Result<DiverProfile, Error>
     func fetchMyProfile() async -> Result<DiverProfile, Error>
     func updateMyProfile(

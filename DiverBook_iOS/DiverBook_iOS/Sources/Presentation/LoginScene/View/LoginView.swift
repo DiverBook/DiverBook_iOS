@@ -13,6 +13,11 @@ struct LoginView: View {
     init(nickname: String, coordinator: Coordinator) {
         _viewModel = StateObject(wrappedValue: LoginViewModel(
             coordinator: coordinator,
+            diverProfileUseCase: DefaultFetchDiverProfileUseCase(
+                repository: DefaultDiverRepository(
+                    diverProfileService: DiverProfileService()
+                )
+            ),
             loginUseCase: DefaultLoginUseCase(
                 loginRepository: DefaultLoginRepository(
                     loginService: DiverBookLoginService())),

@@ -6,6 +6,7 @@
 //
 
 protocol FetchDiverProfileUseCase {
+    func executeFetchProfileImageUrl(nickName: String) async -> Result<String, Error>
     func executeFetchProfile(id: String) async -> Result<DiverProfile, Error>
     func executeFetchMyProfile() async -> Result<DiverProfile, Error>
 }

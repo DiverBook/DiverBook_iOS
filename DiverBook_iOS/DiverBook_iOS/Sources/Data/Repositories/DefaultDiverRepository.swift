@@ -12,6 +12,21 @@ final class DefaultDiverRepository: DiverRepository {
         self.diverProfileService = diverProfileService
     }
 
+    func fetchProfileImageUrl(nickName: String) async -> Result<String, Error> {
+        let profileResult = await diverProfileService.fetchProfileImageUrl(nickName: nickName)
+        switch profileResult {
+        case .success(let baseResponse):
+            if baseResponse.success, let data = baseResponse.data {
+                return .success(data)
+            }
+            else {
+                return .failure(RequestError.errorWithLog(baseResponse.errorMessage ?? ""))
+            }
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    
     func fetchDiverProfile(id: String) async -> Result<DiverProfile, Error> {
         let profileResult = await diverProfileService.fetchDiverProfile(id: id)
 

@@ -6,6 +6,8 @@
 //
 
 protocol DiverProfileServicable: HTTPClient {
+    func fetchProfileImageUrl(nickName: String) async -> Result<BaseResponse<String>, RequestError>
+    
     func fetchDiverProfile(
         id: String
     ) async -> Result<BaseResponse<DiverProfileResModel>, RequestError>

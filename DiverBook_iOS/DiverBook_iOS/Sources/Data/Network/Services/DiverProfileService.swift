@@ -6,6 +6,13 @@
 //
 
 final class DiverProfileService: DiverProfileServicable {
+    func fetchProfileImageUrl(nickName: String) async -> Result<BaseResponse<String>, RequestError> {
+        return await request(
+            endpoint: DiverProfileEndpoint.profileImageUrl(nickName: nickName),
+            responseModel: BaseResponse<String>.self
+        )
+    }
+    
     func fetchDiverProfile(
         id: String
     ) async -> Result<BaseResponse<DiverProfileResModel>, RequestError> {

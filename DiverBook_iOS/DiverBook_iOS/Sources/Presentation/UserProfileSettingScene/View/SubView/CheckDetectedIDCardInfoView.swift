@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CheckDetectedIDCardInfoView: View {
+    var diverProfileImageUrl: URL?
     var nickname: String
     
     var body: some View {
@@ -19,7 +20,7 @@ struct CheckDetectedIDCardInfoView: View {
             .font(DiveFont.bodyMedium1)
             .foregroundStyle(DiveColor.gray4)
             .padding(.bottom, 64)
-        InitialUserProfileView(nickname: self.nickname)
+        InitialUserProfileView(diverProfileImageUrl: diverProfileImageUrl, nickname: self.nickname)
             .frame(width: UIScreen.main.bounds.width - 48)
     }
 }
