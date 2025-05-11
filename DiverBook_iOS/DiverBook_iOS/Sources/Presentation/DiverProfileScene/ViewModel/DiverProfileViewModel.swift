@@ -56,11 +56,17 @@ final class DiverProfileViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .viewAppeared:
-            state.isDataFetching = true
             Task {
+                await MainActor.run {
+                    state.isDataFetching = true
+                }
+
                 await fetchDiverProfileById()
                 await fetchDiverCollectionInfo()
-                state.isDataFetching = false
+
+                await MainActor.run {
+                    state.isDataFetching = false
+                }
             }
 
         case .memoChanged(let newMemo):
@@ -77,31 +83,34 @@ final class DiverProfileViewModel: ViewModelable {
     private func fetchDiverProfileById() async {
         let result = await fetchDiverProfileUseCase.executeFetchProfile(id: state.diverId)
         
-        switch result {
-        case .success(let profile):
-            state.diverProfile = profile
-        case .failure(let error):
-            print("❌ 다이버 프로필 조회 실패: \(error)")
+        await MainActor.run {
+            switch result {
+            case .success(let profile):
+                state.diverProfile = profile
+            case .failure(let error):
+                print("❌ 다이버 프로필 조회 실패: \(error)")
+            }
+
+            state.isDataFetching = false
         }
-        
-        state.isDataFetching = false
     }
     
     private func fetchDiverCollectionInfo() async {
         let result = await fetchDiverCollectionUseCase.executeFetchDiverCollection()
-        switch result {
-        case .success(let collection):
-            if let diverInfo = collection.first(where: { $0.foundUserId == state.diverId }) {
-                state.foundDate = formatFoundDate(diverInfo.foundDate)
-                memo = diverInfo.memo
-                originalMemo = diverInfo.memo
-                isSaveEnabled = false
-            }
-        case .failure(let error):
-            print("다이버 도감 정보 조회 실패: \(error))")
-        }
         
-        state.isDataFetching = false
+        await MainActor.run {
+            switch result {
+            case .success(let collection):
+                if let diverInfo = collection.first(where: { $0.foundUserId == state.diverId }) {
+                    state.foundDate = formatFoundDate(diverInfo.foundDate)
+                    memo = diverInfo.memo
+                    originalMemo = diverInfo.memo
+                    isSaveEnabled = false
+                }
+            case .failure(let error):
+                print("다이버 도감 정보 조회 실패: \(error))")
+            }
+        }
     }
     
     private func createDiverMemo() async {
