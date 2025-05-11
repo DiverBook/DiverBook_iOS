@@ -92,7 +92,7 @@ final class DiverProfileViewModel: ViewModelable {
         switch result {
         case .success(let collection):
             if let diverInfo = collection.first(where: { $0.foundUserId == state.diverId }) {
-                state.foundDate = diverInfo.foundDate
+                state.foundDate = formatFoundDate(diverInfo.foundDate)
                 memo = diverInfo.memo
                 originalMemo = diverInfo.memo
                 isSaveEnabled = false
@@ -134,5 +134,23 @@ final class DiverProfileViewModel: ViewModelable {
         case .edit:
             await updateDiverMemo()
         }
+    }
+    
+    private func formatFoundDate(_ raw: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+        inputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+        guard let date = inputFormatter.date(from: raw) else {
+            return "-"
+        }
+
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "yy. MM. dd"
+        outputFormatter.locale = Locale(identifier: "ko_KR")
+        outputFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+
+        return outputFormatter.string(from: date)
     }
 }
