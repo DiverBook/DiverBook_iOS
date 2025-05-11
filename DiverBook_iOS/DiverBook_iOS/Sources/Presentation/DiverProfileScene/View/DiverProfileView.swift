@@ -86,6 +86,6 @@ struct DiverProfileView: View {
         .onAppear {
             viewModel.action(.viewAppeared)
         }
-
+        .hideKeyboardOnTap()
     }
 }
