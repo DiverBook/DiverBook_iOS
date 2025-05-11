@@ -25,4 +25,15 @@ final class DefaultBadgeRepository: BadgeRepository {
             $0.toDomain(isCollected: userBadgeCodes.contains($0.code))
         }
     }
+    
+    func postUserBadge(badgeCode: String) async throws -> String {
+        let result = await badgeService.postUserBadge(badgeCode: badgeCode)
+        
+        switch result {
+        case .success(let badgeCode):
+            return badgeCode.toDomain()
+        case .failure(let error):
+            throw error
+        }
+    }
 }

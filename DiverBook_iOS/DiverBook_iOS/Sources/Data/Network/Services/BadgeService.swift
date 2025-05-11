@@ -25,4 +25,11 @@ final class BadgeService: BadgeServicable {
             responseModel: BaseResponse<[UserBadgeResponseModel]>.self
         )
     }
+    
+    func postUserBadge(badgeCode: String) async -> Result<UserBadgeResponseModel, RequestError> {
+        return await request(
+            endpoint: BadgeEndpoint.postUserBadge(badgeCode: badgeCode),
+            responseModel: UserBadgeResponseModel.self
+        )
+    }
 }
