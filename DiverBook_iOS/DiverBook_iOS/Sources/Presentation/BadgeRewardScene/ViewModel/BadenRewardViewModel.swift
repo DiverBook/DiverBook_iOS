@@ -59,7 +59,7 @@ class BadenRewardViewModel: ObservableObject {
     func action(_ action: Action) {
         switch action {
         case .confirmButtonTapped:
-            coordinator.push(.collectedBadge)
+            coordinator.path = [.mainTab]
         }
     }
 }
