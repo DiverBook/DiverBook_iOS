@@ -41,6 +41,7 @@ final class DiverProfileViewModel: ViewModelable {
             state.isDataFetching = true
             Task {
                 await fetchDiverProfileById()
+                state.isDataFetching = false
             }
         }
     }
