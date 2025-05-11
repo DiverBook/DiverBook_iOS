@@ -16,9 +16,16 @@ struct DiverProfileView: View {
                 diverProfileService: DiverProfileService()
             )
         )
+        
+        let fetchDiverCollectionUsecase = DefaultDiverCollectionUseCase(diverCollectionRepository: DefaultDiverCollectionRepository(diverCollectionService: DiverCollectionService()))
+        
+        let updateDiverMemoUseCase = DefaultUpdateDiverMemoUseCase(diverCollectionRepository: DefaultDiverCollectionRepository(diverCollectionService: DiverCollectionService()))
+        
         _viewModel = StateObject(
             wrappedValue: DiverProfileViewModel(
                 fetchDiverProfileUseCase: fetchDiverProfileUseCase,
+                fetchDIverCollectionUseCase: fetchDiverCollectionUsecase,
+                updateDiverMemoUseCase: updateDiverMemoUseCase,
                 diverId: diverId
             )
         )
@@ -33,11 +40,11 @@ struct DiverProfileView: View {
             if viewModel.state.isDataFetching {
                 ScrollView(showsIndicators: false) {
                     DiverProfileContentView(
-                        diverProfile: viewModel.state.diverProfile,
-                        history: $viewModel.history,
+                        memo: $viewModel.memo, diverProfile: viewModel.state.diverProfile,
+                        foundDate: viewModel.state.foundDate,
                         isSaveEnabled: viewModel.isSaveEnabled,
                         saveAction: {
-                            // 저장 액션 처리 예정
+                            viewModel.action(.saveMemo)
                         }
                     )
                 }
@@ -45,11 +52,11 @@ struct DiverProfileView: View {
             } else {
                 ScrollView(showsIndicators: false) {
                     DiverProfileContentView(
-                        diverProfile: viewModel.state.diverProfile,
-                        history: $viewModel.history,
+                        memo: $viewModel.memo, diverProfile: viewModel.state.diverProfile,
+                        foundDate: viewModel.state.foundDate,
                         isSaveEnabled: viewModel.isSaveEnabled,
                         saveAction: {
-                            // 저장 액션 처리 예정
+                            viewModel.action(.saveMemo)
                         }
                     )
                 }
@@ -62,5 +69,3 @@ struct DiverProfileView: View {
         
     }
 }
-
-

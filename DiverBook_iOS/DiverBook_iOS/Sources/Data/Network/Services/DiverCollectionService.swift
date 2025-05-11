@@ -5,7 +5,7 @@
 //  Created by 한건희 on 5/6/25.
 //
 
-final class DiverCollectionService: DiverCollectionServicable {
+final class DiverCollectionService: DiverCollectionServicable {    
     func fetchAllDiverList() async -> Result<BaseResponse<[DiverProfileResModel]>, RequestError> {
         return await request(
             endpoint: DiverCollectionEndpoint.allDiverList,
@@ -18,5 +18,9 @@ final class DiverCollectionService: DiverCollectionServicable {
             endpoint: DiverCollectionEndpoint.diverCollection,
             responseModel: BaseResponse<[CollectedDiverResModel]>.self
         )
+    }
+    
+    func updateDiverMemo(foundUserId: String, memo: String) async -> Result<BaseResponse<CollectedDiverResModel>, RequestError> {
+        return await request(endpoint: DiverCollectionEndpoint.updateDiverMemo(foundUserId: foundUserId, memo: memo), responseModel: BaseResponse<CollectedDiverResModel>.self)
     }
 }

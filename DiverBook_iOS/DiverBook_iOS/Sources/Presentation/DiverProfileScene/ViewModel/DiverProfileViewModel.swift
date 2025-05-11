@@ -12,26 +12,33 @@ final class DiverProfileViewModel: ViewModelable {
         var isDataFetching: Bool = false
         var diverProfile: DiverProfile = DiverProfile.unfoundMockData
         var diverId: String = ""
+        var foundDate: String = ""
     }
 
     enum Action {
         case viewAppeared
+        case memoChanged(String)
+        case saveMemo
     }
 
     @Published var state = State()
-    
-    @Published var history: String = ""
+    @Published var memo: String = ""
     @Published private(set) var isSaveEnabled: Bool = false
     
-    private var originalHistory: String = ""
-    
+    private var originalMemo: String = ""
     private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
+    private let fetchDiverCollectionUseCase: DiverCollectionUseCase
+    private let updateDiverMemoUseCase: UpdateDiverMemoUseCase
     
     init(
         fetchDiverProfileUseCase: FetchDiverProfileUseCase,
+        fetchDIverCollectionUseCase: DiverCollectionUseCase,
+        updateDiverMemoUseCase: UpdateDiverMemoUseCase,
         diverId: String
     ) {
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
+        self.fetchDiverCollectionUseCase = fetchDIverCollectionUseCase
+        self.updateDiverMemoUseCase = updateDiverMemoUseCase
         self.state.diverId = diverId
     }
 
@@ -41,7 +48,17 @@ final class DiverProfileViewModel: ViewModelable {
             state.isDataFetching = true
             Task {
                 await fetchDiverProfileById()
+                await fetchDiverCollectionInfo()
                 state.isDataFetching = false
+            }
+
+        case .memoChanged(let newMemo):
+            memo = newMemo
+            isSaveEnabled = (memo != originalMemo)
+
+        case .saveMemo:
+            Task {
+                await saveMemo()
             }
         }
     }
@@ -57,5 +74,33 @@ final class DiverProfileViewModel: ViewModelable {
         }
         
         state.isDataFetching = false
+    }
+    
+    private func fetchDiverCollectionInfo() async {
+        let result = await fetchDiverCollectionUseCase.executeFetchDiverCollection()
+        switch result {
+        case .success(let collection):
+            if let diverInfo = collection.first(where: { $0.foundUserId == state.diverId }) {
+                state.foundDate = diverInfo.foundDate
+                memo = diverInfo.memo
+                originalMemo = diverInfo.memo
+                isSaveEnabled = false
+            }
+        case .failure(let error):
+            print("다이버 도감 정보 조회 실패: \(error))")
+        }
+    }
+    
+    private func saveMemo() async {
+        let result = await updateDiverMemoUseCase.executeUpdateDiverMemoUseCase(foundUserId: state.diverId, memo: memo)
+        
+        switch result {
+        case .success(let updated):
+            originalMemo = updated.memo
+            isSaveEnabled = false
+            print("✅ 메모 저장 성공")
+        case .failure(let error):
+            print("❌ 메모 저장 실패: \(error)")
+        }
     }
 }
