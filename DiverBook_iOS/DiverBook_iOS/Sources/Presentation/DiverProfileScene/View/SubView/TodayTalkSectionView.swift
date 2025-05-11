@@ -38,6 +38,7 @@ struct TodayTalkSectionView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 55)
+        .padding(.horizontal, 4)
     }
 }
 
