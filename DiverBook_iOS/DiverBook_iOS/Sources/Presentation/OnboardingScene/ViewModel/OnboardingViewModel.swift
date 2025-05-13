@@ -30,6 +30,9 @@ class OnboardingViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .splashEnd:
+            if UserToken.accessToken != "" {
+                coordinator.push(.mainTab)
+            }
             state.isSplashing = false
         case .initialStartButtonTapped:
             AppSettings.hasLaunched = true

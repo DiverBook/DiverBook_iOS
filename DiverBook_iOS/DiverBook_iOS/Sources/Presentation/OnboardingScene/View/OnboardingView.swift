@@ -32,6 +32,7 @@ struct OnboardingView: View {
             Image("splash").resizable().frame(
                 width: UIScreen.main.bounds.width,
                 height: UIScreen.main.bounds.height)
+            .ignoresSafeArea()
             .opacity(self.viewModel.state.isSplashing ? 1 : 0)
             .animation(.spring(), value: self.viewModel.state.isSplashing)
         }
