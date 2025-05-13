@@ -84,5 +84,6 @@ struct MyProfileView: View {
         .onAppear {
             viewModel.action(.viewAppeared)
         }
+        .hideKeyboardOnTap()
     }
 }
