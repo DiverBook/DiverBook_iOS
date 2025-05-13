@@ -24,7 +24,7 @@ struct PasswordTextField: View {
             Button(action: {
                 isHidden.toggle()
             }, label: {
-                Image("visible")
+                Image(isHidden ? "revealed" : "visible")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 22)
