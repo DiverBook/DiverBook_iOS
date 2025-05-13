@@ -19,7 +19,6 @@ struct OnboardingView: View {
     var body: some View {
         ZStack {
             OnboardingContentView(viewModel: self.viewModel)
-            .padding(.horizontal, 20)
             
             InitialOnboardingStartView(
                 startButtonTapAction: {
