@@ -13,6 +13,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication
             .LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        DiverBookIOSFontFamily.registerAllCustomFonts()
         return true
     }
 }

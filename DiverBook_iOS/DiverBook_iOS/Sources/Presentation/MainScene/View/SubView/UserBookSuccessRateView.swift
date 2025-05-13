@@ -13,16 +13,15 @@ struct UserBookSuccessRateView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            #warning("폰트 size - 14, weight - semibold 폰트 필요")
             LeadingText(text: "도감 달성률")
-                .font(DiveFont.bodyMedium2)
+                .font(DiveFont.bodyMediumPretendard)
                 .padding(.bottom, 6)
             DiveRateBar(
                 rate: self.$viewModel.state.bookAttainmentRate
             )
             .padding(.bottom, 10)
             Text("다이버를 찾아 도감을 완성해보세요")
-                .font(DiveFont.bodyExtra1)
+                .font(DiveFont.bodyMedium2)
         }
         .frame(width: UIScreen.main.bounds.width - 92)
         .padding(.all, 20)
