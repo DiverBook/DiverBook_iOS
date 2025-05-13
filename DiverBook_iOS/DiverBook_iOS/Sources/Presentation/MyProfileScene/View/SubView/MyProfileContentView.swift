@@ -29,8 +29,6 @@ struct MyProfileContentView: View {
                 Text(myProfile.userName)
                     .font(DiveFont.headingH3)
 
-                Spacer().frame(height: 20)
-
                 TodayTalkSectionView(
                     mode: .editable(
                         binding: $todayTalk
