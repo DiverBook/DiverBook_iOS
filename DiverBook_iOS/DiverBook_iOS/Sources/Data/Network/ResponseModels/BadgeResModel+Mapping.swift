@@ -19,7 +19,7 @@ extension BadgeResponseModel {
         return Badge(
             code: code,
             name: name,
-            description: description,
+            description: description.replacingOccurrences(of: "\\n", with: "\n"),
             imageUrl: imageUrl,
             isCollected: isCollected
         )
