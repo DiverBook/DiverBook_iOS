@@ -46,7 +46,7 @@ class BadenRewardViewModel: ObservableObject {
                     await MainActor.run {
                         state = State(
                             badgeImage: matched.imageUrl,
-                            badgeName: matched.name,
+                            badgeName: matched.name
                         )
                     }
                 }
