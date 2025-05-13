@@ -58,6 +58,8 @@ struct CollectedBadgeView: View {
         .sheet(item: $selectedBadge) { badge in
             BadgeDetailView(badge: badge)
                 .presentationDetents([.height(300)])
+                .presentationDragIndicator(.visible)
+            
         }
     }
 }

@@ -47,6 +47,8 @@ struct BadgeDetailView: View {
                 .multilineTextAlignment(.center)
         }
         .padding()
+        .background(DiveColor.white)
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }
 
