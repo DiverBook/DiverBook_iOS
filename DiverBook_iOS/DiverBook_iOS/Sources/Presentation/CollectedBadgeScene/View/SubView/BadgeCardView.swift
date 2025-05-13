@@ -1,10 +1,3 @@
-//
-//  BadgeCardView.swift
-//  DiverBook_iOS
-//
-//  Created by jun on 4/26/25.
-//
-
 import SwiftUI
 
 struct BadgeCardView: View {
@@ -53,10 +46,32 @@ struct BadgeCardView: View {
             .frame(height: 150)
             .background(DiveColor.white)
             .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(DiveColor.stroke, lineWidth: 2)
-            )
+            .modifier(BadgeCardModifier(isCollected: badge.isCollected))
         }
+    }
+}
+
+struct BadgeCardModifier: ViewModifier {
+    let isCollected: Bool
+
+    func body(content: Content) -> some View {
+        if isCollected {
+            return content
+                .applyShadow(DiveShadow.shadow1)
+                .eraseToAnyView()
+        } else {
+            return content
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(DiveColor.stroke, lineWidth: 2)
+                )
+                .eraseToAnyView()
+        }
+    }
+}
+
+extension View {
+    func eraseToAnyView() -> AnyView {
+        AnyView(self)
     }
 }
