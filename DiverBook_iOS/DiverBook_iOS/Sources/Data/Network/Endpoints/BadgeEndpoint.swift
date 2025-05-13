@@ -10,6 +10,7 @@ import Foundation
 enum BadgeEndpoint: Endpoint {
     case getBadges
     case getUserBadges
+    case postUserBadge(badgeCode: String)
 }
 
 extension BadgeEndpoint {
@@ -19,15 +20,17 @@ extension BadgeEndpoint {
             return "/api/badges"
         case .getUserBadges:
             return "/api/user-badge"
+        case .postUserBadge(let badgeCode):
+            return "/api/user-badge/\(badgeCode)"
         }
     }
 
     var method: RequestMethod {
         switch self {
-        case .getBadges:
+        case .getBadges, .getUserBadges:
             return .get
-        case .getUserBadges:
-            return .get
+        case .postUserBadge:
+            return .post
         }
     }
 

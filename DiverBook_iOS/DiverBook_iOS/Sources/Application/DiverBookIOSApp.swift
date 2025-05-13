@@ -73,6 +73,8 @@ struct DiverBookIOSApp: App {
                                     mode: .edit
                                 )
                                     .toolbar(.hidden, for: .navigationBar)
+                            case .badgeReward(badgeCode: let badgeCode):
+                                BadgeRewardView(coordinator: self.coordinator, badgeCode: badgeCode)
                             }
                         })
             }
