@@ -102,38 +102,58 @@ class UserProfileSettingViewModel: ViewModelable {
             }
             
         case .validatePassword:
-            state.buttonAvailable = validatePassword(password: state.password)
+             state.buttonAvailable = validatePassword(password: state.password)
             
         case .validateShortBio:
-            self.action(.validatePreferredPlaces)
-            guard state.buttonAvailable else {
-                return
-            }
-            state.buttonAvailable = validateShortBio(shortBio: state.shortBio)
+            state.buttonAvailable = validateInfoSettingPage()
             if state.shortBio.count > 20 {
                 state.shortBio = String(state.shortBio.dropLast())
             }
             
         case .validatePreferredPlaces:
-            self.action(.validateInterests)
-            guard state.buttonAvailable else {
-                return
-            }
-            state.buttonAvailable = validateFrequentPlaces(frequentPlaces: state.preferredPlaces)
+            state.buttonAvailable = validateInfoSettingPage()
             
         case .validateInterests:
-            self.action(.validatePhoneNumber)
-            guard state.buttonAvailable else {
-                return
-            }
-            state.buttonAvailable = validateInterests(interests: state.interests)
+            state.buttonAvailable = validateInfoSettingPage()
             
         case .validatePhoneNumber:
-            state.buttonAvailable = validatePhoneNumber(state.phoneNumber)
+            state.buttonAvailable = validateInfoSettingPage()
             
         case .validatePreferredField:
-            state.buttonAvailable = validatePreferredField(preferredField: state.preferredField)
+            state.buttonAvailable = validateInfoSettingPage()
         }
+    }
+    
+    private func validateInfoSettingPage() -> Bool {
+        var isValid = false
+        if state.profileSettingPhase.phaseStep >=  3 {
+            isValid = validatePreferredField(preferredField: state.preferredField)
+            if !isValid {
+                return isValid
+            }
+        }
+        if state.profileSettingPhase.phaseStep >= 4 {
+            isValid = validatePhoneNumber(state.phoneNumber)
+            if !isValid {
+                return isValid
+            }
+        }
+        if state.profileSettingPhase.phaseStep >= 5 {
+            isValid = validateInterests(interests: state.interests)
+            if !isValid {
+                return isValid
+            }
+        }
+        if state.profileSettingPhase.phaseStep >= 6 {
+            isValid = validateFrequentPlaces(frequentPlaces: state.preferredPlaces)
+            if !isValid {
+                return isValid
+            }
+        }
+        if state.profileSettingPhase.phaseStep >= 7 {
+            isValid = validateShortBio(shortBio: state.shortBio)
+        }
+        return isValid
     }
     
     private func validatePassword(password: String) -> Bool {

@@ -41,7 +41,12 @@ struct UserProfileSettingView: View {
 
             if self.viewModel.state.profileSettingPhase
                 == .checkDetectedIDCardInfo {
-                CheckDetectedIDCardInfoView(diverProfileImageUrl: URL(string: viewModel.state.profileImageUrl ?? ""), nickname: self.nickName)
+                CheckDetectedIDCardInfoView(
+                    diverProfileImageUrl: URL(
+                        string: viewModel.state.profileImageUrl ?? ""
+                    ),
+                    nickname: self.nickName
+                )
             } else if viewModel.state.profileSettingPhase == .inputPassword {
                 SignUpPasswordInputView(viewModel: viewModel)
             } else {
