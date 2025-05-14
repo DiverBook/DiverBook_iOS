@@ -13,15 +13,16 @@ struct IDCardScannerContentView: View {
     var body: some View {
         VStack(spacing: 0) {
             TopBar()
-            Spacer()
-            Text("아카데미 출입증을 준비해주세요").font(DiveFont.headingH3)
-                .padding(.bottom, 5)
+            Spacer().frame(height: 60)
+            Text("아카데미 출입증을 준비해주세요").font(DiveFont.headingH3).bold()
+                .padding(.bottom, 10)
             Text("조명이나 배경에 따라 출입증이 제대로\n촬영되지 않을 수 있어요.")
                 .font(DiveFont.bodyMedium2)
+                .foregroundStyle(DiveColor.gray3)
                 .lineSpacing(3)
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 45)
-            Image("idcard-image").resizable().aspectRatio(contentMode: .fit).frame(width: 241)
+                .padding(.bottom, 55)
+            Image("idcard-image").resizable().aspectRatio(contentMode: .fit).frame(width: 240)
             Spacer()
             
             PrimaryButton(title: "촬영하기", coordinator: Coordinator()) {
@@ -74,4 +75,9 @@ struct IDCardScannerContentView: View {
             .opacity(viewModel.state.isScanning ? 1 : 0)
         )
     }
+}
+
+#Preview {
+    @Previewable @StateObject var coordinator = Coordinator()
+    IDCardScannerContentView(viewModel: IDCardScannerViewModel(coordinator: coordinator, checkUserActivationUseCase: DefaultCheckUserActivationUseCase(checkUserActivationRepository: DefaultCheckUserActivationRepository(checkUserActivationService: DiverBookCheckUserActivationService()))))
 }
