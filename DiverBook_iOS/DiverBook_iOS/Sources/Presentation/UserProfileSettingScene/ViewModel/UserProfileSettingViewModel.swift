@@ -9,11 +9,12 @@ import Combine
 import SwiftUI
 
 class UserProfileSettingViewModel: ViewModelable {
-    
     struct State {
         var authUseCase: AuthUseCase
+        var diverProfileUseCase: FetchDiverProfileUseCase
         var profileSettingPhase: ProfileSettingPhase = .checkDetectedIDCardInfo
         var nickName: String
+        var profileImageUrl: String?
         var password: String = ""
         var preferredField: PreferredField = .tech
         var phoneNumber: String = ""
@@ -25,6 +26,7 @@ class UserProfileSettingViewModel: ViewModelable {
     }
     
     enum Action {
+        case viewAppeared
         case nextButtonTapped
         case profileSettingEnd
         
@@ -40,13 +42,24 @@ class UserProfileSettingViewModel: ViewModelable {
     @ObservedObject var coordinator: Coordinator
     @Published var state: State
     
-    init(coordinator: Coordinator, authUseCase: AuthUseCase, nickName: String) {
+    init(coordinator: Coordinator, authUseCase: AuthUseCase, diverProfileUseCase: FetchDiverProfileUseCase, nickName: String) {
         self.coordinator = coordinator
-        self.state = State(authUseCase: authUseCase, nickName: nickName)
+        self.state = State(authUseCase: authUseCase, diverProfileUseCase: diverProfileUseCase, nickName: nickName)
     }
     
     func action(_ action: Action) {
         switch action {
+        case .viewAppeared:
+            Task {
+                let profileImageUrlResult = await state.diverProfileUseCase.executeFetchProfileImageUrl(nickName: state.nickName)
+                switch profileImageUrlResult {
+                case .success(let profileImageUrl):
+                    state.profileImageUrl = profileImageUrl
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            
         case .nextButtonTapped:
             guard let nextPhase = self.state.profileSettingPhase.nextPhase else {
                 self.action(.profileSettingEnd)
