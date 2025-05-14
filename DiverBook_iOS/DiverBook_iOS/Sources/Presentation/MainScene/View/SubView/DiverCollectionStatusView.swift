@@ -23,7 +23,7 @@ struct DiverCollectionStatusView: View {
                 diverTapAction: { diverId in
                     self.viewModel.action(.collectionDiverTapped(id: diverId))
             })
-            .padding(.horizontal, 38)
+            .padding(.horizontal, 28)
         }
     }
 }
