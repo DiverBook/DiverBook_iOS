@@ -19,6 +19,7 @@ struct InitialOnboardingStartView: View {
         ZStack(alignment: .bottom) {
             Image("initialOnboardingStart")
                 .resizable()
+                .ignoresSafeArea()
                 .aspectRatio(contentMode: .fill)
                 .frame(
                     width: UIScreen.main.bounds.width,
