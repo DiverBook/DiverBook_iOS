@@ -23,4 +23,24 @@ extension View {
             x: shadow.positionX,
             y: shadow.positionY)
     }
+    
+    func setBackGesture(dragOffset: GestureState<CGSize>, dismiss: @escaping () -> Void) -> some View {
+        self
+            .gesture(
+                DragGesture()
+                    .updating(dragOffset) { value, state, transaction in
+                        if (value.startLocation.x < 30 && value.translation.width > 100) {
+                            dismiss()
+                        }
+                    }
+            )
+    }
+}
+
+#Preview {
+    @GestureState var dragOffset: CGSize = .zero
+    Text("rfefe")
+        .setBackGesture(dragOffset: $dragOffset, dismiss: {
+            
+        })
 }

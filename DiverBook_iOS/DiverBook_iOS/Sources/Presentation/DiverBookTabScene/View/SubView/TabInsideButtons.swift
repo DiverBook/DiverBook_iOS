@@ -22,13 +22,11 @@ struct TabInsideButtons: View {
                     Spacer().frame(height: 10)
                     Image(systemName: "book").resizable().aspectRatio(
                         contentMode: .fit
-                    ).frame(width: 25).foregroundStyle(
-                        self.selectedTab == .diverBook ? .blue : .black
-                    )
+                    ).frame(width: 25)
+                        .foregroundStyle(self.selectedTab == .diverBook ? .blue : DiveColor.gray3)
                     .padding(.bottom, 5)
-                    Text("도감").font(.system(size: 12))
-                        .foregroundStyle(
-                            self.selectedTab == .diverBook ? .blue : .black)
+                    Text("도감").font(DiveFont.bodyExtra2).bold()
+                        .foregroundStyle(self.selectedTab == .diverBook ? .blue : DiveColor.gray3)
                     Spacer()
                 }
             })
@@ -46,10 +44,10 @@ struct TabInsideButtons: View {
                     ).frame(width: 25)
                         .padding(.bottom, 3)
                         .foregroundStyle(
-                            self.selectedTab == .setting ? .blue : .black)
-                    Text("설정").font(.system(size: 12))
+                            self.selectedTab == .setting ? .blue : DiveColor.gray3)
+                    Text("설정").font(DiveFont.bodyExtra2).bold()
                         .foregroundStyle(
-                            self.selectedTab == .setting ? .blue : .black)
+                            self.selectedTab == .setting ? .blue : DiveColor.gray3)
                     Spacer()
                 }
             })

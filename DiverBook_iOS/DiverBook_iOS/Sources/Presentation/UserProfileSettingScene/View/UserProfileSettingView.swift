@@ -23,6 +23,11 @@ struct UserProfileSettingView: View {
                         tokenService: DiverBookTokenService()
                     )
                 ),
+                diverProfileUseCase: DefaultFetchDiverProfileUseCase(
+                    repository: DefaultDiverRepository(
+                        diverProfileService: DiverProfileService()
+                    )
+                ),
                 nickName: nickName
             )
         )
@@ -36,7 +41,12 @@ struct UserProfileSettingView: View {
 
             if self.viewModel.state.profileSettingPhase
                 == .checkDetectedIDCardInfo {
-                CheckDetectedIDCardInfoView(nickname: self.nickName)
+                CheckDetectedIDCardInfoView(
+                    diverProfileImageUrl: URL(
+                        string: viewModel.state.profileImageUrl ?? ""
+                    ),
+                    nickname: self.nickName
+                )
             } else if viewModel.state.profileSettingPhase == .inputPassword {
                 SignUpPasswordInputView(viewModel: viewModel)
             } else {
@@ -75,5 +85,8 @@ struct UserProfileSettingView: View {
         .padding(.horizontal, 24)
         .background(Rectangle().fill(.white))
         .hideKeyboardOnTap()
+        .onAppear {
+            viewModel.action(.viewAppeared)
+        }
     }
 }
