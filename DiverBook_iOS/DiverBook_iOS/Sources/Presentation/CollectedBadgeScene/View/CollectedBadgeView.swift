@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CollectedBadgeView: View {
     @StateObject private var viewModel: CollectedBadgeViewModel
-    @State private var selectedBadge: Badge?
+    @State private var selectedBadge: BadgeMeta?
 
     init() {
         let fetchBadgesUseCase = DefaultFetchBadgesUseCase(

@@ -10,7 +10,7 @@ import SwiftUI
 
 class CollectedBadgeViewModel: ViewModelable {
     struct State {
-        var badges: [Badge] = []
+        var badges: [BadgeMeta] = []
     }
 
     enum Action {
@@ -39,22 +39,24 @@ class CollectedBadgeViewModel: ViewModelable {
                 let collectedBadgeCodes = try await fetchBadgesUseCase.executeFetchBadges()
                 let collectedSet = Set(collectedBadgeCodes)
 
-                let allBadges: [Badge] = BadgeMeta.allBadges.map { meta in
-                    Badge(
-                        code: meta.code,
-                        name: meta.name,
-                        description: meta.description,
-                        imageName: meta.imageName,
-                        isCollected: collectedSet.contains(meta.code)
+                let updatedBadges: [BadgeMeta] = BadgeMeta.allBadges.map { badge in
+                    BadgeMeta(
+                        code: badge.code,
+                        name: badge.name,
+                        rewardDescription: badge.rewardDescription,
+                        description: badge.description,
+                        condition: badge.condition,
+                        imageName: badge.imageName,
+                        isCollected: collectedSet.contains(badge.code) // ✅ 상태 업데이트 핵심
                     )
                 }
 
                 await MainActor.run {
-                    self.state.badges = allBadges
+                    self.state.badges = updatedBadges
                 }
 
             } catch {
-                print("❌ Failed to load all badges: \(error)")
+                print("❌ Failed to load collected badges: \(error)")
             }
         }
     }

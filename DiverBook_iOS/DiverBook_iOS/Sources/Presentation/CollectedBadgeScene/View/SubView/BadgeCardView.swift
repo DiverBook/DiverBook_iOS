@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BadgeCardView: View {
-    let badge: Badge
+    let badge: BadgeMeta
     let onTap: () -> Void
 
     var body: some View {
