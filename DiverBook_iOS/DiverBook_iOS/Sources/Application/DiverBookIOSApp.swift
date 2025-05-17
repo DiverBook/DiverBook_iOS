@@ -10,7 +10,6 @@ struct DiverBookIOSApp: App {
         WindowGroup {
             NavigationStack(path: self.$coordinator.path) {
                 OnboardingView(coordinator: self.coordinator)
-//                LoginView(nickname: "Jun", coordinator: self.coordinator)
                     .toolbar(.hidden, for: .navigationBar)
                     .navigationDestination(
                         for: Path.self,
