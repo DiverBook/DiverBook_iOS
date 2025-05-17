@@ -14,7 +14,7 @@ struct DiverCollectionStatusView: View {
     var body: some View {
         VStack(spacing: 0) {
             LeadingText(text: "도감 현황")
-                .font(DiveFont.headingH3)
+                .font(DiveFont.title2Emphasized)
                 .padding(.vertical, 20)
                 .padding(.horizontal, 38)
             
@@ -23,6 +23,7 @@ struct DiverCollectionStatusView: View {
                 diverTapAction: { diverId in
                     self.viewModel.action(.collectionDiverTapped(id: diverId))
             })
+            .padding(.horizontal, 28)
         }
     }
 }

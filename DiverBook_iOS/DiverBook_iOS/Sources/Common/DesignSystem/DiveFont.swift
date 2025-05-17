@@ -16,6 +16,8 @@ enum DiveFont {
     static let headingH2: Font = .system(size: 24, weight: .semibold)
     /// size: 20, weight: semibold
     static let headingH3: Font = .system(size: 20, weight: .semibold)
+    /// size: 16, weight: semibold
+    static let bookAttainment: Font = .system(size: 16, weight: .semibold)
     /// size: 18, weight: regular
     static let bodyLarge: Font = .system(size: 18, weight: .regular)
     /// size: 16, weight: regular
