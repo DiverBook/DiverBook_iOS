@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DiverProfileMode{
+enum DiverProfileMode {
     case create
     case edit
 }
@@ -28,7 +28,7 @@ final class DiverProfileViewModel: ViewModelable {
 
     @Published var state = State()
     @Published var memo: String = ""
-    @Published private(set) var isSaveEnabled: Bool = false
+    @Published private(set) var isSaveEnabled: Bool = true
 
     private let coordinator: Coordinator
     private let mode: DiverProfileMode
@@ -77,7 +77,6 @@ final class DiverProfileViewModel: ViewModelable {
 
         case .memoChanged(let newMemo):
             memo = newMemo
-            isSaveEnabled = (memo != originalMemo)
 
         case .saveMemo:
             Task {
@@ -111,7 +110,6 @@ final class DiverProfileViewModel: ViewModelable {
                     state.foundDate = formatFoundDate(diverInfo.foundDate)
                     memo = diverInfo.memo
                     originalMemo = diverInfo.memo
-                    isSaveEnabled = false
                 }
             case .failure(let error):
                 print("다이버 도감 정보 조회 실패: \(error))")
@@ -127,8 +125,6 @@ final class DiverProfileViewModel: ViewModelable {
 
         switch createResult {
         case .success(let updated):
-            originalMemo = updated.memo
-            isSaveEnabled = false
             print("✅ 메모 POST 성공")
 
             async let collectedResult = fetchDiverCollectionUseCase.executeFetchDiverCollection()
@@ -140,12 +136,9 @@ final class DiverProfileViewModel: ViewModelable {
                 let collectedCount = collections.count
                 let totalCount = allDivers.count
 
-                print("🧾 수집한 다이버 수: \(collectedCount), 전체 다이버 수: \(totalCount)")
-
                 if let badgeCode = badgeCodeForCollectionCount(collectedCount, totalCount: totalCount) {
                     do {
                         let collectedBadge = try await postUserBadgeUseCase.executePostUserBadge(badgeCode: badgeCode)
-                        print("🎉 뱃지 POST 성공 - 코드: \(collectedBadge)")
                         await MainActor.run {
                             coordinator.path = [.badgeReward(badgeCode: collectedBadge.badgeCode)]
                         }
@@ -176,16 +169,19 @@ final class DiverProfileViewModel: ViewModelable {
         )
 
         switch result {
-        case .success(let updated):
-            originalMemo = updated.memo
-            isSaveEnabled = false
-            coordinator.pop()
+        case .success:
+            await MainActor.run {
+                coordinator.pop()
+            }
             print("✅ PATCH 성공")
+            
         case .failure(let error):
-            print("❌ PATCH 실패: \(error)")
+            await MainActor.run {
+                print("❌ PATCH 실패: \(error)")
+            }
         }
     }
-
+    
     private func saveMemo() async {
         switch mode {
         case .create:
