@@ -12,6 +12,7 @@ class BadenRewardViewModel: ObservableObject {
     struct State {
         var badgeImage: String = ""
         var badgeName: String = ""
+        var rewardDesription: String = ""
     }
 
     enum Action {
@@ -47,7 +48,8 @@ class BadenRewardViewModel: ObservableObject {
                         await MainActor.run {
                             state = State(
                                 badgeImage: badgeMeta.code,
-                                badgeName: badgeMeta.name
+                                badgeName: badgeMeta.name,
+                                rewardDesription: badgeMeta.rewardDescription
                             )
                         }
                     }
