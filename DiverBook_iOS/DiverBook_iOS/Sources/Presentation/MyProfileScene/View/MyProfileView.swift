@@ -30,7 +30,7 @@ struct MyProfileView: View {
             )
         )
         
-        let fetchBadgeUseCase = DefaultFetchBadgesUseCase(badgeRepository: DefaultBadgeRepository(badgeService: BadgeService()))
+        let fetchBadgeUseCase = DefaultFetchBadgesUseCase(badgeRepository: DefaultBadgeRepository(badgeService: CollectedBadgeService()))
 
         _viewModel = StateObject(
             wrappedValue: MyProfileViewModel(

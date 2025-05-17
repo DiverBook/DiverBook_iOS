@@ -12,23 +12,11 @@ struct BadgeDetailView: View {
 
     var body: some View {
         VStack(alignment: .center) {
-            if let url = URL(string: badge.imageUrl), badge.isCollected {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                            .frame(width: 87, height: 124)
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 87, height: 124)
-                    case .failure:
-                        EmptyView()
-                    @unknown default:
-                        EmptyView()
-                    }
-                }
+            if badge.isCollected {
+                Image(badge.code)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 87, height: 124)
             } else {
                 Image("lock")
                     .resizable()
@@ -48,7 +36,7 @@ struct BadgeDetailView: View {
         }
         .padding()
         .background(DiveColor.white)
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }
 
@@ -58,7 +46,7 @@ struct BadgeDetailView: View {
             code: "B002",
             name: "수면 돌파",
             description: "벌써 10명의 다이버를 만났어요.  \n수면 위의 세상이 눈 앞에!",
-            imageUrl: "https://diverbook.sijun.dev/api/images/view/B007.png",
+            imageName: "B001",
             isCollected: true
         )
     )

@@ -7,27 +7,11 @@ struct BadgeCardView: View {
     var body: some View {
         Button(action: onTap) {
             VStack(spacing: 8) {
-                if badge.isCollected, let url = URL(string: badge.imageUrl) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                                .frame(width: 62, height: 88)
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 62, height: 88)
-                        case .failure:
-                            Image("lock")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 62, height: 88)
-                        @unknown default:
-                            EmptyView()
-                                .frame(width: 62, height: 88)
-                        }
-                    }
+                if badge.isCollected {
+                    Image(badge.code)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 62, height: 88)
                 } else {
                     Image("lock")
                         .resizable()
@@ -50,7 +34,6 @@ struct BadgeCardView: View {
         }
     }
 }
-
 struct BadgeCardModifier: ViewModifier {
     let isCollected: Bool
 

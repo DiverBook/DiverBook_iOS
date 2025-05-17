@@ -29,7 +29,7 @@ class BadenRewardViewModel: ObservableObject {
         badgeCode: String,
         fetchBadgesUseCase: FetchBadgesUseCase = DefaultFetchBadgesUseCase(
             badgeRepository: DefaultBadgeRepository(
-                badgeService: BadgeService()
+                badgeService: CollectedBadgeService()
             )
         )
     ) {
@@ -41,13 +41,15 @@ class BadenRewardViewModel: ObservableObject {
     func loadBadge() {
         Task {
             do {
-                let badges = try await fetchBadgesUseCase.executeFetchBadges()
-                if let matched = badges.first(where: { $0.code == badgeCode }) {
-                    await MainActor.run {
-                        state = State(
-                            badgeImage: matched.imageUrl,
-                            badgeName: matched.name,
-                        )
+                let collectedCodes = try await fetchBadgesUseCase.executeFetchBadges()
+                if collectedCodes.contains(badgeCode) {
+                    if let badgeMeta = BadgeMeta.allBadges.first(where: { $0.code == badgeCode }) {
+                        await MainActor.run {
+                            state = State(
+                                badgeImage: badgeMeta.code,
+                                badgeName: badgeMeta.name
+                            )
+                        }
                     }
                 }
             } catch {

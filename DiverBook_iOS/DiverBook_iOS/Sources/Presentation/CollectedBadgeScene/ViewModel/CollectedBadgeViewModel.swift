@@ -36,11 +36,23 @@ class CollectedBadgeViewModel: ViewModelable {
     private func loadAllBadges() {
         Task {
             do {
-                let allBadgeModels = try await fetchBadgesUseCase.executeFetchBadges()
-                let allBadges = allBadgeModels
+                let collectedBadgeCodes = try await fetchBadgesUseCase.executeFetchBadges()
+                let collectedSet = Set(collectedBadgeCodes)
+
+                let allBadges: [Badge] = BadgeMeta.allBadges.map { meta in
+                    Badge(
+                        code: meta.code,
+                        name: meta.name,
+                        description: meta.description,
+                        imageName: meta.imageName,
+                        isCollected: collectedSet.contains(meta.code)
+                    )
+                }
+
                 await MainActor.run {
                     self.state.badges = allBadges
                 }
+
             } catch {
                 print("❌ Failed to load all badges: \(error)")
             }

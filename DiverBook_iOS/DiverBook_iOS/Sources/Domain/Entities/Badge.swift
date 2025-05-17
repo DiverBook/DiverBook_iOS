@@ -11,7 +11,7 @@ struct Badge: Identifiable {
     let code: String
     let name: String
     let description: String
-    let imageUrl: String
+    let imageName: String
     let isCollected: Bool
     
     var id: String { code }

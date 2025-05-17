@@ -8,7 +8,6 @@
 import Foundation
 
 enum BadgeEndpoint: Endpoint {
-    case getBadges
     case getUserBadges
     case postUserBadge(badgeCode: String)
 }
@@ -16,8 +15,6 @@ enum BadgeEndpoint: Endpoint {
 extension BadgeEndpoint {
     var path: String {
         switch self {
-        case .getBadges:
-            return "/api/badges"
         case .getUserBadges:
             return "/api/user-badge"
         case .postUserBadge(let badgeCode):
@@ -27,7 +24,7 @@ extension BadgeEndpoint {
 
     var method: RequestMethod {
         switch self {
-        case .getBadges, .getUserBadges:
+        case .getUserBadges:
             return .get
         case .postUserBadge:
             return .post

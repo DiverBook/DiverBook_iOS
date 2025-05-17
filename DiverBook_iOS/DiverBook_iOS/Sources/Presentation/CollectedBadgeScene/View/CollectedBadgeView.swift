@@ -14,7 +14,7 @@ struct CollectedBadgeView: View {
     init() {
         let fetchBadgesUseCase = DefaultFetchBadgesUseCase(
             badgeRepository: DefaultBadgeRepository(
-                badgeService: BadgeService()
+                badgeService: CollectedBadgeService()
             )
         )
         
