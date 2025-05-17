@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct BadgeRewardView: View {
-    @StateObject private var viewModel: BadenRewardViewModel
+    @StateObject private var viewModel: BadgeRewardViewModel
 
     init(coordinator: Coordinator, badgeCode: String) {
         _viewModel = StateObject(
-            wrappedValue: BadenRewardViewModel(coordinator: coordinator, badgeCode: badgeCode)
+            wrappedValue: BadgeRewardViewModel(coordinator: coordinator, badgeCode: badgeCode)
         )
     }
 
