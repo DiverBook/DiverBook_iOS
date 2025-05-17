@@ -35,7 +35,7 @@ struct DiverProfileView: View {
             )
         )
         
-        let postUserBadgeUseCase = DefaultPostUserBadgeUseCase(badgeRepository: DefaultBadgeRepository(badgeService: BadgeService()))
+        let postUserBadgeUseCase = DefaultPostUserBadgeUseCase(badgeRepository: DefaultBadgeRepository(badgeService: CollectedBadgeService()))
 
         _viewModel = StateObject(
             wrappedValue: DiverProfileViewModel(

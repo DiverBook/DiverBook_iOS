@@ -8,27 +8,15 @@
 import SwiftUI
 
 struct BadgeDetailView: View {
-    let badge: Badge
+    let badge: BadgeMeta
 
     var body: some View {
         VStack(alignment: .center) {
-            if let url = URL(string: badge.imageUrl), badge.isCollected {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                            .frame(width: 87, height: 124)
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 87, height: 124)
-                    case .failure:
-                        EmptyView()
-                    @unknown default:
-                        EmptyView()
-                    }
-                }
+            if badge.isCollected {
+                Image(badge.code)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 87, height: 124)
             } else {
                 Image("lock")
                     .resizable()
@@ -41,23 +29,21 @@ struct BadgeDetailView: View {
                 .foregroundStyle(DiveColor.color5)
 
             Spacer().frame(height: 12)
+            
+            if badge.isCollected {
+                Text(badge.description)
+                    .font(DiveFont.bodyMedium2)
+                    .multilineTextAlignment(.center)
+            } else {
+                Text(badge.condition)
+                    .font(DiveFont.bodyMedium2)
+                    .multilineTextAlignment(.center)
+            }
 
-            Text(badge.description)
-                .font(DiveFont.bodyMedium2)
-                .multilineTextAlignment(.center)
         }
         .padding()
+        .background(DiveColor.white)
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }
 
-#Preview {
-    BadgeDetailView(
-        badge: Badge(
-            code: "B002",
-            name: "수면 돌파",
-            description: "벌써 10명의 다이버를 만났어요.  \n수면 위의 세상이 눈 앞에!",
-            imageUrl: "https://diverbook.sijun.dev/api/images/view/B007.png",
-            isCollected: true
-        )
-    )
-}

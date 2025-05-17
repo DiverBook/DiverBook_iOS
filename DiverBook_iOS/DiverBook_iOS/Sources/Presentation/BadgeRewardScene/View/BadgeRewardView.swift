@@ -8,31 +8,27 @@
 import SwiftUI
 
 struct BadgeRewardView: View {
-    @StateObject private var viewModel: BadenRewardViewModel
+    @StateObject private var viewModel: BadgeRewardViewModel
 
     init(coordinator: Coordinator, badgeCode: String) {
         _viewModel = StateObject(
-            wrappedValue: BadenRewardViewModel(coordinator: coordinator, badgeCode: badgeCode)
+            wrappedValue: BadgeRewardViewModel(coordinator: coordinator, badgeCode: badgeCode)
         )
     }
 
     var body: some View {
         VStack {
             Spacer()
-
-            if let imageURL = URL(string: viewModel.state.badgeImage) {
-                AsyncImage(url: imageURL) { image in
-                    image.resizable()
-                         .scaledToFit()
-                         .frame(width: 125, height: 177)
-                         .applyShadow(DiveShadow.shadow1)
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 125, height: 177)
-                }
-            }
+            
+            Image(viewModel.state.badgeImage)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 125, height: 177)
+                .applyShadow(DiveShadow.shadow1)
 
             VStack(spacing: 4) {
+                Text("\(viewModel.state.rewardDesription)")
+                
                 HStack {
                     Text("'\(viewModel.state.badgeName)'")
                         .foregroundStyle(DiveColor.color6)

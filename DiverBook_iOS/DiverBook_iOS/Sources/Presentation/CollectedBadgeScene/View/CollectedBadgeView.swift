@@ -9,15 +9,17 @@ import SwiftUI
 
 struct CollectedBadgeView: View {
     @StateObject private var viewModel: CollectedBadgeViewModel
-    @State private var selectedBadge: Badge?
+    @State private var selectedBadge: BadgeMeta?
+    @GestureState var dragOffset: CGSize = .zero
+    @Environment(\.dismiss) var dismiss
 
     init() {
         let fetchBadgesUseCase = DefaultFetchBadgesUseCase(
             badgeRepository: DefaultBadgeRepository(
-                badgeService: BadgeService()
+                badgeService: CollectedBadgeService()
             )
         )
-        
+
         _viewModel = StateObject(
             wrappedValue: CollectedBadgeViewModel(
                 fetchBadgesUseCase: fetchBadgesUseCase
@@ -41,9 +43,13 @@ struct CollectedBadgeView: View {
             }
             .padding(.horizontal, 24)
 
-            ScrollView {
+            VStack {
                 LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(viewModel.state.badges.sorted(by: { $0.code < $1.code }), id: \.code) { badge in
+                    ForEach(
+                        viewModel.state.badges.sorted(by: { $0.code < $1.code }
+                        ),
+                        id: \.code
+                    ) { badge in
                         BadgeCardView(badge: badge) {
                             selectedBadge = badge
                         }
@@ -52,12 +58,17 @@ struct CollectedBadgeView: View {
                 .padding()
                 .frame(maxWidth: .infinity)
             }
+            
+            Spacer()
 
         }
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
         .frame(maxHeight: .infinity)
         .sheet(item: $selectedBadge) { badge in
             BadgeDetailView(badge: badge)
                 .presentationDetents([.height(300)])
+                .presentationDragIndicator(.visible)
+
         }
     }
 }

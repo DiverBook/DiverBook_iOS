@@ -123,10 +123,9 @@ final class MyProfileViewModel: ViewModelable {
     
     private func fetchBadgeCount() async {
         do {
-            let badges = try await fetchBadgeUseCase.executeFetchBadges()
-            let count = badges.filter { $0.isCollected }.count
+            let collectedBadgeCodes = try await fetchBadgeUseCase.executeFetchBadges()
             await MainActor.run {
-                state.badgeCount = count
+                state.badgeCount = collectedBadgeCodes.count
             }
         } catch {
             print("❌ 뱃지 수 불러오기 실패: \(error)")

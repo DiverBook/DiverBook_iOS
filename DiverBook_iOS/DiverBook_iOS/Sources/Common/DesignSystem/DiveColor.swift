@@ -21,5 +21,6 @@ enum DiveColor {
     static let gray2: Color = Color("Gray2")
     static let gray3: Color = Color("Gray3")
     static let gray4: Color = Color("Gray4")
+    static let stroke: Color = Color("Stroke")
 }
 
