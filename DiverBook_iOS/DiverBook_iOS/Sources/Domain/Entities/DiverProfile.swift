@@ -25,13 +25,13 @@ struct DiverProfile: Hashable {
 extension DiverProfile {
     static let mockData = DiverProfile(
         id: "",
-        userName: "Air",
-        divisions: "테크",
-        phoneNumber: "010-1234-1234",
-        interests: "사진, 공기",
-        places: "C5",
-        about: "공기는 눈에 보이지 않지만 어디에나 있습니다.",
-        profileImageUrlString: "https://diverbook.sijun.dev/api/images/view/Air.png"
+        userName: "",
+        divisions: "",
+        phoneNumber: "",
+        interests: "",
+        places: "",
+        about: "",
+        profileImageUrlString: ""
     )
     
     static let unfoundMockData = DiverProfile(
