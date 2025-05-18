@@ -33,6 +33,7 @@ enum Path: Hashable {
     case unfoundDiver(nickname: String)
     case searchResult(diverProfile: DiverProfile)
     case startConversation(id: String)
+    case checkConversation(id: String)
     case finishConversation(id: String)
     case myProfile
     case diverProfile(id: String)

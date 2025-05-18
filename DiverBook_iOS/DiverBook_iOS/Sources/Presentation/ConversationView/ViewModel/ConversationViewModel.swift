@@ -41,7 +41,7 @@ final class ConversationViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .finishConversation(let diverID):
-            coordinator.push(.finishConversation(id: diverID))
+            coordinator.push(.checkConversation(id: diverID))
         case .selectCard(let index):
             handleSelectCard(index: index)
         case .dismissCard:

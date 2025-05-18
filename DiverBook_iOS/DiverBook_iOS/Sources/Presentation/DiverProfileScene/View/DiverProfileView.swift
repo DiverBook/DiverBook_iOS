@@ -29,12 +29,6 @@ struct DiverProfileView: View {
             )
         )
         
-        let saveDiverMemoUseCase = DefaultSaveDiverMemoUseCase(
-            diverCollectionRepository: DefaultDiverCollectionRepository(
-                diverCollectionService: DiverCollectionService()
-            )
-        )
-        
         let postUserBadgeUseCase = DefaultPostUserBadgeUseCase(badgeRepository: DefaultBadgeRepository(badgeService: BadgeService()))
 
         _viewModel = StateObject(
@@ -44,7 +38,6 @@ struct DiverProfileView: View {
                 fetchDiverProfileUseCase: fetchDiverProfileUseCase,
                 fetchDIverCollectionUseCase: fetchDiverCollectionUsecase,
                 updateDiverMemoUseCase: updateDiverMemoUseCase,
-                saveDiverMemoUseCase: saveDiverMemoUseCase,
                 postUserBadgeUseCase: postUserBadgeUseCase,
                 diverId: diverId
             )
