@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DiverSearchResultView: View {
     @StateObject var viewModel: DiverSearchResultViewModel
+    @GestureState var dragOffset: CGSize = .zero
     @Environment(\.dismiss) var dismiss
         
     let diverProfile: DiverProfile
@@ -70,5 +71,7 @@ struct DiverSearchResultView: View {
             }
         }
         .padding(.horizontal, 24)
+        .background(.white)
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
     }
 }

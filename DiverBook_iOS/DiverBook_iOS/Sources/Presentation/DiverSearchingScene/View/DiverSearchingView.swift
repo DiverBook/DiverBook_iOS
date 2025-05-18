@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DiverSearchingView: View {
     @StateObject var viewModel: DiverSearchingViewModel
+    @GestureState var dragOffset: CGSize = .zero
+    @Environment(\.dismiss) var dismiss
     
     init(coordinator: Coordinator) {
         let collectionUseCase = DefaultDiverCollectionUseCase(
@@ -32,8 +34,6 @@ struct DiverSearchingView: View {
             )
         )
     }
-    
-    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack(spacing: 10) {
@@ -66,5 +66,7 @@ struct DiverSearchingView: View {
         .onDisappear {
             viewModel.stopSearching()
         }
+        .background(.white)
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
     }
 }
