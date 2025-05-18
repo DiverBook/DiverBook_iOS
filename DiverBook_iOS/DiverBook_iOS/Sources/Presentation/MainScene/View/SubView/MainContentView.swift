@@ -67,6 +67,7 @@ struct MainContentView: View {
                 }
             }
             .ignoresSafeArea(edges: [.top])
+            .disabled(viewModel.state.tapDisabled)
         }
         .onAppear {
             viewModel.action(.viewAppeared)

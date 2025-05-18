@@ -10,6 +10,7 @@ import SwiftUI
 
 final class MainViewModel: ViewModelable {
     struct State {
+        var tapDisabled: Bool = false
         var isDataFetching: Bool = false
         var firstFetched: Bool = false
         var myProfile: DiverProfile = DiverProfile.mockData
@@ -57,6 +58,7 @@ final class MainViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .viewAppeared:
+            state.tapDisabled = false
             if !state.firstFetched || LocalUserData.hasNewDiverProfile {
                 state.isDataFetching = true
                 Task {
@@ -73,6 +75,7 @@ final class MainViewModel: ViewModelable {
         case .profileSettingButtonTapped:
             coordinator.push(.myProfile)
         case .collectionDiverTapped(let diverId):
+            state.tapDisabled = true
             if state.isFoundedDiver[diverId] ?? false {
                 coordinator.push(.diverProfile(id: diverId))
             }
