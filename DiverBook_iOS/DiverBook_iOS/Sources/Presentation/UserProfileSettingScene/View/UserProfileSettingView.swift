@@ -10,6 +10,7 @@ import SwiftUI
 
 struct UserProfileSettingView: View {
     @StateObject private var viewModel: UserProfileSettingViewModel
+    @GestureState var dragOffset: CGSize = .zero
     var nickName: String
 
     init(nickName: String, coordinator: Coordinator) {
@@ -33,6 +34,7 @@ struct UserProfileSettingView: View {
         )
     }
 
+    @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             TopBar()
@@ -84,6 +86,10 @@ struct UserProfileSettingView: View {
         }
         .padding(.horizontal, 24)
         .background(Rectangle().fill(.white))
+        .setBackGesture(
+            dragOffset: $dragOffset,
+            dismiss: { dismiss() }
+        )
         .hideKeyboardOnTap()
         .onAppear {
             viewModel.action(.viewAppeared)
