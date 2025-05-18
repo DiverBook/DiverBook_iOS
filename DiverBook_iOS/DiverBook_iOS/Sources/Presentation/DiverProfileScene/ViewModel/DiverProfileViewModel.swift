@@ -86,7 +86,9 @@ final class DiverProfileViewModel: ViewModelable {
     }
 
     private func fetchDiverProfileById() async {
-        let result = await fetchDiverProfileUseCase.executeFetchProfile(id: state.diverId)
+        let result = await fetchDiverProfileUseCase.executeFetchProfile(
+            id: state.diverId
+        )
 
         await MainActor.run {
             switch result {
@@ -101,16 +103,24 @@ final class DiverProfileViewModel: ViewModelable {
     }
 
     private func fetchDiverCollectionInfo() async {
-        let result = await fetchDiverCollectionUseCase.executeFetchDiverCollection()
+        let result =
+            await fetchDiverCollectionUseCase.executeFetchDiverCollection()
 
         await MainActor.run {
             switch result {
             case .success(let collection):
-                if let diverInfo = collection.first(where: { $0.foundUserId == state.diverId }) {
-                    state.foundDate = formatFoundDate(diverInfo.foundDate)
+                if let diverInfo = collection.first(where: {
+                    $0.foundUserId == state.diverId
+                }) {
+                    state.foundDate = DateFormatterUtil.formatFoundDate(
+                        diverInfo.foundDate
+                    )
                     memo = diverInfo.memo
                     originalMemo = diverInfo.memo
+                } else if mode == .create {
+                    state.foundDate = DateFormatterUtil.formatToday()
                 }
+
             case .failure(let error):
                 print("다이버 도감 정보 조회 실패: \(error))")
             }
@@ -118,17 +128,20 @@ final class DiverProfileViewModel: ViewModelable {
     }
 
     private func createDiverMemo() async {
-        let createResult = await saveDiverMemoUseCase.executeSaveDiverMemoUseCase(
-            foundUserId: state.diverId,
-            memo: memo
-        )
+        let createResult =
+            await saveDiverMemoUseCase.executeSaveDiverMemoUseCase(
+                foundUserId: state.diverId,
+                memo: memo
+            )
 
         switch createResult {
         case .success(let updated):
             print("✅ 메모 POST 성공")
 
-            async let collectedResult = fetchDiverCollectionUseCase.executeFetchDiverCollection()
-            async let allDiverResult = fetchDiverCollectionUseCase.executeFetchAllDiverList()
+            async let collectedResult =
+                fetchDiverCollectionUseCase.executeFetchDiverCollection()
+            async let allDiverResult =
+                fetchDiverCollectionUseCase.executeFetchAllDiverList()
 
             do {
                 let collections = try await collectedResult.get()
@@ -136,11 +149,21 @@ final class DiverProfileViewModel: ViewModelable {
                 let collectedCount = collections.count
                 let totalCount = allDivers.count
 
-                if let badgeCode = badgeCodeForCollectionCount(collectedCount, totalCount: totalCount) {
+                if let badgeCode = badgeCodeForCollectionCount(
+                    collectedCount,
+                    totalCount: totalCount
+                ) {
                     do {
-                        let collectedBadge = try await postUserBadgeUseCase.executePostUserBadge(badgeCode: badgeCode)
+                        let collectedBadge =
+                            try await postUserBadgeUseCase.executePostUserBadge(
+                                badgeCode: badgeCode
+                            )
                         await MainActor.run {
-                            coordinator.path = [.badgeReward(badgeCode: collectedBadge.badgeCode)]
+                            coordinator.path = [
+                                .badgeReward(
+                                    badgeCode: collectedBadge.badgeCode
+                                )
+                            ]
                         }
                         return
                     } catch {
@@ -174,14 +197,14 @@ final class DiverProfileViewModel: ViewModelable {
                 coordinator.pop()
             }
             print("✅ PATCH 성공")
-            
+
         case .failure(let error):
             await MainActor.run {
                 print("❌ PATCH 실패: \(error)")
             }
         }
     }
-    
+
     private func saveMemo() async {
         switch mode {
         case .create:
@@ -191,7 +214,10 @@ final class DiverProfileViewModel: ViewModelable {
         }
     }
 
-    private func badgeCodeForCollectionCount(_ collectedCount: Int, totalCount: Int) -> String? {
+    private func badgeCodeForCollectionCount(
+        _ collectedCount: Int,
+        totalCount: Int
+    ) -> String? {
         switch collectedCount {
         case 1: return "B001"
         case 10: return "B002"
@@ -199,26 +225,9 @@ final class DiverProfileViewModel: ViewModelable {
         case 30: return "B004"
         case 40: return "B005"
         case 50: return "B006"
-        case _ where collectedCount == totalCount: return "B007"
+        case 60: return "B007"
+        case _ where collectedCount == totalCount: return "B008"
         default: return nil
         }
-    }
-
-    private func formatFoundDate(_ raw: String) -> String {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-        inputFormatter.locale = Locale(identifier: "en_US_POSIX")
-        inputFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-
-        guard let date = inputFormatter.date(from: raw) else {
-            return "-"
-        }
-
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "yy. MM. dd"
-        outputFormatter.locale = Locale(identifier: "ko_KR")
-        outputFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-
-        return outputFormatter.string(from: date)
     }
 }
