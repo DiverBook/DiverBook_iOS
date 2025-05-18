@@ -34,6 +34,7 @@ final class DiverSearchingViewModel: ViewModelable {
         self.diverProfile = DiverProfile.mockData
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
         self.fetchRefreshTokenUseCase = fetchRefreshTokenUseCase
+        dataTransferManager.currentMode = .diverSearch
     }
     
     func action(_ action: Action) {
