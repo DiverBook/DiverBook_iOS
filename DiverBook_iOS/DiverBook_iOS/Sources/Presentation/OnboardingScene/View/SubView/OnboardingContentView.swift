@@ -19,6 +19,7 @@ struct OnboardingContentView: View {
             PrimaryButton(title: "등록하기", coordinator: Coordinator()) {
                 self.viewModel.action(.signUpButtonTapped)
             }
+            .padding(.horizontal, 24)
             .padding(.bottom, 50)
         }
     }

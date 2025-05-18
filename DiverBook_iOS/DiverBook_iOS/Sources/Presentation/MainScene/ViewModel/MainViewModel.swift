@@ -76,7 +76,10 @@ final class MainViewModel: ViewModelable {
                 coordinator.push(.diverProfile(id: diverId))
             }
             else {
-                coordinator.push(.unfoundDiver)
+                if let diverProfile = state.diverProfiles.first(where: { $0.id == diverId }) {
+                    let nickname = diverProfile.userName
+                    coordinator.push(.unfoundDiver(nickname: nickname))
+                }
             }
         }
     }

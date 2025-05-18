@@ -28,6 +28,7 @@ struct DiverProfileContentView: View {
                     text: diverProfile.about
                 )
             )
+            .padding(.top, -10)
 
             ProfileDetailsInfoView(
                 division: .readOnly(

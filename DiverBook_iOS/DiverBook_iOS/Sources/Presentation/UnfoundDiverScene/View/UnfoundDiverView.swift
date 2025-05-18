@@ -10,8 +10,11 @@ import SwiftUI
 struct UnfoundDiverView: View {
     @StateObject var viewModel: UnfoundDiverViewModel
     
-    init(coordinator: Coordinator) {
+    let diverName: String
+    
+    init(coordinator: Coordinator, diverName: String) {
         _viewModel = StateObject(wrappedValue: UnfoundDiverViewModel(coordinator: coordinator))
+        self.diverName = diverName
     }
     
     var body: some View {
@@ -20,7 +23,7 @@ struct UnfoundDiverView: View {
             Spacer()
             PrimaryProfile(
                 imageURL: DiverProfile.unfoundMockData.profileImageUrl,
-                nickname: DiverProfile.unfoundMockData.userName,
+                nickname: diverName,
                 style: .unfound
             )
             Text("아직 발견되지 않은 다이버입니다.")
@@ -34,9 +37,4 @@ struct UnfoundDiverView: View {
         }
         .padding(.horizontal, 24)
     }
-}
-
-#Preview {
-    @Previewable @StateObject var coordinator = Coordinator()
-    UnfoundDiverView(coordinator: coordinator)
 }
