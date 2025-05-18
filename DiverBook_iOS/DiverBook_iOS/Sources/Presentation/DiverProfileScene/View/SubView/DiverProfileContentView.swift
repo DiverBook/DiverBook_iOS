@@ -44,8 +44,8 @@ struct DiverProfileContentView: View {
                     text: diverProfile.places
                 )
             )
-
-            Spacer().frame(height: 12)
+            
+            Divider()
 
             DiverHistorySectionView(history: $memo)
 
@@ -56,7 +56,6 @@ struct DiverProfileContentView: View {
                 coordinator: Coordinator(),
                 action: saveAction
             )
-//            .padding(.bottom, 16)
         }
     }
 }

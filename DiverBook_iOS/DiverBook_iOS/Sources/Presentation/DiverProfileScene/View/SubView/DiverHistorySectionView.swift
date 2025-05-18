@@ -14,7 +14,7 @@ struct DiverHistorySectionView: View {
     var body: some View {
         VStack(spacing: 14) {
             HStack {
-                Text("다이버에 대한 기록을 남겨주세요!")
+                Text("다이버에 대한 기록을 남겨보세요")
                     .font(DiveFont.bodyLarge)
                     .foregroundStyle(DiveColor.gray3)
                 Spacer()
