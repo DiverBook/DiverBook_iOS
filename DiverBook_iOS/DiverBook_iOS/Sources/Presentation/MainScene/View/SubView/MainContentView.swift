@@ -16,7 +16,9 @@ struct MainContentView: View {
                 if viewModel.state.isDataFetching {
                     VStack(spacing: 0) {
                         MainTopInfoView(viewModel: self.viewModel)
-                            .background(DiveColor.color6)
+                            .padding(.horizontal, 13)
+                            .padding(.top, 100)
+                            .padding(.bottom, 40)
                             .id("top")
                         DiverCollectionStatusView(viewModel: self.viewModel)
                             .padding(.bottom, 60)
@@ -41,7 +43,8 @@ struct MainContentView: View {
                 else {
                     VStack(spacing: 0) {
                         MainTopInfoView(viewModel: self.viewModel)
-                            .background(DiveColor.color6)
+                            .padding(.top, 100)
+                            .padding(.bottom, 40)
                             .id("top")
                         DiverCollectionStatusView(viewModel: self.viewModel)
                             .padding(.bottom, 60)

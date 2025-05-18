@@ -13,18 +13,17 @@ struct MainTopInfoView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            LeadingText(text: "다이버 도감")
-                .font(DiveFont.title2Emphasized)
-                .foregroundStyle(.white)
-                .padding(.horizontal, 32)
-                .padding(.bottom, 20)
-                .padding(.top, 70)
             MainDiverInfoView(viewModel: self.viewModel)
                 .padding(.horizontal, 24)
                 .padding(.bottom, 24)
             UserBookSuccessRateView(viewModel: self.viewModel)
                 .padding(.horizontal, 24)
-                .padding(.bottom, 31)
         }
+        .padding(.horizontal, 13)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(DiveColor.color6)
+                .frame(width: UIScreen.main.bounds.width - 24, height: 270)
+        )
     }
 }
