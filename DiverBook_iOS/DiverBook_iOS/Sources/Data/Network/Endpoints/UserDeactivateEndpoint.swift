@@ -8,13 +8,10 @@
 import Foundation
 
 enum UserDeactivateEndpoint: Endpoint {
-    case deactivate
+    case deactivate(refreshToken: String)
 
     var path: String {
-        switch self {
-        case .deactivate:
-            return "/api/users/me/deactivate"
-        }
+        return "/api/users/me/deactivate"
     }
 
     var method: RequestMethod {
@@ -26,22 +23,18 @@ enum UserDeactivateEndpoint: Endpoint {
     }
 
     var header: [String: String]? {
-        switch self {
-        default:
-            return [
-                "accept": "*/*",
-                "Content-Type": "application/json",
-                "Authorization":
-                    "\(UserToken.tokenType) \(UserToken.accessToken)",
-            ]
-        }
+        return [
+            "accept": "*/*",
+            "Content-Type": "application/json",
+            "Authorization":
+                "\(UserToken.tokenType) \(UserToken.accessToken)",
+        ]
     }
 
     var body: [String: String]? {
         switch self {
-        default:
-            return nil
+        case .deactivate(let refreshToken):
+            return ["refreshToken": refreshToken]
         }
     }
-
 }
