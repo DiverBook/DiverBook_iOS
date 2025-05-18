@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DiverProfileView: View {
+    @GestureState private var dragOffset: CGSize = .zero
+    @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: DiverProfileViewModel
     @StateObject private var keyboardObserver = KeyboardObserver()
 
@@ -29,14 +31,18 @@ struct DiverProfileView: View {
                 diverCollectionService: DiverCollectionService()
             )
         )
-        
+
         let saveDiverMemoUseCase = DefaultSaveDiverMemoUseCase(
             diverCollectionRepository: DefaultDiverCollectionRepository(
                 diverCollectionService: DiverCollectionService()
             )
         )
-        
-        let postUserBadgeUseCase = DefaultPostUserBadgeUseCase(badgeRepository: DefaultBadgeRepository(badgeService: CollectedBadgeService()))
+
+        let postUserBadgeUseCase = DefaultPostUserBadgeUseCase(
+            badgeRepository: DefaultBadgeRepository(
+                badgeService: CollectedBadgeService()
+            )
+        )
 
         _viewModel = StateObject(
             wrappedValue: DiverProfileViewModel(
@@ -84,12 +90,21 @@ struct DiverProfileView: View {
                     }
                     .safeAreaInset(edge: .bottom) {
                         Color.clear
-                            .frame(height: max(0, keyboardObserver.keyboardHeight - 50))
+                            .frame(
+                                height: max(
+                                    0,
+                                    keyboardObserver.keyboardHeight - 50
+                                )
+                            )
                     }
-                    .animation(.easeOut(duration: 0.1), value: keyboardObserver.keyboardHeight)
+                    .animation(
+                        .easeOut(duration: 0.1),
+                        value: keyboardObserver.keyboardHeight
+                    )
                 }
             }
         }
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
         .padding(.horizontal, 24)
         .onAppear {
             viewModel.action(.viewAppeared)
@@ -100,4 +115,3 @@ struct DiverProfileView: View {
         .hideKeyboardOnTap()
     }
 }
-
