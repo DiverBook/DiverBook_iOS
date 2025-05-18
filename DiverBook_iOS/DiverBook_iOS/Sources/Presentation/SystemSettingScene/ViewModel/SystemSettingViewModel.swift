@@ -60,6 +60,7 @@ final class SystemSettingViewModel: ViewModelable {
                 switch result {
                 case .success:
                     print("✅ 회원 탈퇴 성공")
+                    UserToken.clear()
                     await MainActor.run {
                         coordinator.path = [.splash]
                     }
