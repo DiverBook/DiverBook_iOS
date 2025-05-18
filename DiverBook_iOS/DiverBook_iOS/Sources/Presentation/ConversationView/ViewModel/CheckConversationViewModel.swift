@@ -70,6 +70,7 @@ final class CheckConversationViewModel: ViewModelable {
         switch createResult {
         case .success(let updated):
             print("✅ 새로운 도감 정보 저장 성공")
+            LocalUserData.hasNewDiverProfile = true
             await MainActor.run {
                 coordinator.path = [.mainTab]
             }
