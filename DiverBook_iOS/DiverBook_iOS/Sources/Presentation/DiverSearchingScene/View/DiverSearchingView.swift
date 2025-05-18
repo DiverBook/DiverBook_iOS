@@ -11,6 +11,11 @@ struct DiverSearchingView: View {
     @StateObject var viewModel: DiverSearchingViewModel
     
     init(coordinator: Coordinator) {
+        let collectionUseCase = DefaultDiverCollectionUseCase(
+            diverCollectionRepository: DefaultDiverCollectionRepository(
+                diverCollectionService: DiverCollectionService()
+            )
+        )
         _viewModel = StateObject(
             wrappedValue: DiverSearchingViewModel(
                 coordinator: coordinator,
@@ -23,7 +28,7 @@ struct DiverSearchingView: View {
                         authService: DiverBookAuthService(),
                         tokenService: DiverBookTokenService()
                     )
-                )
+                ), collectionUseCase: collectionUseCase
             )
         )
     }

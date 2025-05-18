@@ -41,9 +41,12 @@ struct DiverBookIOSApp: App {
                             case .searchingDiver:
                                 DiverSearchingView(coordinator: self.coordinator)
                                     .toolbar(.hidden, for: .navigationBar)
-                            case .searchResult(diverProfile: let diverProfile):
+                            case .searchResult(
+                                diverProfile: let diverProfile,
+                                hasBeenFound: let hasBeenFound):
                                 DiverSearchResultView(
                                     diverProfile: diverProfile,
+                                    hasBeenFound: hasBeenFound,
                                     coordinator: self.coordinator
                                 )
                                     .toolbar(.hidden, for: .navigationBar)
