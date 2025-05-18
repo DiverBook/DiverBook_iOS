@@ -8,5 +8,7 @@
 import Foundation
 
 protocol UserDeactivateServicable: HTTPClient {
-    func deactivateUser() async -> Result<BaseResponse<DiverProfileResModel>, RequestError>
+    func deactivateUser(refreshToken: String) async -> Result<
+        BaseResponse<DiverProfileResModel>, RequestError
+    >
 }

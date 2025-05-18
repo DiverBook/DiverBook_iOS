@@ -8,9 +8,9 @@
 import Foundation
 
 final class UserDeactivateService: UserDeactivateServicable {
-    func deactivateUser() async -> Result<BaseResponse<DiverProfileResModel>, RequestError> {
+    func deactivateUser(refreshToken: String) async -> Result<BaseResponse<DiverProfileResModel>, RequestError> {
         return await request(
-            endpoint: UserDeactivateEndpoint.deactivate,
+            endpoint: UserDeactivateEndpoint.deactivate(refreshToken: refreshToken),
             responseModel: BaseResponse<DiverProfileResModel>.self
         )
     }

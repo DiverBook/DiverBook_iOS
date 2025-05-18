@@ -8,5 +8,5 @@
 import Foundation
 
 protocol UserDeactivateRepository {
-    func deactivateUser() async -> Result<DiverProfile, Error>
+    func deactivateUser(refreshToken: String) async -> Result<DiverProfile, Error>
 }
