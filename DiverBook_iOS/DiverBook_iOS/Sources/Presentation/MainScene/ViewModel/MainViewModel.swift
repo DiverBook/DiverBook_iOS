@@ -11,6 +11,7 @@ import SwiftUI
 final class MainViewModel: ViewModelable {
     struct State {
         var isDataFetching: Bool = false
+        var firstFetched: Bool = false
         var myProfile: DiverProfile = DiverProfile.mockData
         var bookAttainmentRate: Double = 0
         
@@ -56,14 +57,17 @@ final class MainViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .viewAppeared:
-            state.isDataFetching = true
-            Task {
-                await fetchMyProfile()
-                await fetchDiverCollectionRate()
-                await fetchAllDiverList()
-                await fetchDiverCollection()
-                state.isDataFetching = false
+            if !state.firstFetched {
+                state.isDataFetching = true
+                Task {
+                    await fetchDiverCollectionRate()
+                    await fetchMyProfile()
+                    await fetchAllDiverList()
+                    await fetchDiverCollection()
+                    state.isDataFetching = false
+                }
             }
+            state.firstFetched = true
             
         case .profileSettingButtonTapped:
             coordinator.push(.myProfile)
@@ -117,7 +121,7 @@ final class MainViewModel: ViewModelable {
         
         switch allDiverListResult {
         case .success(let diverProfiles):
-            state.diverProfiles = diverProfiles
+            state.diverProfiles = diverProfiles.filter { $0.id != UserToken.id }
             for diverProfile in diverProfiles {
                 state.isFoundedDiver[diverProfile.id] = false
             }

@@ -7,14 +7,15 @@
 import Foundation
 
 protocol HTTPClient {
-    func request<T: Decodable>(endpoint: Endpoint, responseModel: T.Type) async
+    func request<T: Decodable>(endpoint: Endpoint, responseModel: T.Type, session: URLSession?) async
         -> Result<T, RequestError>
 }
 
 extension HTTPClient {
     func request<T: Decodable>(
         endpoint: Endpoint,
-        responseModel: T.Type
+        responseModel: T.Type,
+        session: URLSession? = nil
     ) async -> Result<T, RequestError> {
         var urlComponents = URLComponents()
         urlComponents.scheme = endpoint.scheme
@@ -34,12 +35,26 @@ extension HTTPClient {
         }
 
         do {
-            let (data, response) = try await URLSession.shared.data(
-                for: request, delegate: nil)
-            guard let response = response as? HTTPURLResponse else {
+            var data: Data?
+            var urlResponse: URLResponse?
+            if let session = session {
+                (data, urlResponse) = try await session.data(for: request, delegate: DiverBookURLSessionDelegate.init())
+            }
+            else {
+                (data, urlResponse) = try await URLSession.shared.data(
+                    for: request, delegate: nil)
+            }
+            
+            guard let data = data, let urlResponse = urlResponse else {
+                return .failure(.unknown)
+            }
+            
+            guard let response = urlResponse as? HTTPURLResponse else {
                 return .failure(.decode)
             }
 
+            print(response.allHeaderFields)
+            
             switch response.statusCode {
             case 200...299:
                 guard
@@ -64,6 +79,14 @@ extension HTTPClient {
             }
         } catch {
             return .failure(.unknown)
+        }
+    }
+}
+
+final class DiverBookURLSessionDelegate: NSObject, URLSessionTaskDelegate {
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        for transaction in metrics.transactionMetrics {
+            print("✅ fetchType: \(transaction.resourceFetchType)")
         }
     }
 }
