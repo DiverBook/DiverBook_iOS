@@ -9,7 +9,9 @@ import SwiftUI
 
 struct IDCardScannerContentView: View {
     @ObservedObject var viewModel: IDCardScannerViewModel
+    @GestureState var dragOffset: CGSize = .zero
     
+    @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack(spacing: 0) {
             TopBar()
@@ -31,6 +33,11 @@ struct IDCardScannerContentView: View {
             .padding(.bottom, 20)
         }
         .padding(.horizontal, 24)
+        .background(.white)
+        .setBackGesture(
+            dragOffset: $dragOffset,
+            dismiss: { dismiss() }
+        )
         .sheet(
             isPresented: self.$viewModel.state.showCamera,
             onDismiss: {

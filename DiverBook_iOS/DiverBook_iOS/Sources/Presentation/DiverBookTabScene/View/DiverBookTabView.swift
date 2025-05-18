@@ -24,7 +24,6 @@ struct DiverBookTabView: View {
                 SystemSettingView(coordinator: self.viewModel.coordinator)
                     .tag(TabType.setting)
             }
-            .tabViewStyle(.page)
             DiverBookTabBar(
                 selectedTab: self.$viewModel.state.selectedTab,
                 selectSearchTab: {

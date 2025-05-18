@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var viewModel: LoginViewModel
+    @GestureState var dragOffset: CGSize = .zero
     
     init(nickname: String, coordinator: Coordinator) {
         _viewModel = StateObject(wrappedValue: LoginViewModel(
@@ -24,6 +25,7 @@ struct LoginView: View {
             nickname: nickname))
     }
     
+    @Environment(\.dismiss) var dismiss
     var body: some View {
         ZStack(alignment: .top) {
             LoginContentView(viewModel: viewModel)
@@ -32,5 +34,10 @@ struct LoginView: View {
             .hideKeyboardOnTap()
             ServiceErrorAlert(message: viewModel.state.errorMessage, showErrorAlert: $viewModel.state.errorAlertShowing)
         }
+        .background(.white)
+        .setBackGesture(
+            dragOffset: $dragOffset,
+            dismiss: { dismiss() }
+        )
     }
 }
