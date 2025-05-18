@@ -44,7 +44,6 @@ struct DiverProfileView: View {
                 fetchDiverProfileUseCase: fetchDiverProfileUseCase,
                 fetchDIverCollectionUseCase: fetchDiverCollectionUsecase,
                 updateDiverMemoUseCase: updateDiverMemoUseCase,
-                saveDiverMemoUseCase: saveDiverMemoUseCase,
                 postUserBadgeUseCase: postUserBadgeUseCase,
                 diverId: diverId
             )

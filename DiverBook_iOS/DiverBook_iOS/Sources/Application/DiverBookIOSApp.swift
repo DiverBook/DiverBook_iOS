@@ -50,6 +50,12 @@ struct DiverBookIOSApp: App {
                             case .startConversation(let diverId):
                                 ConversationView(coordinator: self.coordinator, diverId: diverId)
                                     .toolbar(.hidden, for: .navigationBar)
+                            case .checkConversation(let diverId):
+                                CheckConversationView(
+                                    coordinator: self.coordinator,
+                                    diverId: diverId
+                                )
+                                    .toolbar(.hidden, for: .navigationBar)
                             case .finishConversation(let diverId):
                                 DiverProfileView(
                                     coordinator: self.coordinator,

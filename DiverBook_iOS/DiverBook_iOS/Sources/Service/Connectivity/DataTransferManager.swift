@@ -9,6 +9,11 @@ import Foundation
 import MultipeerConnectivity
 import NearbyInteraction
 
+enum DataTransferMode {
+    case diverSearch
+    case checkConversation
+}
+
 final class DataTransferManager: NSObject, ObservableObject {
     var peerID: MCPeerID
     var session: MCSession
@@ -17,8 +22,9 @@ final class DataTransferManager: NSObject, ObservableObject {
     private var nearbyToken: NIDiscoveryToken?
     private var advertiserManager: AdvertiserManager?
     private var browserManager: BrowserManager?
-    private weak var viewModel: DiverSearchingViewModel?
+    private weak var viewModel: (any ViewModelable)?
     
+    var currentMode: DataTransferMode = .diverSearch
     let hapticManager = HapticManager.instance
     let serviceType = "DiverBook"
     private let minDistance: Float = 0.2
@@ -26,7 +32,7 @@ final class DataTransferManager: NSObject, ObservableObject {
 
     @Published var isBrowser: Bool = false
 
-    init(userID: String, viewModel: DiverSearchingViewModel) {
+    init(userID: String, viewModel: any ViewModelable) {
         self.userID = userID
         self.viewModel = viewModel
         self.peerID = MCPeerID(displayName: UIDevice.current.name)
@@ -82,6 +88,13 @@ final class DataTransferManager: NSObject, ObservableObject {
         try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
         print("✅ sendNickname")
     }
+    
+    private func sendFinishConversation() {
+        guard !session.connectedPeers.isEmpty,
+              let data = "finish".data(using: .utf8) else { return }
+        try? session.send(data, toPeers: session.connectedPeers, with: .reliable)
+        print("✅ sendFinishConversation")
+    }
 }
 
 // MARK: - MCSessionDelegate
@@ -89,16 +102,22 @@ extension DataTransferManager: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         guard state == .connected,
               let token = niSession?.discoveryToken else { return }
-        if let data = try? NSKeyedArchiver.archivedData(
-            withRootObject: token,
-            requiringSecureCoding: true
-        ) {
+        switch currentMode {
+        case .diverSearch:
+            guard let token = niSession?.discoveryToken,
+                  let data = try? NSKeyedArchiver.archivedData(
+                    withRootObject: token,
+                    requiringSecureCoding: true
+                  ) else { return }
             try? session.send(data, toPeers: [peerID], with: .reliable)
+        case .checkConversation:
+            sendFinishConversation()
         }
     }
 
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        if let token = try? NSKeyedUnarchiver.unarchivedObject(
+        if currentMode == .diverSearch,
+           let token = try? NSKeyedUnarchiver.unarchivedObject(
             ofClass: NIDiscoveryToken.self,
             from: data
         ) {
@@ -109,12 +128,20 @@ extension DataTransferManager: MCSessionDelegate {
             return
         }
 
-        if let diverID = String(data: data, encoding: .utf8) {
+        if let data = String(data: data, encoding: .utf8) {
             DispatchQueue.main.async {
-                self.hapticManager.cutstomStrongHaptic()
+                if self.currentMode == .diverSearch {
+                    self.hapticManager.cutstomStrongHaptic()
+                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.viewModel?.action(.successSearchingDiver(diverID: diverID))
-                    print("✅ 받은 닉네임: \(diverID)")
+                    if let diverSearchingViewModel = self.viewModel as? DiverSearchingViewModel {
+                        diverSearchingViewModel.action(.successSearchingDiver(diverID: data))
+                    } else if let checkConversationViewModel = self.viewModel as? CheckConversationViewModel {
+                        checkConversationViewModel.action(
+                            .checkFinishConversation(isFinishConversation: data)
+                        )
+                    }
+                    print("✅ 받은 정보: \(data)")
                 }
             }
         }
