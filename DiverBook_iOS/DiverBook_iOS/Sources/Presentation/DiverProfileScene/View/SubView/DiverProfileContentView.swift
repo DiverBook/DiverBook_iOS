@@ -56,6 +56,7 @@ struct DiverProfileContentView: View {
                 coordinator: Coordinator(),
                 action: saveAction
             )
+//            .padding(.bottom, 16)
         }
     }
 }
