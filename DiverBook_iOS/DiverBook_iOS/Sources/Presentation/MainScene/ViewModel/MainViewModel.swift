@@ -57,7 +57,7 @@ final class MainViewModel: ViewModelable {
     func action(_ action: Action) {
         switch action {
         case .viewAppeared:
-            if !state.firstFetched {
+            if !state.firstFetched || LocalUserData.hasNewDiverProfile {
                 state.isDataFetching = true
                 Task {
                     await fetchDiverCollectionRate()
@@ -66,8 +66,9 @@ final class MainViewModel: ViewModelable {
                     await fetchDiverCollection()
                     state.isDataFetching = false
                 }
+                state.firstFetched = true
+                LocalUserData.hasNewDiverProfile = false
             }
-            state.firstFetched = true
             
         case .profileSettingButtonTapped:
             coordinator.push(.myProfile)
