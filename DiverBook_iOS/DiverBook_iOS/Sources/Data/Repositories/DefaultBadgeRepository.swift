@@ -14,24 +14,22 @@ final class DefaultBadgeRepository: BadgeRepository {
         self.badgeService = badgeService
     }
 
-    func fetchBadges() async throws -> [Badge] {
-        async let allBadgesResult = badgeService.fetchBadges()
-        async let userBadgesResult = badgeService.fetchUserBadges()
+    func fetchUserBadges() async throws -> [String] {
+        let result = await badgeService.fetchUserBadges()
 
-        let allBadges = try await allBadgesResult.get().data ?? []
-        let userBadgeCodes = try await userBadgesResult.get().data?.map(\.badgeCode) ?? []
-
-        return allBadges.map {
-            $0.toDomain(isCollected: userBadgeCodes.contains($0.code))
+        switch result {
+        case .success(let response):
+            return (response.data ?? []).compactMap { $0.badgeCode }
+        case .failure(let error):
+            throw error
         }
     }
-    
-    func postUserBadge(badgeCode: String) async throws -> String {
+
+    func postUserBadge(badgeCode: String) async throws -> CollectedBadge {
         let result = await badgeService.postUserBadge(badgeCode: badgeCode)
-        
         switch result {
-        case .success(let badgeCode):
-            return badgeCode.toDomain()
+        case .success(let dto):
+            return dto.toDomain()
         case .failure(let error):
             throw error
         }

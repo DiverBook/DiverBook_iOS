@@ -141,10 +141,10 @@ final class DiverProfileViewModel: ViewModelable {
 
                 if let badgeCode = badgeCodeForCollectionCount(collectedCount, totalCount: totalCount) {
                     do {
-                        let postedCode = try await postUserBadgeUseCase.executePostUserBadge(badgeCode: badgeCode)
-                        print("🎉 뱃지 POST 성공 - 코드: \(postedCode)")
+                        let collectedBadge = try await postUserBadgeUseCase.executePostUserBadge(badgeCode: badgeCode)
+                        print("🎉 뱃지 POST 성공 - 코드: \(collectedBadge)")
                         await MainActor.run {
-                            coordinator.path = [.badgeReward(badgeCode: postedCode)]
+                            coordinator.path = [.badgeReward(badgeCode: collectedBadge.badgeCode)]
                         }
                         return
                     } catch {

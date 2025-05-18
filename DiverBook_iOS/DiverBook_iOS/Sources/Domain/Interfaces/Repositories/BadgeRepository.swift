@@ -8,6 +8,6 @@
 import Foundation
 
 protocol BadgeRepository {
-    func fetchBadges() async throws -> [Badge]
-    func postUserBadge(badgeCode: String) async throws -> String
+    func fetchUserBadges() async throws -> [String]
+    func postUserBadge(badgeCode: String) async throws -> CollectedBadge
 }

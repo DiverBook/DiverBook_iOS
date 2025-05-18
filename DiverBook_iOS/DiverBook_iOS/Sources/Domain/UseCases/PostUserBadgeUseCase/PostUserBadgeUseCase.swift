@@ -8,5 +8,5 @@
 import Foundation
 
 protocol PostUserBadgeUseCase {
-    func executePostUserBadge(badgeCode: String) async throws -> String
+    func executePostUserBadge(badgeCode: String) async throws -> CollectedBadge
 }

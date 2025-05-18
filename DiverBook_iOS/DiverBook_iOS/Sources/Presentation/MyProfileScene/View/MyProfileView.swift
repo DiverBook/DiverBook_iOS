@@ -9,6 +9,8 @@ import SwiftUI
 
 struct MyProfileView: View {
     @StateObject private var viewModel: MyProfileViewModel
+    @GestureState var dragOffset: CGSize = .zero
+    @Environment(\.dismiss) var dismiss
 
     init(coordinator: Coordinator) {
         let fetchDiverProfileUseCase = DefaultFetchDiverProfileUseCase(
@@ -30,7 +32,7 @@ struct MyProfileView: View {
             )
         )
         
-        let fetchBadgeUseCase = DefaultFetchBadgesUseCase(badgeRepository: DefaultBadgeRepository(badgeService: BadgeService()))
+        let fetchBadgeUseCase = DefaultFetchBadgesUseCase(badgeRepository: DefaultBadgeRepository(badgeService: CollectedBadgeService()))
 
         _viewModel = StateObject(
             wrappedValue: MyProfileViewModel(
@@ -48,7 +50,7 @@ struct MyProfileView: View {
             MyProfileTopBarView()
 
             if viewModel.state.isDataFetching {
-                ScrollView(showsIndicators: false) {
+                VStack {
                     MyProfileContentView(
                         myProfile: $viewModel.state.myProfile,
                         todayTalk: $viewModel.state.todayTalk,
@@ -64,7 +66,7 @@ struct MyProfileView: View {
                 }
                 .redacted(reason: .placeholder)
             } else {
-                ScrollView(showsIndicators: false) {
+                VStack {
                     MyProfileContentView(
                         myProfile: $viewModel.state.myProfile,
                         todayTalk: $viewModel.state.todayTalk,
@@ -85,5 +87,6 @@ struct MyProfileView: View {
             viewModel.action(.viewAppeared)
         }
         .hideKeyboardOnTap()
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
     }
 }
