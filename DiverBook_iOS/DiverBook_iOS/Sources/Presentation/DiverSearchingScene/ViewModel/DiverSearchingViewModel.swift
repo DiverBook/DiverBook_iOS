@@ -10,6 +10,7 @@ import SwiftUI
 
 final class DiverSearchingViewModel: ViewModelable {
     struct State {
+        var isFoundedDiver: [String] = []
     }
     
     enum Action {
@@ -26,14 +27,18 @@ final class DiverSearchingViewModel: ViewModelable {
     }()
     private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
     private let fetchRefreshTokenUseCase: FetchRefreshTokenUseCase
+    private let collectionUseCase: DiverCollectionUseCase
     
-    init(coordinator: Coordinator, fetchDiverProfileUseCase: FetchDiverProfileUseCase,
-         fetchRefreshTokenUseCase: FetchRefreshTokenUseCase) {
+    init(coordinator: Coordinator,
+         fetchDiverProfileUseCase: FetchDiverProfileUseCase,
+         fetchRefreshTokenUseCase: FetchRefreshTokenUseCase,
+         collectionUseCase: DiverCollectionUseCase) {
         self.coordinator = coordinator
         self.userID = UserToken.id
         self.diverProfile = DiverProfile.mockData
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
         self.fetchRefreshTokenUseCase = fetchRefreshTokenUseCase
+        self.collectionUseCase = collectionUseCase
         dataTransferManager.currentMode = .diverSearch
     }
     
@@ -41,6 +46,7 @@ final class DiverSearchingViewModel: ViewModelable {
         switch action {
         case .successSearchingDiver(let diverID):
             Task {
+                await fetchDiverCollection()
                 await loadDiverProfileData(id: diverID)
             }
         }
@@ -64,9 +70,32 @@ final class DiverSearchingViewModel: ViewModelable {
         switch result {
         case .success(let info):
             diverProfile = info
-            self.coordinator.push(.searchResult(diverProfile: diverProfile))
+            self.coordinator.push(
+                .searchResult(
+                    diverProfile: diverProfile,
+                    hasBeenFound: state.isFoundedDiver.contains(id)
+                )
+            )
         case .failure(let error):
             print("Failed to fetch diver info: \(error)")
+        }
+    }
+    
+    private func fetchDiverCollection() async {
+        let diverCollectionResult = await TokenRefreshHandler.withTokenRefresh(
+            operation: {
+                await self.collectionUseCase.executeFetchDiverCollection()
+            },
+            refreshTokenUseCase: fetchRefreshTokenUseCase
+        )
+        
+        switch diverCollectionResult {
+        case .success(let diverProfiles):
+            for diverProfile in diverProfiles {
+                state.isFoundedDiver.append(diverProfile.foundUserId)
+            }
+        case .failure(let error):
+            print("Failed to fetch diver collections info: \(error)")
         }
     }
 }

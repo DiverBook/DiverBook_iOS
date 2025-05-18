@@ -10,6 +10,8 @@ import SwiftUI
 struct QuestionCardGridView: View {
     @StateObject var viewModel: ConversationViewModel
     @State private var degree: Double = 0
+    @GestureState var dragOffset: CGSize = .zero
+    @Environment(\.dismiss) var dismiss
     
     let columns: [GridItem] = Array(repeating: .init(.flexible(), spacing: 0), count: 2)
     let animationNamespace: Namespace.ID
@@ -45,5 +47,7 @@ struct QuestionCardGridView: View {
             }
         }
         .padding(.horizontal, 24)
+        .background(.white)
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
     }
 }

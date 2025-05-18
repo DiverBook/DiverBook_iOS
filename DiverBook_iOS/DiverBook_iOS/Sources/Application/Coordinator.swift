@@ -31,7 +31,7 @@ enum Path: Hashable {
     case mainTab
     case searchingDiver
     case unfoundDiver(nickname: String)
-    case searchResult(diverProfile: DiverProfile)
+    case searchResult(diverProfile: DiverProfile, hasBeenFound: Bool)
     case startConversation(id: String)
     case checkConversation(id: String)
     case finishConversation(id: String)

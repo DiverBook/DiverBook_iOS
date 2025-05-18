@@ -9,8 +9,15 @@ import SwiftUI
 
 struct DiverSearchingView: View {
     @StateObject var viewModel: DiverSearchingViewModel
+    @GestureState var dragOffset: CGSize = .zero
+    @Environment(\.dismiss) var dismiss
     
     init(coordinator: Coordinator) {
+        let collectionUseCase = DefaultDiverCollectionUseCase(
+            diverCollectionRepository: DefaultDiverCollectionRepository(
+                diverCollectionService: DiverCollectionService()
+            )
+        )
         _viewModel = StateObject(
             wrappedValue: DiverSearchingViewModel(
                 coordinator: coordinator,
@@ -23,12 +30,10 @@ struct DiverSearchingView: View {
                         authService: DiverBookAuthService(),
                         tokenService: DiverBookTokenService()
                     )
-                )
+                ), collectionUseCase: collectionUseCase
             )
         )
     }
-    
-    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack(spacing: 10) {
@@ -61,5 +66,7 @@ struct DiverSearchingView: View {
         .onDisappear {
             viewModel.stopSearching()
         }
+        .background(.white)
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
     }
 }

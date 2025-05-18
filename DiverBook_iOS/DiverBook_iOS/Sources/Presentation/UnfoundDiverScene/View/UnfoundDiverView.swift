@@ -9,6 +9,8 @@ import SwiftUI
 
 struct UnfoundDiverView: View {
     @StateObject var viewModel: UnfoundDiverViewModel
+    @GestureState var dragOffset: CGSize = .zero
+    @Environment(\.dismiss) var dismiss
     
     let diverName: String
     
@@ -36,5 +38,7 @@ struct UnfoundDiverView: View {
             }
         }
         .padding(.horizontal, 24)
+        .background(.white)
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
     }
 }

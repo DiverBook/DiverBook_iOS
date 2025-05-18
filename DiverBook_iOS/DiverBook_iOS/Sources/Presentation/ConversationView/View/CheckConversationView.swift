@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CheckConversationView: View {
     @StateObject var viewModel: CheckConversationViewModel
+    @GestureState var dragOffset: CGSize = .zero
+    @Environment(\.dismiss) var dismiss
     
     init(coordinator: Coordinator, diverId: String) {
         let saveDiverMemoUseCase = DefaultSaveDiverMemoUseCase(
@@ -50,5 +52,7 @@ struct CheckConversationView: View {
         .onDisappear {
             viewModel.stopSearching()
         }
+        .background(.white)
+        .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
     }
 }
