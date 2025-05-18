@@ -14,8 +14,8 @@ final class DefaultUserDeactivateRepository: UserDeactivateRepository {
         self.userDeactivateService = userDeactivateService
     }
 
-    func deactivateUser() async -> Result<DiverProfile, Error> {
-        let result = await userDeactivateService.deactivateUser()
+    func deactivateUser(refreshToken: String) async -> Result<DiverProfile, Error> {
+        let result = await userDeactivateService.deactivateUser(refreshToken: refreshToken)
         switch result {
         case .success(let response):
             if let data = response.data {

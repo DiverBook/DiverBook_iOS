@@ -54,10 +54,13 @@ final class SystemSettingViewModel: ViewModelable {
         case .confirmWithdraw:
             state.showWithdrawAlert = false
             Task {
-                let result = await deactivateUserUseCase.execute()
+                let result = await deactivateUserUseCase.execute(
+                    refreshToken: UserToken.refreshToken
+                )
                 switch result {
                 case .success:
                     print("✅ 회원 탈퇴 성공")
+                    UserToken.clear()
                     await MainActor.run {
                         coordinator.path = [.splash]
                     }

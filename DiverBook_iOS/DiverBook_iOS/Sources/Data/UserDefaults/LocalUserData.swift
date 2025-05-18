@@ -8,4 +8,7 @@
 struct LocalUserData {
     @UserDefault(key: "collectedUserCount", defaultValue: 0)
     static var collectedUserCount: Int
+    
+    @UserDefault(key: "hasNewDiverProfile", defaultValue: false)
+    static var hasNewDiverProfile: Bool
 }

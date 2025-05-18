@@ -28,3 +28,12 @@ extension UserToken {
         self.id = authInfo.id
     }
 }
+
+extension UserToken {
+    static func clear() {
+        self.accessToken = ""
+        self.refreshToken = ""
+        self.tokenType = ""
+        self.id = ""
+    }
+}

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol DeactivateUserUseCase {
-    func execute() async -> Result<DiverProfile, Error>
+    func execute(refreshToken: String) async -> Result<DiverProfile, Error>
 }
 
 final class DefaultDeactivateUserUseCase: DeactivateUserUseCase {
@@ -18,7 +18,7 @@ final class DefaultDeactivateUserUseCase: DeactivateUserUseCase {
         self.repository = repository
     }
 
-    func execute() async -> Result<DiverProfile, Error> {
-        return await repository.deactivateUser()
+    func execute(refreshToken: String) async -> Result<DiverProfile, Error> {
+        return await repository.deactivateUser(refreshToken: refreshToken)
     }
 }

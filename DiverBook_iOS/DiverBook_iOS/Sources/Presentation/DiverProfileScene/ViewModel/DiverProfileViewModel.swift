@@ -36,7 +36,6 @@ final class DiverProfileViewModel: ViewModelable {
     private let fetchDiverProfileUseCase: FetchDiverProfileUseCase
     private let fetchDiverCollectionUseCase: DiverCollectionUseCase
     private let updateDiverMemoUseCase: UpdateDiverMemoUseCase
-    private let saveDiverMemoUseCase: SaveDiverMemoUseCase
     private let postUserBadgeUseCase: PostUserBadgeUseCase
 
     init(
@@ -45,7 +44,6 @@ final class DiverProfileViewModel: ViewModelable {
         fetchDiverProfileUseCase: FetchDiverProfileUseCase,
         fetchDIverCollectionUseCase: DiverCollectionUseCase,
         updateDiverMemoUseCase: UpdateDiverMemoUseCase,
-        saveDiverMemoUseCase: SaveDiverMemoUseCase,
         postUserBadgeUseCase: PostUserBadgeUseCase,
         diverId: String
     ) {
@@ -54,7 +52,6 @@ final class DiverProfileViewModel: ViewModelable {
         self.fetchDiverProfileUseCase = fetchDiverProfileUseCase
         self.fetchDiverCollectionUseCase = fetchDIverCollectionUseCase
         self.updateDiverMemoUseCase = updateDiverMemoUseCase
-        self.saveDiverMemoUseCase = saveDiverMemoUseCase
         self.postUserBadgeUseCase = postUserBadgeUseCase
         self.state.diverId = diverId
     }
