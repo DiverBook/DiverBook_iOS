@@ -71,10 +71,6 @@ final class CheckConversationViewModel: ViewModelable {
         case .success(let updated):
             print("✅ 새로운 도감 정보 저장 성공")
             LocalUserData.hasNewDiverProfile = true
-            await MainActor.run {
-                coordinator.path = [.mainTab]
-            }
-
         case .failure(let error):
             print("❌ 새로운 도감 정보 저장 실패: \(error)")
         }

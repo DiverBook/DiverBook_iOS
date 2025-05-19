@@ -126,7 +126,7 @@ final class DiverProfileViewModel: ViewModelable {
 
     private func createDiverMemo() async {
         let createResult =
-            await saveDiverMemoUseCase.executeSaveDiverMemoUseCase(
+            await updateDiverMemoUseCase.executeUpdateDiverMemoUseCase(
                 foundUserId: state.diverId,
                 memo: memo
             )
