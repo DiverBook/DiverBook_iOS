@@ -8,5 +8,5 @@
 import Foundation
 
 protocol LogoutRepository {
-    func logout(refreshToken: String) async throws -> Result<AuthInfo, Error>
+    func logout(refreshToken: String) async -> Result<AuthInfo, Error>
 }

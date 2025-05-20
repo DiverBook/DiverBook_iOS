@@ -14,7 +14,7 @@ final class DefaultLogoutRepository: LogoutRepository {
         self.logoutService = logoutService
     }
 
-    func logout(refreshToken: String) async throws -> Result<AuthInfo, Error> {
+    func logout(refreshToken: String) async -> Result<AuthInfo, Error> {
         let result = await logoutService.logout(refreshToken: refreshToken)
         switch result {
         case .success(let response):
