@@ -17,10 +17,10 @@ final class CollectedBadgeService: BadgeServicable {
         )
     }
     
-    func postUserBadge(badgeCode: String) async -> Result<CollectedBadgeResModel, RequestError> {
+    func postUserBadge(badgeCode: String) async -> Result<BaseResponse<CollectedBadgeResModel>, RequestError> {
         return await request(
             endpoint: BadgeEndpoint.postUserBadge(badgeCode: badgeCode),
-            responseModel: CollectedBadgeResModel.self
+            responseModel: BaseResponse<CollectedBadgeResModel>.self
         )
     }
 }

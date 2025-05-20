@@ -10,6 +10,7 @@ import SwiftUI
 
 class BadgeRewardViewModel: ObservableObject {
     struct State {
+        var isDataFetching: Bool = false
         var badgeImage: String = ""
         var badgeName: String = ""
         var rewardDesription: String = ""
@@ -17,6 +18,7 @@ class BadgeRewardViewModel: ObservableObject {
 
     enum Action {
         case confirmButtonTapped
+        case viewAppeared
     }
 
     @Published var state = State()
@@ -64,6 +66,15 @@ class BadgeRewardViewModel: ObservableObject {
         switch action {
         case .confirmButtonTapped:
             coordinator.path = [.mainTab]
+        case .viewAppeared:
+            Task{
+                await MainActor.run{
+                    state.isDataFetching = true
+                }
+                await MainActor.run {
+                    state.isDataFetching = false
+                }
+            }
         }
     }
 }
