@@ -15,13 +15,17 @@ final class DefaultLogoutRepository: LogoutRepository {
     }
 
     func logout(refreshToken: String) async -> Result<AuthInfo, Error> {
-        let result = await logoutService.logout(refreshToken: refreshToken)
-        switch result {
-        case .success(let response):
-            if let data = response.data {
+        let logoutResult = await logoutService.logout(
+            refreshToken: refreshToken
+        )
+        switch logoutResult {
+        case .success(let baseResponse):
+            if baseResponse.success, let data = baseResponse.data {
                 return .success(data.toDomain())
             } else {
-                return .failure(RequestError.errorWithLog(response.errorMessage ?? ""))
+                return .failure(
+                    RequestError.errorWithLog(baseResponse.errorMessage ?? "")
+                )
             }
         case .failure(let error):
             return .failure(error)

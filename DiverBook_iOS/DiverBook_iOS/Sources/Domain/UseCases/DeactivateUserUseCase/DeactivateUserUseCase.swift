@@ -19,6 +19,13 @@ final class DefaultDeactivateUserUseCase: DeactivateUserUseCase {
     }
 
     func execute(refreshToken: String) async -> Result<DiverProfile, Error> {
-        return await repository.deactivateUser(refreshToken: refreshToken)
+        let deactivateResult = await repository.deactivateUser(refreshToken: refreshToken)
+        switch deactivateResult {
+        case .success(let authInfo):
+            UserToken.clear()
+            return .success(authInfo)
+        case .failure(let error):
+            return .failure(error)
+        }
     }
 }

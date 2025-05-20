@@ -59,10 +59,16 @@ enum DiverBookAuthEndpoint: Endpoint {
     
     var header: [String: String]? {
         switch self {
-        case .signUp, .checkActivation, .login, .logout:
+        case .signUp, .checkActivation, .login:
             return [
                 "accept": "*/*",
                 "Content-Type": "application/json"
+            ]
+        case .logout:
+            return [
+                "accept": "*/*",
+                "Content-Type": "application/json",
+                "Authorization": "\(UserToken.tokenType) \(UserToken.accessToken)"
             ]
         }
     }

@@ -16,10 +16,18 @@ struct SystemSettingView: View {
                 userDeactivateService: UserDeactivateService()
             )
         )
+
+        let logoutUseCase = DefaultLogoutUseCase(
+            logoutRepository: DefaultLogoutRepository(
+                logoutService: DiverBookLogoutService()
+            )
+        )
+
         _viewModel = StateObject(
             wrappedValue: SystemSettingViewModel(
                 coordinator: coordinator,
-                deactivateUserUseCase: deactivateUserUseCase
+                deactivateUserUseCase: deactivateUserUseCase,
+                logoutUseCase: logoutUseCase
             )
         )
     }
@@ -41,6 +49,10 @@ struct SystemSettingView: View {
 
                     SettingRowView(title: "개인정보 이용 약관") {
                         viewModel.action(.tapPolicy)
+                    }
+
+                    SettingRowView(title: "로그아웃") {
+                        viewModel.action(.tapLogout)
                     }
 
                     SettingRowView(title: "회원탈퇴") {
@@ -65,6 +77,14 @@ struct SystemSettingView: View {
             }
             Button("탈퇴", role: .destructive) {
                 viewModel.action(.confirmWithdraw)
+            }
+        }
+        .alert("로그아웃 하시겠습니까?", isPresented: $viewModel.state.showLogoutAlert) {
+            Button("취소", role: .cancel) {
+                viewModel.action(.dismissAlert)
+            }
+            Button("로그아웃", role: .destructive) {
+                viewModel.action(.confirmLogout)
             }
         }
     }

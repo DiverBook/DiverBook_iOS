@@ -9,8 +9,8 @@ import Foundation
 
 struct LogoutResModel: Decodable {
     var id: String
-    var accessToken: String
-    var refreshToken: String
+    var accessToken: String?
+    var refreshToken: String?
     var tokenType: String
 }
 
@@ -19,8 +19,8 @@ extension LogoutResModel {
     func toDomain() -> AuthInfo {
         return .init(
             id: id,
-            accessToken: accessToken,
-            refreshToken: refreshToken,
+            accessToken: accessToken ?? "",
+            refreshToken: refreshToken ?? "",
             tokenType: tokenType)
     }
 }

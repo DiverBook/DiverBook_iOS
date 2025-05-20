@@ -8,7 +8,9 @@
 import Foundation
 
 final class DiverBookLogoutService: DiverBookLogoutServicable {
-    func logout(refreshToken: String) async -> Result<BaseResponse<LogoutResModel>, RequestError> {
+    func logout(refreshToken: String) async -> Result<
+        BaseResponse<LogoutResModel>, RequestError
+    > {
         return await request(
             endpoint: DiverBookAuthEndpoint.logout(refreshToken: refreshToken),
             responseModel: BaseResponse<LogoutResModel>.self

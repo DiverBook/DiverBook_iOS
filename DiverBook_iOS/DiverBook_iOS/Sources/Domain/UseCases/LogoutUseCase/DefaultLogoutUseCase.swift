@@ -15,6 +15,13 @@ final class DefaultLogoutUseCase: LogoutUseCase {
     }
 
     func executeLogout(refreshToken: String) async -> Result<AuthInfo, Error> {
-        return await logoutRepository.logout(refreshToken: refreshToken)
+        let logoutResult = await logoutRepository.logout(refreshToken: refreshToken)
+        switch logoutResult {
+        case .success(let authInfo):
+            UserToken.clear()
+            return .success(authInfo)
+        case .failure(let error):
+            return .failure(error)
+        }
     }
 }
