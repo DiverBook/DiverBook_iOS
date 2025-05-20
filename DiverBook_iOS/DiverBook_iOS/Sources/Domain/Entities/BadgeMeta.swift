@@ -58,14 +58,14 @@ struct BadgeMeta: Identifiable {
             code: "B006",
             name: "심해의 경계자", rewardDescription: "낯선 다이버들과의 조우, 경계선에 도달!",
             description: "드디어 위험한(?) 다이버들도\n 만나기 시작했군요...!",
-            condition: "50명의 다이버를 만난 당신,\n이제 미지의 다이버들과도 조우할 시간이에요",
+            condition: "50명의 다이버를 만난 당신,\n이제 미지의 다이버들과도 조우할 시간이에요.",
             imageName: "B006", isCollected: false
         ),
         .init(
             code: "B007",
             name: "베테랑 다이버", rewardDescription: "파도에도 흔들림 없는 여유!",
             description: "산소가 부족해도 여유로운 당신,\n이제 진짜 프로예요",
-            condition: "수많은 다이버를 만난 당신,\n이제는 흔들림 없는 노련한 여정자예요.",
+            condition: "100명의 다이버를 만난 당신\n이제는 흔들림 없는 노련한 여정자예요.",
             imageName: "B007", isCollected: false
         ),
         .init(

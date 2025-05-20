@@ -222,7 +222,7 @@ final class DiverProfileViewModel: ViewModelable {
         case 30: return "B004"
         case 40: return "B005"
         case 50: return "B006"
-        case 60: return "B007"
+        case 100: return "B007"
         case _ where collectedCount == totalCount: return "B008"
         default: return nil
         }
