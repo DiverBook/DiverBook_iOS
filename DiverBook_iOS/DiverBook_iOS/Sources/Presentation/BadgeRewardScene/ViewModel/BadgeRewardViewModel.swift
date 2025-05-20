@@ -17,8 +17,8 @@ class BadgeRewardViewModel: ObservableObject {
     }
 
     enum Action {
-        case confirmButtonTapped
         case viewAppeared
+        case confirmButtonTapped
     }
 
     @Published var state = State()
@@ -41,40 +41,37 @@ class BadgeRewardViewModel: ObservableObject {
         self.fetchBadgesUseCase = fetchBadgesUseCase
     }
 
-    func loadBadge() {
-        Task {
-            do {
-                let collectedCodes = try await fetchBadgesUseCase.executeFetchBadges()
-                if collectedCodes.contains(badgeCode) {
-                    if let badgeMeta = BadgeMeta.allBadges.first(where: { $0.code == badgeCode }) {
-                        await MainActor.run {
-                            state = State(
-                                badgeImage: badgeMeta.code,
-                                badgeName: badgeMeta.name,
-                                rewardDesription: badgeMeta.rewardDescription
-                            )
-                        }
-                    }
-                }
-            } catch {
-                print("❌ 뱃지 로딩 실패: \(error)")
-            }
-        }
-    }
-
     func action(_ action: Action) {
         switch action {
-        case .confirmButtonTapped:
-            coordinator.path = [.mainTab]
         case .viewAppeared:
-            Task{
-                await MainActor.run{
+            Task {
+                await MainActor.run {
                     state.isDataFetching = true
                 }
+                await loadBadge()
                 await MainActor.run {
                     state.isDataFetching = false
                 }
             }
+
+        case .confirmButtonTapped:
+            coordinator.path = [.mainTab]
+        }
+    }
+
+    private func loadBadge() async {
+        do {
+            let collectedCodes = try await fetchBadgesUseCase.executeFetchBadges()
+            if collectedCodes.contains(badgeCode),
+               let badgeMeta = BadgeMeta.allBadges.first(where: { $0.code == badgeCode }) {
+                await MainActor.run {
+                    state.badgeImage = badgeMeta.code
+                    state.badgeName = badgeMeta.name
+                    state.rewardDesription = badgeMeta.rewardDescription
+                }
+            }
+        } catch {
+            print("❌ [BadgeReward] 뱃지 로딩 실패: \(error)")
         }
     }
 }

@@ -65,7 +65,7 @@ struct BadgeMeta: Identifiable {
             code: "B007",
             name: "베테랑 다이버", rewardDescription: "파도에도 흔들림 없는 여유!",
             description: "산소가 부족해도 여유로운 당신,\n이제 진짜 프로예요",
-            condition: "수많은 다이버를 만난 당신,\n이제는 흔들림 없는 노련한 여정자예요.",
+            condition: "70명의 다이버를 만난 당신,\n이제는 흔들림 없는 노련한 여정자예요.",
             imageName: "B007", isCollected: false
         ),
         .init(
