@@ -23,6 +23,7 @@ final class ConversationViewModel: ViewModelable {
     @Published var selectedCardIndex: Int?
     @Published var isPopupCard: Bool = false
     @Published var state: State = State()
+    @Published var flippedCardIndices: Set<Int> = []
     @ObservedObject var coordinator: Coordinator
     
     private let fetchQuestionUseCase: FetchQuestionUseCase
@@ -54,15 +55,16 @@ final class ConversationViewModel: ViewModelable {
     private func handleSelectCard(index: Int) {
         selectedCardIndex = index
         isPopupCard = true
+        flippedCardIndices.insert(index)
     }
     
     private func handleDismissCard() {
         withAnimation {
             isPopupCard = false
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            self.selectedCardIndex = nil
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+//            self.selectedCardIndex = nil
+//        }
     }
     
     private func loadQuestions() {
@@ -76,6 +78,7 @@ final class ConversationViewModel: ViewModelable {
             switch result {
             case .success(let questions):
                 state.questions = questions
+                flippedCardIndices = []
             case .failure(let error):
                 print("Failed to fetch questions: \(error)")
             }

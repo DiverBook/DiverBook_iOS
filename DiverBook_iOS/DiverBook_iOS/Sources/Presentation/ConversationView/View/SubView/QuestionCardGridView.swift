@@ -29,15 +29,30 @@ struct QuestionCardGridView: View {
             
             LazyVGrid(columns: columns, spacing: 0) {
                 ForEach(0..<4) { index in
-                    if viewModel.selectedCardIndex == index {
-                        Color.clear
-                    } else {
-                        QuestionCardBackView(degree: $degree)
-                            .matchedGeometryEffect(id: index, in: animationNamespace)
-                            .onTapGesture {
-                                viewModel.action(.selectCard(index: index))
-                            }
+                    let isSelectedAndPopup = (viewModel.selectedCardIndex == index && viewModel.isPopupCard)
+                    let isFlipped = viewModel.flippedCardIndices.contains(index)
+                    
+                    Group {
+                        if isFlipped {
+                            QuestionCardFrontView(
+                                degree: .constant(0),
+                                index: index,
+                                question: viewModel.state.questions[index],
+                                isPopup: false
+                            )
+                        } else {
+                            QuestionCardBackView(degree: $degree)
+                        }
                     }
+                    .opacity(isSelectedAndPopup ? 0 : 1)
+                    .allowsHitTesting(!isSelectedAndPopup)
+                    .animation(nil, value: isSelectedAndPopup)
+                    .onTapGesture {
+                        if !isSelectedAndPopup {
+                            viewModel.action(.selectCard(index: index))
+                        }
+                    }
+                        
                 }
             }
             
@@ -49,5 +64,17 @@ struct QuestionCardGridView: View {
         .padding(.horizontal, 24)
         .background(.white)
         .setBackGesture(dragOffset: $dragOffset, dismiss: { dismiss() })
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool,
+                             transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
     }
 }
