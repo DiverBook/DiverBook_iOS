@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DiverProfileView: View {
     @GestureState private var dragOffset: CGSize = .zero
+    @FocusState var memoFocused: Bool
     @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: DiverProfileViewModel
     @StateObject private var keyboardObserver = KeyboardObserver()
@@ -79,6 +80,7 @@ struct DiverProfileView: View {
                     ScrollView(showsIndicators: false) {
                         DiverProfileContentView(
                             memo: $viewModel.memo,
+                            memoFocused: _memoFocused,
                             diverProfile: viewModel.state.diverProfile,
                             foundDate: viewModel.state.foundDate,
                             isSaveEnabled: viewModel.isSaveEnabled,
@@ -86,20 +88,34 @@ struct DiverProfileView: View {
                                 viewModel.action(.saveMemo)
                             }
                         )
+                        Spacer()
+                            .frame(height: 1)
                     }
-                    .safeAreaInset(edge: .bottom) {
-                        Color.clear
-                            .frame(
-                                height: max(
-                                    0,
-                                    keyboardObserver.keyboardHeight - 50
-                                )
-                            )
+                    .onChange(of: memoFocused) {
+                        if memoFocused {
+                            Task {
+                                try await Task.sleep(nanoseconds: 300_000_000)
+                                await MainActor.run {
+                                    withAnimation {
+                                        proxy.scrollTo("bottom")
+                                    }
+                                }
+                            }
+                        }
                     }
-                    .animation(
-                        .easeOut(duration: 0.1),
-                        value: keyboardObserver.keyboardHeight
-                    )
+//                    .safeAreaInset(edge: .bottom) {
+//                        Color.clear
+//                            .frame(
+//                                height: max(
+//                                    0,
+//                                    keyboardObserver.keyboardHeight - 50
+//                                )
+//                            )
+//                    }
+//                    .animation(
+//                        .easeOut(duration: 0.1),
+//                        value: keyboardObserver.keyboardHeight
+//                    )
                 }
             }
         }

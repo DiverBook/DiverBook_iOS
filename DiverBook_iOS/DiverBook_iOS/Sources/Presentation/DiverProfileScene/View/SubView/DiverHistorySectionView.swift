@@ -10,6 +10,7 @@ import SwiftUI
 
 struct DiverHistorySectionView: View {
     @Binding var history: String
+    @FocusState var memoFocused: Bool
 
     var body: some View {
         VStack(spacing: 14) {
@@ -20,7 +21,7 @@ struct DiverHistorySectionView: View {
                 Spacer()
             }
             
-            CustomTextEditor(text: $history)
+            CustomTextEditor(text: $history, memoFocused: _memoFocused)
         }
     }
 }

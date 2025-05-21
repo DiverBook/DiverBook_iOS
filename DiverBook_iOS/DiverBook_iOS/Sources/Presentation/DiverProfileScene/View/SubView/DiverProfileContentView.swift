@@ -10,6 +10,7 @@ import SwiftUI
 
 struct DiverProfileContentView: View {
     @Binding var memo: String
+    @FocusState var memoFocused: Bool
     let diverProfile: DiverProfile
     let foundDate: String
     let isSaveEnabled: Bool
@@ -47,7 +48,7 @@ struct DiverProfileContentView: View {
             
             Divider()
 
-            DiverHistorySectionView(history: $memo)
+            DiverHistorySectionView(history: $memo, memoFocused: _memoFocused)
 
             PrimaryButton(
                 title: "저장",
@@ -56,6 +57,7 @@ struct DiverProfileContentView: View {
                 coordinator: Coordinator(),
                 action: saveAction
             )
+            .id("bottom")
         }
     }
 }
