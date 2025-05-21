@@ -73,12 +73,11 @@ struct IDCardScannerContentView: View {
                 Text("촬영 정보를 불러오는 중입니다")
                     .font(DiveFont.headingH3)
                 Spacer()
+                LottieView(animationName: "ProgressAnimation", shouldPlay: true)
+                    .frame(height: 600)
             }
             .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             .background(.white)
-            .overlay(
-                ProgressView()
-            )
             .opacity(viewModel.state.isScanning ? 1 : 0)
         )
     }
