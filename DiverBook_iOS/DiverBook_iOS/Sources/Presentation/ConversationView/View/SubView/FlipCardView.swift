@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FlipCardView: View {
     @State var backDegree = 0.0
-    @State var frontDegree = -89.9
+    @State var frontDegree = -90.0
     @State var isFlipped = false
     
     let durationAndDelay: CGFloat = 0.3
@@ -23,7 +23,8 @@ struct FlipCardView: View {
                 QuestionCardFrontView(
                     degree: $frontDegree,
                     index: cardIndex,
-                    question: question
+                    question: question,
+                    isPopup: true
                 )
                 .zIndex(1)
             }
@@ -44,7 +45,7 @@ struct FlipCardView: View {
         isFlipped = !isFlipped
         if isFlipped {
             withAnimation(.linear(duration: durationAndDelay)) {
-                backDegree = 89.9
+                backDegree = 90
             }
             withAnimation(.linear(duration: durationAndDelay)
                 .delay(durationAndDelay)) {
@@ -52,7 +53,7 @@ struct FlipCardView: View {
             }
         } else {
             withAnimation(.linear(duration: durationAndDelay)) {
-                frontDegree = -89.9
+                frontDegree = -90
             }
             withAnimation(.linear(duration: durationAndDelay)
                 .delay(durationAndDelay)) {
