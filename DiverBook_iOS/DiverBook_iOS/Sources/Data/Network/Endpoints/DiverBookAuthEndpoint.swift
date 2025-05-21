@@ -25,6 +25,8 @@ enum DiverBookAuthEndpoint: Endpoint {
         password: String
     )
     
+    case logout(refreshToken: String)
+    
     var path: String {
         switch self {
         case .signUp:
@@ -33,12 +35,15 @@ enum DiverBookAuthEndpoint: Endpoint {
             return "/api/users/activation/\(userName)"
         case .login:
             return "/api/auth/login"
+        case .logout:
+            return "/api/auth/logout"
+            
         }
     }
     
     var method: RequestMethod {
         switch self {
-        case .signUp, .login:
+        case .signUp, .login, .logout:
             return .post
         case .checkActivation:
             return .get
@@ -59,6 +64,12 @@ enum DiverBookAuthEndpoint: Endpoint {
                 "accept": "*/*",
                 "Content-Type": "application/json"
             ]
+        case .logout:
+            return [
+                "accept": "*/*",
+                "Content-Type": "application/json",
+                "Authorization": "\(UserToken.tokenType) \(UserToken.accessToken)"
+            ]
         }
     }
     
@@ -78,6 +89,10 @@ enum DiverBookAuthEndpoint: Endpoint {
             return [
                 "userName": params.userName,
                 "password": params.password
+            ]
+        case .logout(let refreshToken):
+            return [
+                "refreshToken": refreshToken
             ]
         default:
             return nil
