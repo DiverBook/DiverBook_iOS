@@ -84,6 +84,7 @@ struct DiverBookIOSApp: App {
                                     .toolbar(.hidden, for: .navigationBar)
                             case .badgeReward(badgeCode: let badgeCode):
                                 BadgeRewardView(coordinator: self.coordinator, badgeCode: badgeCode)
+                                    .toolbar(.hidden, for: .navigationBar)
                             }
                         })
             }
