@@ -12,32 +12,63 @@ struct BadgeRewardView: View {
 
     init(coordinator: Coordinator, badgeCode: String) {
         _viewModel = StateObject(
-            wrappedValue: BadgeRewardViewModel(coordinator: coordinator, badgeCode: badgeCode)
+            wrappedValue: BadgeRewardViewModel(
+                coordinator: coordinator,
+                badgeCode: badgeCode
+            )
         )
     }
 
     var body: some View {
         VStack {
-            Spacer()
-            
-            Image(viewModel.state.badgeImage)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 125, height: 177)
-                .applyShadow(DiveShadow.shadow1)
+            if viewModel.state.isDataFetching {
+                VStack {
+                    Spacer()
 
-            VStack(spacing: 4) {
-                Text("\(viewModel.state.rewardDesription)")
-                
-                HStack {
-                    Text("'\(viewModel.state.badgeName)'")
-                        .foregroundStyle(DiveColor.color6)
-                    Text("뱃지를 획득했어요.")
+                    Image(viewModel.state.badgeImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 125, height: 177)
+                        .applyShadow(DiveShadow.shadow1)
+
+                    VStack(spacing: 4) {
+                        Text(viewModel.state.rewardDesription)
+
+                        HStack {
+                            Text("'\(viewModel.state.badgeName)'")
+                                .foregroundStyle(DiveColor.color6)
+                            Text("뱃지를 획득했어요.")
+                        }
+                    }
+                    .font(DiveFont.headingH3)
+                    
+                    Spacer()
+                }
+                .redacted(reason: .placeholder)
+            } else {
+                VStack {
+                    Spacer()
+
+                    Image(viewModel.state.badgeImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 125, height: 177)
+                        .applyShadow(DiveShadow.shadow1)
+
+                    VStack(spacing: 4) {
+                        Text(viewModel.state.rewardDesription)
+
+                        HStack {
+                            Text("'\(viewModel.state.badgeName)'")
+                                .foregroundStyle(DiveColor.color6)
+                            Text("뱃지를 획득했어요.")
+                        }
+                    }
+                    .font(DiveFont.headingH3)
+                    
+                    Spacer()
                 }
             }
-            .font(DiveFont.headingH3)
-
-            Spacer()
 
             PrimaryButton(title: "확인", coordinator: viewModel.coordinator) {
                 viewModel.action(.confirmButtonTapped)
@@ -45,7 +76,7 @@ struct BadgeRewardView: View {
         }
         .padding(.horizontal, 24)
         .onAppear {
-            viewModel.loadBadge()
+            viewModel.action(.viewAppeared)
         }
     }
 }

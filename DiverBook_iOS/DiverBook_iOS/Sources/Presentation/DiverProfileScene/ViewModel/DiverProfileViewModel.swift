@@ -125,60 +125,63 @@ final class DiverProfileViewModel: ViewModelable {
     }
 
     private func createDiverMemo() async {
-        let createResult =
-            await updateDiverMemoUseCase.executeUpdateDiverMemoUseCase(
-                foundUserId: state.diverId,
-                memo: memo
-            )
+        let createResult = await updateDiverMemoUseCase.executeUpdateDiverMemoUseCase(
+            foundUserId: state.diverId,
+            memo: memo
+        )
 
         switch createResult {
         case .success(let updated):
-            print("✅ 메모 POST 성공")
+            print("✅ [Memo POST] 메모 저장 성공: \(updated.memo)")
+            
+            if mode == .create {
+                print("🔁 [Mode Check] 현재 모드는 .create입니다. 뱃지 획득 조건 확인을 시작합니다.")
+                
+                async let collectedResult = fetchDiverCollectionUseCase.executeFetchDiverCollection()
+                async let allDiverResult = fetchDiverCollectionUseCase.executeFetchAllDiverList()
 
-            async let collectedResult =
-                fetchDiverCollectionUseCase.executeFetchDiverCollection()
-            async let allDiverResult =
-                fetchDiverCollectionUseCase.executeFetchAllDiverList()
+                do {
+                    let collections = try await collectedResult.get()
+                    let allDivers = try await allDiverResult.get()
+                    let collectedCount = collections.count
+                    let totalCount = allDivers.count
+                    
+                    print("📦 [도감 수] 수집된 다이버 수: \(collectedCount)")
+                    print("📦 [전체 수] 전체 다이버 수: \(totalCount)")
 
-            do {
-                let collections = try await collectedResult.get()
-                let allDivers = try await allDiverResult.get()
-                let collectedCount = collections.count
-                let totalCount = allDivers.count
+                    if let badgeCode = badgeCodeForCollectionCount(collectedCount, totalCount: totalCount) {
+                        print("🏷️ [Badge 조건 충족] 획득 가능한 뱃지 코드: \(badgeCode)")
 
-                if let badgeCode = badgeCodeForCollectionCount(
-                    collectedCount,
-                    totalCount: totalCount
-                ) {
-                    do {
-                        let collectedBadge =
-                            try await postUserBadgeUseCase.executePostUserBadge(
-                                badgeCode: badgeCode
-                            )
-                        await MainActor.run {
-                            coordinator.path = [
-                                .badgeReward(
-                                    badgeCode: collectedBadge.badgeCode
-                                )
-                            ]
+                        do {
+                            let collectedBadge = try await postUserBadgeUseCase.executePostUserBadge(badgeCode: badgeCode)
+                            print("🎉 [Badge POST] 서버에 뱃지 POST 성공 - 코드: \(collectedBadge.badgeCode)")
+
+                            await MainActor.run {
+                                print("➡️ [Navigation] BadgeRewardView로 이동")
+                                coordinator.path = [.badgeReward(badgeCode: collectedBadge.badgeCode)]
+                            }
+                            return
+                        } catch {
+                            print("❌ [Badge POST 실패] \(error.localizedDescription)")
                         }
-                        return
-                    } catch {
-                        print("❌ 뱃지 POST 실패: \(error.localizedDescription)")
+                    } else {
+                        print("⚠️ [Badge 조건 미충족] 조건에 맞는 뱃지 없음")
                     }
-                } else {
-                    print("⚠️ 뱃지 조건 불충족")
+
+                } catch {
+                    print("❌ [도감 조회 실패] \(error.localizedDescription)")
                 }
-            } catch {
-                print("❌ 도감 조회 실패: \(error.localizedDescription)")
+            } else {
+                print("📴 [Mode] 현재 모드는 .edit이므로 뱃지 획득 로직은 실행되지 않습니다.")
             }
 
             await MainActor.run {
+                print("➡️ [Navigation] 메인탭으로 이동")
                 coordinator.path = [.mainTab]
             }
 
         case .failure(let error):
-            print("❌ POST 실패: \(error)")
+            print("❌ [Memo POST 실패] \(error.localizedDescription)")
         }
     }
 

@@ -27,9 +27,14 @@ final class DefaultBadgeRepository: BadgeRepository {
 
     func postUserBadge(badgeCode: String) async throws -> CollectedBadge {
         let result = await badgeService.postUserBadge(badgeCode: badgeCode)
+
         switch result {
-        case .success(let dto):
+        case .success(let response):
+            guard let dto = response.data else {
+                throw RequestError.decode
+            }
             return dto.toDomain()
+
         case .failure(let error):
             throw error
         }

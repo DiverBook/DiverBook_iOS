@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CustomTextEditor: View {
     @Binding var text: String
+    @FocusState var memoFocused: Bool
     let placeholder: String = "기록 입력"
 
     var body: some View {
@@ -19,6 +20,7 @@ struct CustomTextEditor: View {
                     .font(DiveFont.bodyMedium2)
                     .padding(12)
                     .foregroundColor(.black)
+                    .focused($memoFocused)
                     .scrollContentBackground(.hidden)
             }
             .frame(height: 140)
