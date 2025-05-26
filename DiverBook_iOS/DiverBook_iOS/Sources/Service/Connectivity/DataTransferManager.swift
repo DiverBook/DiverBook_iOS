@@ -28,7 +28,7 @@ final class DataTransferManager: NSObject, ObservableObject {
     let hapticManager = HapticManager.instance
     let serviceType = "DiverBook"
     private let minDistance: Float = 0.2
-    private let maxDistance: Float = 1.0
+    private let maxDistance: Float = 0.5
 
     @Published var isBrowser: Bool = false
 
