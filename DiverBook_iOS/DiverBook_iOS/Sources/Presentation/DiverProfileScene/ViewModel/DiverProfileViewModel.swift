@@ -29,6 +29,7 @@ final class DiverProfileViewModel: ViewModelable {
     @Published var state = State()
     @Published var memo: String = ""
     @Published private(set) var isSaveEnabled: Bool = true
+    @Published var isSavingMemo: Bool = false
 
     private let coordinator: Coordinator
     private let mode: DiverProfileMode
@@ -77,7 +78,13 @@ final class DiverProfileViewModel: ViewModelable {
 
         case .saveMemo:
             Task {
+                await MainActor.run {
+                    isSavingMemo = true
+                }
                 await saveMemo()
+                await MainActor.run {
+                    isSavingMemo = false
+                }
             }
         }
     }
