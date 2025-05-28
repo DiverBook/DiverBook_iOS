@@ -16,5 +16,6 @@ struct DiverProfileTopBarView: View {
                 .font(DiveFont.bar)
                 .foregroundStyle(DiveColor.gray4)
         }
+        .padding(.horizontal, 24)
     }
 }

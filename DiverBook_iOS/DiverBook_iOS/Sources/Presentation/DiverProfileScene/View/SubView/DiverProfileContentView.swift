@@ -59,5 +59,6 @@ struct DiverProfileContentView: View {
             )
             .id("bottom")
         }
+        .padding(.horizontal, 24)
     }
 }
